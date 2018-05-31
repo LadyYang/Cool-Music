@@ -23,6 +23,9 @@ function requestSource(res, hash) {
             console.log(err.toString());
         });
     });
+    request.on('error', function (err) {
+        console.log(err.toString());
+    });
     request.end();
 }
 
@@ -97,6 +100,11 @@ function get(u, res) {
 }
 
 server.on('request', function (req, res) {
+
+    req.on('error', function (err) {
+        console.log(err.toString());
+    });
+
     if (req.url === '/getSong.js') {
         var hash = '';
 
@@ -105,22 +113,23 @@ server.on('request', function (req, res) {
         });
 
         req.on('end', function () {
+            res.on('error', function (err) {
+                console.log(err.toString());
+            });
             requestSource(res, hash);
         });
-
-        req.on('error', function (err) {
-            console.log(err.toString());
-        });
     } else if (req.url === '/') {
+
         get('/html/index.html', res);
     } else {
+
         get(req.url, res);
     }
 
     log({
         req: req,
         res: res,
-        path: res.statusCode < 400 ? '/../log/access.log' : '/../log/error.log'
+        path: res.statusCode < 400 ? '/../../log/access.log' : '/../../log/error.log'
     });
 });
 
@@ -128,13 +137,13 @@ server.on('error', function (err) {
     console.log(err.toString());
     log({
         info: 'Service opening failed, ' + err.toString(),
-        path: '/../log/server.log'
+        path: '/../../log/server.log'
     });
 })
 
 server.listen(81, function () {
     log({
         info: 'Start service successfully',
-        path: '/../log/server.log'
+        path: '/../../log/server.log'
     });
 });
