@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>音乐播放器</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <div class="wrapper">
+
+        <div class="nav">
+            <div class="nav-content">
+                <span>推荐</span>
+                <span>排行榜</span>
+                <span>歌单</span>
+                <div class="image">
+                    <img src="/images/soso.png" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="slideshow">
+            <ul class="slider">
+                <li>
+                    <img src="/images/slide01.jpg" alt="">
+                </li>
+                <li>
+                    <img src="/images/slide02.jpg" alt="">
+                </li>
+                <li>
+                    <img src="/images/slide03.jpg" alt="">
+                </li>
+                <li>
+                    <img src="/images/slide04.jpg" alt="">
+                </li>
+                <li>
+                    <img src="/images/slide05.jpg" alt="">
+                </li>
+                <li>
+                    <img src="/images/slide06.jpg" alt="">
+                </li>
+            </ul>
+            <div class="slider-index">
+                <span class="slider-active"></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="content">
+            <div class="waterfall">
+                <ul>
+                    <li>
+                        <div class="image">
+                            <img src="" alt="">
+                        </div>
+                        <p class="title"></p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="song_wrapper">
+            <ul class="song_list">
+
+            </ul>
+        </div>
+    </div>
+    <script src="/js/zepto.js"></script>
+    <script src="/js/touch.js"></script>
+    <script src="/js/ajax.js"></script>
+    <script src="/js/index.js"></script>
+    <script>
+        window.onload = function () {
+            // document.addEventListener('touchstart', function (e) {
+            //     // console.log(e);
+            //     if (e.touches.length > 1) {
+            //         e.preventDefault();
+            //     }
+            // });
+
+            // var lastTouchEnd = 0;
+            // document.addEventListener('touchend', function (e) {
+            //     var now = +new Date();
+            //     if (now - lastTouchEnd < 300) {
+            //         e.preventDefault();
+            //     }
+            //     lastTouchEnd = now;
+            // });
+
+            // document.body.addEventListener('touchmove', function (e) {
+            //     e.preventDefault();
+            // })
+        }
+    </script>
+</body>
+
+</html>
