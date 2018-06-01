@@ -64,7 +64,7 @@ body {
         line-height: 43px;
         flex-grow: 1;
     }
-    .wrapper .nav .nav-content .image {
+    .wrapper .nav .nav-content .soso {
         display: inline-block;
         width: 10%;
         height: 43px;
@@ -160,53 +160,5 @@ body {
         width: 100%;
         height: 100%;
         border-radius: 5px;
-    }
-    /* song list */
-    .song_wrapper {
-        width: 900px;
-        position: absolute;
-        top: 250px;
-        margin: 0 auto;
-    }
-    .song_wrapper .song_list {
-        width: 100%;
-    }
-    .song_wrapper .song_list .song_item {
-        position: relative;
-        height: 40px;
-        line-height: 40px;
-        border-bottom: 1px solid #ccc;
-    }
-    .song_wrapper .song_list .song_item div {
-        height: 100%;
-        display: inline-block;
-    }
-    .song_wrapper .song_list .song_item .select_song {
-        width: 13px;
-        height: 13px;
-        border: 1px solid #666;
-        margin-left: 10px;
-        cursor: pointer;
-    }
-    .song_wrapper .song_list .song_head div:nth-child(2),
-    .song_wrapper .song_list .song_item .singer_name {
-        position: absolute;
-        left: 50px;
-    }
-    .song_wrapper .song_list .song_item .singer_name:hover {
-        cursor: pointer;
-        color: deepskyblue;
-    }
-    .song_wrapper .song_list .song_head div:nth-child(3),
-    .song_wrapper .song_list .song_item .song_album {
-        width: 250px;
-        position: absolute;
-        right: 150px;
-    }
-    .song_wrapper .song_list .song_head div:nth-child(4),
-    .song_wrapper .song_list .song_item .song_time {
-        width: 100px;
-        position: absolute;
-        right: 5px;
     }
 }

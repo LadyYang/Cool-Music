@@ -1,0 +1,53 @@
+/* song list */
+
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    box-sizing: border-box;
+}
+
+.song_wrapper {
+    width: 100%;
+    position: relative;
+}
+
+.song_wrapper input {
+    width: 100%;
+    height: 30px;
+}
+f
+.song_wrapper .song_list {
+    width: 100%;
+}
+
+.song_wrapper .song_list .song_item {
+    position: relative;
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #ccc;
+}
+
+.song_wrapper .song_list .song_item div {
+    height: 100%;
+    display: inline-block;
+}
+
+.song_wrapper .song_list .song_head div:nth-child(1),
+.song_wrapper .song_list .song_item .singer_name {
+    position: absolute;
+    left: 2px;
+}
+
+.song_wrapper .song_list .song_head div:nth-child(2),
+.song_wrapper .song_list .song_item .song_album {
+    position: absolute;
+    width: 50px;
+    left: 200px;
+}
+
+.song_wrapper .song_list .song_head div:nth-child(3),
+.song_wrapper .song_list .song_item .song_time {
+    position: absolute;
+    right: 2px;
+}

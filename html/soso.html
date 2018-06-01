@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="soso.css">
+    <script src="/js/ajax.js"></script>
+</head>
+
+<body>
+    <div class="song_wrapper">
+        <input type="text">
+        <ul class="song_list">
+        </ul>
+    </div>
+    <script src="/js/song.js"></script>
+    <script src="/js/soso.js"></script>
+    <script>
+        window.onload = function () {
+            document.addEventListener('touchstart', function (e) {
+                // console.log(e);
+                if (e.touches.length > 1) {
+                    e.preventDefault();
+                }
+            });
+
+            var lastTouchEnd = 0;
+            document.addEventListener('touchend', function (e) {
+                var now = +new Date();
+                if (now - lastTouchEnd < 300) {
+                    e.preventDefault();
+                }
+                lastTouchEnd = now;
+            });
+        }
+    </script>
+</body>
+
+</html>

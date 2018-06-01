@@ -25,7 +25,6 @@ song.extend({
     // create song list
     createDom: function (obj, songList) {
         var str = `<li class="song_head song_item">
-                    <div class="select_song"></div>
                     <div>歌曲名</div>
                     <div>专辑</div>
                     <div>时长</div>
@@ -36,8 +35,7 @@ song.extend({
             var time = (ele.Duration / 60).toFixed(2).toString().split('.');
             var minute = time[0];
             var sec = time[1];
-            var itemStr = `<li class="song_item">
-                                <div class="select_song"></div>
+            var itemStr = `<li class="song_item"> 
                                 <div class="singer_name">${ele.SongName}</div>
                                 <div class="song_album">${ele.AlbumName}</div>
                                 <div class="song_time">${minute > 9 ? minute : ('0' + minute)}:${sec}</div>

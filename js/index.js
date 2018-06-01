@@ -6,7 +6,7 @@ function getStyle(obj, prop) {
     }
 }
 
-
+/* slidershow */
 function animation(obj, json, callback) {
     clearInterval(obj.timer);
 
@@ -104,3 +104,9 @@ function show(dir) {
 sliderLi.timer = setTimeout(() => {
     show('right-left');
 }, 30);
+
+/* soso */
+var soso = document.getElementsByClassName('soso')[0];
+soso.onclick = function () {
+    window.location = '/soso.html';
+}

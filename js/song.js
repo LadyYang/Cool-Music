@@ -86,9 +86,10 @@
             }
 
             img.src = data.img;
-
             audio.src = data.play_url;
-            audio.autoplay = true;
+            audio.onloadedmetadata = () => {
+                this.play();
+            }
         },
 
         play: function () {

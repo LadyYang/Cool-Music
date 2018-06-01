@@ -2,14 +2,14 @@
     margin: 0;
     padding: 0;
     list-style: none;
+    box-sizing: border-box;
 }
 
 .play-wrapper {
     width: 100vw;
-    height: 100vh;
-    background: rgba(200, 200, 120, 0.2);
+    /* height: 100vh; */
+    /* background: rgba(200, 200, 120, 0.2); */
     padding-top: 60px;
-    box-sizing: border-box;
 }
 
 .play-wrapper .song-img {
@@ -69,14 +69,14 @@
     text-align: center;
 }
 
-.play-wrapper .pro .pro-play-wrapper {
+.play-wrapper .pro .pro-wrapper {
     flex: 1;
     position: relative;
     overflow: hidden;
 }
 
-.play-wrapper .pro .pro-play-wrapper .pro-bottom,
-.play-wrapper .pro .pro-play-wrapper .pro-top {
+.play-wrapper .pro .pro-wrapper .pro-bottom,
+.play-wrapper .pro .pro-wrapper .pro-top {
     height: 1px;
     width: 100%;
     background: #fff;
@@ -84,18 +84,18 @@
     top: 20px;
 }
 
-.play-wrapper .pro .pro-play-wrapper .pro-bottom {
+.play-wrapper .pro .pro-wrapper .pro-bottom {
     background-color: rgba(255, 255, 255, 0.6);
 }
 
-.play-wrapper .pro .pro-play-wrapper .pro-top {
+.play-wrapper .pro .pro-wrapper .pro-top {
     background-color: #fff;
     -webkit-transform: translateX(-100%);
     transform: translateX(-100%);
     position: relative;
 }
 
-.play-wrapper .pro .pro-play-wrapper .pro-top .slider-point {
+.play-wrapper .pro .pro-wrapper .pro-top .slider-point {
     width: 21px;
     height: 21px;
     position: absolute;
@@ -106,17 +106,13 @@
     align-items: center;
 }
 
-.play-wrapper .pro .pro-play-wrapper .pro-top .slider-point::after {
+.play-wrapper .pro .pro-wrapper .pro-top .slider-point::after {
     content: "";
     display: block;
     height: 5px;
     width: 5px;
     border-radius: 50%;
     background-color: #fff;
-}
-
-.play-wrapper .pro .pro-play-wrapper .pro-top:hover {
-    cursor: pointer;
 }
 
 .play-wrapper .control {
@@ -128,7 +124,7 @@
     background-color: rgba(0, 0, 0, 0.2);
 }
 
-.play-wrapper .control .btn-play-wrapper {
+.play-wrapper .control .btn-wrapper {
     flex: 1;
     background-repeat: no-repeat;
     background-position: 50%;

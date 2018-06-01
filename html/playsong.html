@@ -45,7 +45,11 @@
         // console.log(hash);
         var song = new Song();
         song.imgDoc = document.getElementsByClassName('img-wrapper')[0];
+        var playBtn = document.getElementsByClassName('play-btn')[0];
         song.loadSong(hash);
+        playBtn.onclick = function () {
+            song.play();
+        }
     </script>
 </body>
 
