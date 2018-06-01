@@ -1,7 +1,6 @@
 var fs = require('fs');
 var http = require('http');
 var url = require('url');
-var server = http.createServer();
 var config = require('./server.config');
 var log = require('./log');
 
@@ -23,6 +22,9 @@ function requestSource(res, hash) {
             console.log(err.toString());
         });
     });
+    request.on('close', function () {
+
+    })
     request.on('error', function (err) {
         console.log(err.toString());
     });
@@ -65,14 +67,11 @@ function get(u, res) {
     // http: //localhost:1010/html/playsong.html?hash=023650FBE10AD3ACEBB2C31CDD3C500
 
     function upload(res, code, type, path) {
-        // res.on('finish', function () {
-        //     console.log('ok...');
-        // })
         var fileReadStream = fs.createReadStream(path);
         fileReadStream.on('error', function (err) {
             console.log(err.toString());
             upload(res, 404, 'text/html', __dirname + '/../html/error.html');
-        })
+        });
         res.writeHead(code, {
             'Content-type': type
         });
@@ -99,9 +98,14 @@ function get(u, res) {
 
 }
 
+var server = http.createServer();
+
 server.on('request', function (req, res) {
 
     req.on('error', function (err) {
+        console.log(err.toString());
+    });
+    res.on('error', function (err) {
         console.log(err.toString());
     });
 
@@ -113,9 +117,7 @@ server.on('request', function (req, res) {
         });
 
         req.on('end', function () {
-            res.on('error', function (err) {
-                console.log(err.toString());
-            });
+
             requestSource(res, hash);
         });
     } else if (req.url === '/') {

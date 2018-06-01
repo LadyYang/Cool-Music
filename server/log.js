@@ -53,9 +53,11 @@ function log({req,res,info,path}) {
 
         fs.write(fd, str, 0, null, null, function (err) {
             if (err) throw err;
-            fs.close(fd);
+          fs.close(fd, function () {
+              console.log('close ok');
+          });
         });
-    })
+    });
 }
 
 module.exports = log;
