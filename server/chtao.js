@@ -143,7 +143,7 @@ server.on('error', function (err) {
     });
 })
 
-server.listen(81, function () {
+server.listen(80, function () {
     log({
         info: 'Start service successfully',
         path: '/../../log/server.log'
