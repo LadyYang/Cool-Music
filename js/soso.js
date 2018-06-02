@@ -24,11 +24,7 @@ song.extend({
 
     // create song list
     createDom: function (obj, songList) {
-        var str = `<li class="song_head song_item">
-                    <div>歌曲名</div>
-                    <div>专辑</div>
-                    <div>时长</div>
-                </li>`;
+        var str = '';
 
         songList.forEach(function (ele, index) {
             // all of song time
@@ -37,8 +33,6 @@ song.extend({
             var sec = time[1];
             var itemStr = `<li class="song_item"> 
                                 <div class="singer_name">${ele.SongName}</div>
-                                <div class="song_album">${ele.AlbumName}</div>
-                                <div class="song_time">${minute > 9 ? minute : ('0' + minute)}:${sec}</div>
                         </li>`;
             str += itemStr;
         });
@@ -75,6 +69,9 @@ song.extend({
 
     bindEvent: (function () {
         var flag = true;
+        var nav = document.getElementsByClassName('nav')[0];
+        var content = document.getElementsByClassName('content')[0];
+
         return function () {
             var self = this;
             if (flag) {
@@ -87,6 +84,7 @@ song.extend({
                     var target = e.target;
 
                     if (target.className === 'singer_name') {
+                        self.input.value = '';
                         var index = singerName.indexOf(target);
                         // console.log(index);
                         // self.loadSong(self.songList[index].FileHash);
@@ -98,6 +96,27 @@ song.extend({
                 flag = false;
             } else {
                 throw new Error('You can\'t perform this function');
+            }
+
+
+            this.input.onclick = function () {
+                nav.style.top = '-38px';
+                nav.style.backgroundColor = '#ccc';
+                content.style.display = 'none';
+                this.style.width = '85%';
+                this.style.left = '44%';
+                this.nextElementSibling.style.display = 'inline-block';
+                self.target.parentElement.style.display = 'block';
+            }
+
+            this.input.nextElementSibling.onclick = function () {
+                nav.style = '';
+                content.style = '';
+                this.previousElementSibling.style = '';
+                this.previousElementSibling.value = '';
+                this.style = '';
+                self.target.parentElement.style.display = '';
+                self.target.innerHTML = '';
             }
         }
     })(),

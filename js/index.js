@@ -46,7 +46,6 @@ function animation(obj, json, callback) {
 }
 
 var sliderLi = Array.from(document.getElementsByClassName('slider')[0]['children']);
-
 // var
 var index = -1;
 var lastIndex = 0;
@@ -105,8 +104,8 @@ sliderLi.timer = setTimeout(() => {
     show('right-left');
 }, 30);
 
-/* soso */
+
 // var soso = document.getElementsByClassName('soso')[0];
 // soso.onclick = function () {
-//     window.location = '/soso.html';
+//         window.location = '/soso.html';
 // }
