@@ -1,4 +1,4 @@
-function ajax(json) {
+module.exports = function ajax(json) {
     var method = json.method,
         url = json.url,
         flag = json.flag,

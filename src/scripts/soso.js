@@ -1,3 +1,5 @@
+var Song = require('./song');
+
 var song = new Song();
 
 function doJSON(data) {

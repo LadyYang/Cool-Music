@@ -1,9 +1,9 @@
-* {
+/* * {
     margin: 0;
     padding: 0;
     list-style: none;
     box-sizing: border-box;
-}
+} */
 
 .play-wrapper {
     width: 100vw;
@@ -132,25 +132,25 @@
 }
 
 .play-wrapper .control .like-btn {
-    background-image: url('../images/icon-like.png');
+    background-image: url(../images/icon-like.png);
 }
 
 .play-wrapper .control .prev-btn {
-    background-image: url('../images/icon-prev.png');
+    background-image: url(../images/icon-prev.png);
 }
 
 .play-wrapper .control .play-btn {
-    background-image: url('../images/icon-play.png');
+    background-image: url(../images/icon-play.png);
 }
 
 .play-wrapper .control .pause-btn {
-    background-image: url('../images/icon-pause.png');
+    background-image: url(../images/icon-pause.png);
 }
 
 .play-wrapper .control .next-btn {
-    background-image: url('../images/icon-next.png');
+    background-image: url(../images/icon-next.png);
 }
 
 .play-wrapper .control .list-btn {
-    background-image: url('../images/icon-list.png');
+    background-image: url(../images/icon-list.png);
 }
