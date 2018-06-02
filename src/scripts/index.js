@@ -1,52 +1,11 @@
-function getStyle(obj, prop) {
-    if (window.getComputedStyle) {
-        return getComputedStyle(obj, null)[prop];
-    } else {
-        return obj.currentStyle[prop];
-    }
-}
-
-/* slidershow */
-function animation(obj, json, callback) {
-    clearInterval(obj.timer);
-
-    obj.timer = setInterval(function () {
-        var flag = false;
-        var iSpeed = 8;
-
-        for (var p in json) {
-            if (p === 'opacity') {
-                iCur = parseFloat(getStyle(obj, p)) * 100;
-            } else {
-                iCur = parseInt(getStyle(obj, p));
-            }
-
-            iSpeed = (parseInt(json[p]) - iCur) / 7;
-            iSpeed = iSpeed > 0 ? Math.ceil(iSpeed) : Math.floor(iSpeed);
-
-            if (p === 'opacity') {
-                obj.style[p] = (iSpeed + iCur) / 100;
-            } else {
-                obj.style[p] = iSpeed + iCur + 'px';
-            }
-
-            if (parseInt(json[p]) === iCur) {
-                flag = true;
-            } else {
-                flag = false;
-            }
-        }
-
-        if (flag) {
-            clearInterval(obj.timer);
-            typeof callback === 'function' ? callback() : '';
-        }
-
-    }, 30);
-}
+var $ = require('zepto');
+// var touch = require('touch');
+var soso = require('./soso.js');
+require('../css/index.css');
+require('../css/playsong.css');
+require('../css/error.css');
 
 var sliderLi = Array.from(document.getElementsByClassName('slider')[0]['children']);
-// var
 var index = -1;
 var lastIndex = 0;
 

@@ -38,7 +38,7 @@ ol {
 #main {
 	width: 1000px;
 	margin: 0 auto;
-	background: url(images/error.jpg) no-repeat left top;
+	background: url(../images/error.jpg) no-repeat left top;
 	font-size: 1.125em;
 	overflow: hidden;
 	position: relative;
