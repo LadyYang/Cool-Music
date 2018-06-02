@@ -1,35 +1,7 @@
 var fs = require('fs');
 var url = require('url');
 var stream = require('stream');
-/* 
- *{
-     host: 'localhost:1010',
-     connection: 'keep-alive',
-     'user-agent': 'Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Mobile Safari/537.36',
-  
-     referer: 'http://localhost:1010/css/playsong.css',
-     'accept-encoding': 'gzip, deflate, br',
-     'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8',
-     cookie: '_ga=GA1.1.2085692776.1526913011'
-   }
- *['Host',
-     'localhost:1010',
-     'Connection',
-     'keep-alive',
-     'User-Agent',
-     'Mozilla/5.0 (Linux; Android 5.0; SM-G900P Build/LRX21T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Mobile Safari/537.36',
-     'Accept',
 
-     'Referer',
-     'http://localhost:1010/css/playsong.css',
-     'Accept-Encoding',
-     'gzip, deflate, br',
-     'Accept-Language',
-     'zh-CN,zh;q=0.9,en;q=0.8',
-     'Cookie',
-     '_ga=GA1.1.2085692776.1526913011'
- ]
-*/
 function log({req,res,info,path}) {
     var data = '';
     if (req instanceof stream.Readable) {

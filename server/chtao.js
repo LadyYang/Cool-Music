@@ -31,28 +31,6 @@ function requestSource(res, hash) {
     request.end();
 }
 
-// var img = /(\.png)$/;
-// var css = /(\.css)$/;
-// var html = /(\.html)$/;
-// var js = /(\.js)$/;
-/* 
- * Url {
-     protocol: null,
-     slashes: null,
-     auth: null,
-     host: null,
-     port: null,
-     hostname: null,
-     hash: null,
-     search: '?hash=023650FBE10AD3ACEBB2C31CDD3C500F',
-     query: {
-         hash: '023650FBE10AD3ACEBB2C31CDD3C500F'
-     },
-     pathname: '/html/playsong.html',
-     path: '/html/playsong.html?hash=023650FBE10AD3ACEBB2C31CDD3C500F',
-     href: '/html/playsong.html?hash=023650FBE10AD3ACEBB2C31CDD3C500F'
- }
-*/
 // 根据路径加载
 function get(u, res) {
     var {
@@ -70,7 +48,7 @@ function get(u, res) {
         var fileReadStream = fs.createReadStream(path);
         fileReadStream.on('error', function (err) {
             console.log(err.toString());
-            upload(res, 404, 'text/html', __dirname + '/../html/error.html');
+            upload(res, 404, 'text/html', __dirname + config.html +'error.html');
         });
         res.writeHead(code, {
             'Content-type': type
@@ -93,7 +71,7 @@ function get(u, res) {
         upload(res, 200, 'application/javascript', __dirname + config.js + path);
     } else {
         console.log(u);
-        upload(res, 404, 'text/html', __dirname + '/../html/error.html');
+        upload(res, 404, 'text/html', __dirname + config.html + 'error.html');
     }
 
 }

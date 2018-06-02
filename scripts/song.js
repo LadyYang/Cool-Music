@@ -4,7 +4,6 @@
  * searchUrl = http://songsearch.kugou.com/song_search_v2?callback=Song.doJSON&keyword
  * songUrl = http: //www.kugou.com/yy/index.php?r=play/getdata&hash=;
  */
-var ajax = require('./ajax');
 (function (global, factory) {
     "use strict";
 

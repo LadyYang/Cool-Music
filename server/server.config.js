@@ -1,6 +1,6 @@
 module.exports = {
-    html: '/../html/',
-    js: '/../js/',
+    html: '/../views/',
+    js: '/../scripts/',
     css: '/../css/',
     image: '/../images/'
 }

@@ -1,10 +1,3 @@
-var $ = require('zepto');
-// var touch = require('touch');
-var soso = require('./soso.js');
-require('../css/index.css');
-require('../css/playsong.css');
-require('../css/error.css');
-
 var sliderLi = Array.from(document.getElementsByClassName('slider')[0]['children']);
 var index = -1;
 var lastIndex = 0;
