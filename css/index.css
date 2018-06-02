@@ -8,63 +8,93 @@
 html,
 body {
     width: 100%;
+    height: 100%;
+    overflow-X: hidden;
+}
+
+.right-wrapper {
+    width: 80%;
+    height: 100%;
+    position: fixed;
+    left: -80%;
+    border: 1px solid black;
+    z-index: 10000;
 }
 
 .wrapper {
     width: 100%;
     position: relative;
+    left: -45%;
 }
 
 /******nav*****/
 
 .wrapper .nav {
     width: 100%;
-    height: 43px;
+    height: 70px;
     position: fixed;
     z-index: 9999;
     background-color: red;
     color: #fff;
 }
 
-.wrapper .nav .nav-content {
+.wrapper .nav .nav-top {
     width: 100%;
-    height: 100%;
+    height: 40px;
     display: flex;
 }
 
-.wrapper .nav span {
+.wrapper .nav .nav-top span {
     display: inline-block;
     width: 60px;
-    height: 100%;
+    height: 40px;
     text-align: center;
-    line-height: 43px;
+    line-height: 40px;
     flex-grow: 1;
 }
 
-.wrapper .nav .nav-content .soso {
+.wrapper .nav .nav-top .menu {
     display: inline-block;
-    width: 10%;
-    height: 43px;
+    width: 30px;
+    height: 30px;
+    margin: 7px 0px 3px 12px;
+    flex-grow: 0;
+    background-image: url(/images/menu.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
 
-.wrapper .nav .nav-content img {
-    display: inline-block;
-    margin-top: 10px;
-    width: 60%;
-    height: 60%;
+.wrapper .nav .soso {
+    width: 100%;
+    height: 30px;
+    position: relative;
 }
 
-.wrapper .soso input {
-    display: none;
+.wrapper .nav .soso input {
+    width: 75%;
+    height: 80%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    text-align: center;
+    font-size: 14px;
+    border-radius: 30px;
+    border: none;
+}
+
+.wrapper .content {
+    width: 100%;
+    position: relative;
+    top: 71px;
 }
 
 /*******slideshow*******/
 
-.wrapper .slideshow {
+.wrapper .content .slideshow {
     width: 100%;
     height: 191px;
-    position: absolute;
-    top: 43px;
+    position: relative;
 }
 
 .slideshow .slider,
@@ -74,22 +104,18 @@ body {
     position: absolute;
 }
 
-.slideshow .slider li img {
-    width: 100%;
-    height: 100%;
-}
-
-.slideshow .slider li img {
-    width: 100%;
-    height: 100%;
-}
-
 .slideshow .slider li {
     opacity: 0;
-    transition: all 1s linear;
+    border-radius: 20px;
+    transition: opacity 1s linear;
 }
 
-.wrapper .slideshow .slider-index {
+.slideshow .slider li img {
+    width: 100%;
+    height: 100%;
+}
+
+.slideshow .slider-index {
     position: absolute;
     width: 100%;
     height: 15px;
@@ -98,7 +124,7 @@ body {
     justify-content: center;
 }
 
-.wrapper .slideshow .slider-index span {
+.slideshow .slider-index span {
     display: block;
     margin-left: 10px;
     width: 10px;
@@ -108,7 +134,7 @@ body {
     cursor: pointer;
 }
 
-.wrapper .slideshow .slider-index .slider-active {
+.slideshow .slider-index .slider-active {
     background-color: red;
 }
 
@@ -116,14 +142,13 @@ body {
 
 /******template******/
 
-.wrapper .waterfall {
-    position: absolute;
-    top: 234px;
+.wrapper .content .waterfall {
+    position: relative;
     width: 100%;
 }
 
 .waterfall .md {
-    position: absolute;
+    position: relative;
     width: 100%;
 }
 
@@ -131,7 +156,7 @@ body {
     height: 50px;
     width: 34%;
     display: inline-block;
-    position: absolute;
+    position: relative;
 }
 
 .waterfall .md .hd .hd-title,
@@ -160,7 +185,6 @@ body {
 
 .waterfall .md .cb {
     width: 100%;
-    top: 50px;
     position: relative;
     display: flex;
     flex-wrap: wrap;
@@ -190,10 +214,12 @@ body {
     line-height: 30px;
     top: 1px;
 }
+
 .cb li .bottom .icon-headset,
 .cb li .bottom .icon-play {
     background: url(/image/iconall.png) no-repeat;
 }
+
 .cb li .bottom .icon-headset {
     float: left;
     width: 14px;
@@ -223,16 +249,10 @@ body {
     height: 60px;
     display: flex;
     justify-content: space-between;
-    
 }
+
 .md .cb li .title a {
     text-decoration: none;
     color: #000;
     font-size: 16px;
-}
-
-.waterfall .md2 {
-    position: absolute;
-    top: 430px;
-    width: 100%;
 }

@@ -106,7 +106,7 @@ sliderLi.timer = setTimeout(() => {
 }, 30);
 
 /* soso */
-var soso = document.getElementsByClassName('soso')[0];
-soso.onclick = function () {
-    window.location = '/soso.html';
-}
+// var soso = document.getElementsByClassName('soso')[0];
+// soso.onclick = function () {
+//     window.location = '/soso.html';
+// }
