@@ -237,11 +237,11 @@ body {
     position: relative;
 }
 
-.waterfall .md .cb .image {
+.waterfall .md .cb .wf-image {
     width: 100%;
 }
 
-.waterfall .md .cb .image img {
+.waterfall .md .cb .wf-image img {
     width: 100%;
     height: 100%;
     /* position: absolute; */

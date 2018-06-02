@@ -58,24 +58,12 @@
                 <!-- 轮播图 -->
                 <div class="slideshow">
                     <ul class="slider">
-                        <li>
-                            <img src="/images/slide01.jpg" alt="">
-                        </li>
-                        <li>
-                            <img src="/images/slide02.jpg" alt="">
-                        </li>
-                        <li>
-                            <img src="/images/slide03.jpg" alt="">
-                        </li>
-                        <li>
-                            <img src="/images/slide04.jpg" alt="">
-                        </li>
-                        <li>
-                            <img src="/images/slide05.jpg" alt="">
-                        </li>
-                        <li>
-                            <img src="/images/slide06.jpg" alt="">
-                        </li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
                     </ul>
                     <div class="slider-index">
                         <span class="slider-active"></span>
@@ -97,8 +85,7 @@
                         </div>
                         <ul class="cb">
                             <li>
-                                <div class="image">
-                                    <img src="/images/18742275209205360.jpg" alt="">
+                                <div class="wf-image">
                                     <div class="bottom">
                                         <span class="icon-headset"></span>
                                         <span class="nb">1240.5万</span>
@@ -110,8 +97,7 @@
                                 </p>
                             </li>
                             <li>
-                                <div class="image">
-                                    <img src="/images/18924794137858123.jpg" alt="">
+                                <div class="wf-image">
                                     <div class="bottom">
                                         <span class="icon-headset"></span>
                                         <span class="nb"></span>
@@ -123,8 +109,7 @@
                                 </p>
                             </li>
                             <li>
-                                <div class="image">
-                                    <img src="/images/19019352137865075.jpg" alt="">
+                                <div class="wf-image">
                                     <div class="bottom">
                                         <span class="icon-headset"></span>
                                         <span class="nb"></span>
@@ -136,8 +121,7 @@
                                 </p>
                             </li>
                             <li>
-                                <div class="image">
-                                    <img src="/images/109951163315570256.jpg" alt="">
+                                <div class="wf-image">
                                     <div class="bottom">
                                         <span class="icon-headset"></span>
                                         <span class="nb"></span>
@@ -149,8 +133,7 @@
                                 </p>
                             </li>
                             <li>
-                                <div class="image">
-                                    <img src="/images/109951163324132839.jpg" alt="">
+                                <div class="wf-image">
                                     <div class="bottom">
                                         <span class="icon-headset"></span>
                                         <span class="nb"></span>
@@ -162,8 +145,7 @@
                                 </p>
                             </li>
                             <li>
-                                <div class="image">
-                                    <img src="/images/109951163325479921.jpg" alt="">
+                                <div class="wf-image">
                                     <div class="bottom">
                                         <span class="icon-headset"></span>
                                         <span class="nb"></span>
@@ -183,8 +165,7 @@
                         </div>
                         <ul class="cb">
                             <li>
-                                <div class="image">
-                                    <img src="/images/18742275209205360.jpg" alt="">
+                                <div class="wf-image">
                                     <div class="bottom">
                                         <span class="icon-headset"></span>
                                         <span class="nb">1240.5万</span>
@@ -196,8 +177,7 @@
                                 </p>
                             </li>
                             <li>
-                                <div class="image">
-                                    <img src="/images/18924794137858123.jpg" alt="">
+                                <div class="wf-image">
                                     <div class="bottom">
                                         <span class="icon-headset"></span>
                                         <span class="nb"></span>
@@ -209,8 +189,7 @@
                                 </p>
                             </li>
                             <li>
-                                <div class="image">
-                                    <img src="/images/19019352137865075.jpg" alt="">
+                                <div class="wf-image">
                                     <div class="bottom">
                                         <span class="icon-headset"></span>
                                         <span class="nb"></span>
@@ -222,8 +201,7 @@
                                 </p>
                             </li>
                             <li>
-                                <div class="image">
-                                    <img src="/images/109951163315570256.jpg" alt="">
+                                <div class="wf-image">
                                     <div class="bottom">
                                         <span class="icon-headset"></span>
                                         <span class="nb"></span>
@@ -235,8 +213,7 @@
                                 </p>
                             </li>
                             <li>
-                                <div class="image">
-                                    <img src="/images/109951163324132839.jpg" alt="">
+                                <div class="wf-image">
                                     <div class="bottom">
                                         <span class="icon-headset"></span>
                                         <span class="nb"></span>
@@ -248,8 +225,7 @@
                                 </p>
                             </li>
                             <li>
-                                <div class="image">
-                                    <img src="/images/109951163325479921.jpg" alt="">
+                                <div class="wf-image">
                                     <div class="bottom">
                                         <span class="icon-headset"></span>
                                         <span class="nb"></span>
@@ -273,6 +249,31 @@
     <script src="/soso.js"></script>
     <script src="/index.js"></script>
     <script>
+        /* slidershow */
+        var slider = document.getElementsByClassName('slider')[0];
+        Array.from(slider.children).forEach(function (ele, index) {
+            var image = new Image();
+            image.onload = function () {
+                ele.appendChild(image);
+            }
+            image.src = `/images/slide0${index + 1}.jpg`;
+        });
+        /* waterfull */
+        // var 
+        var wfImage = Array.from(document.getElementsByClassName('wf-image'));
+        var imageArr = ["/images/18742275209205360.jpg", "/images/18924794137858123.jpg",
+            "/images/19019352137865075.jpg", "/images/109951163315570256.jpg", "/images/109951163324132839.jpg",
+            "/images/109951163325479921.jpg", "/images/18742275209205360.jpg", "/images/18924794137858123.jpg",
+            "/images/109951163315570256.jpg", "/images/19019352137865075.jpg", "/images/109951163324132839.jpg",
+            "/images/109951163325479921.jpg"
+        ];
+        wfImage.forEach(function (ele, index) {
+            var image = new Image();
+            image.onload = function () {
+                ele.appendChild(image);
+            };
+            image.src = imageArr[index];
+        });
         window.onload = function () {
             document.addEventListener('touchstart', function (e) {
                 // console.log(e);
