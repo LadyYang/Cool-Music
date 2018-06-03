@@ -261,38 +261,19 @@
     <script src="/soso.js"></script>
     <script src="/index.js"></script>
     <script>
-        /* slidershow */
-        // var slider = document.getElementsByClassName('slider')[0];
-        // document.onload = function () {
+        var wfImage = Array.from(document.getElementsByClassName('wf-image')),
+            slideshow = document.getElementsByClassName('slideshow')[0],
+            sliderLiImg = document.querySelectorAll('.slider li img'),
+            imageArr = ["/images/18742275209205360.jpg", "/images/18924794137858123.jpg",
+                "/images/19019352137865075.jpg", "/images/109951163315570256.jpg", "/images/109951163324132839.jpg",
+                "/images/109951163325479921.jpg", "/images/18742275209205360.jpg", "/images/18924794137858123.jpg",
+                "/images/109951163315570256.jpg", "/images/19019352137865075.jpg", "/images/109951163324132839.jpg",
+                "/images/109951163325479921.jpg"
+            ];
+        slideshow.style.height = slideshow.offsetWidth / 2.2 + 'px';
 
-            var sliderLiImg = document.querySelectorAll('.slider li img');
-            // console.log(sliderLi);
-            Array.from(sliderLiImg).forEach(function (ele, index) {
-                // console.log(ele.dataset.origin);
-                // console.log(ele.src);
-                var img = new Image();
-                img.onload = function () {
-                    ele.src = img.src;
 
-                }
-                img.src = ele.dataset.origin;
-            });
-        // }
-        // Array.from(slider.children).forEach(function (ele, index) {
-        //     var image = new Image();
-        //     image.onload = function () {
-        //         ele.appendChild(image);
-        //     }
-        //     image.src = `/images/slide0${index + 1}.jpg`;
-        // });
         /* waterfull */
-        var wfImage = Array.from(document.getElementsByClassName('wf-image'));
-        var imageArr = ["/images/18742275209205360.jpg", "/images/18924794137858123.jpg",
-            "/images/19019352137865075.jpg", "/images/109951163315570256.jpg", "/images/109951163324132839.jpg",
-            "/images/109951163325479921.jpg", "/images/18742275209205360.jpg", "/images/18924794137858123.jpg",
-            "/images/109951163315570256.jpg", "/images/19019352137865075.jpg", "/images/109951163324132839.jpg",
-            "/images/109951163325479921.jpg"
-        ];
         wfImage.forEach(function (ele, index) {
             var image = new Image();
             image.onload = function () {
@@ -300,6 +281,9 @@
             };
             image.src = imageArr[index];
         });
+
+
+
         window.onload = function () {
             document.addEventListener('touchstart', function (e) {
                 // console.log(e);
@@ -316,10 +300,16 @@
                 }
                 lastTouchEnd = now;
             });
-        }
 
-        var slideshow = document.getElementsByClassName('slideshow')[0];
-        slideshow.style.height = slideshow.offsetWidth / 2.2 + 'px';
+            /* slidershow */
+            Array.from(sliderLiImg).forEach(function (ele, index) {
+                var img = new Image();
+                img.onload = function () {
+                    ele.src = img.src;
+                }
+                img.src = ele.dataset.origin;
+            });
+        }
     </script>
 </body>
 
