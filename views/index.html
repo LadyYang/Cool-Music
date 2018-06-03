@@ -58,12 +58,24 @@
                 <!-- 轮播图 -->
                 <div class="slideshow">
                     <ul class="slider">
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
-                        <li></li>
+                        <li>
+                            <img src="" data-origin="/images/slide01.jpg" alt="">
+                        </li>
+                        <li>
+                            <img src="" data-origin="/images/slide02.jpg" alt="">
+                        </li>
+                        <li>
+                            <img src="" data-origin="/images/slide03.jpg" alt="">
+                        </li>
+                        <li>
+                            <img src="" data-origin="/images/slide04.jpg" alt="">
+                        </li>
+                        <li>
+                            <img src="" data-origin="/images/slide05.jpg" alt="">
+                        </li>
+                        <li>
+                            <img src="" data-origin="/images/slide06.jpg" alt="">
+                        </li>
                     </ul>
                     <div class="slider-index">
                         <span class="slider-active"></span>
@@ -250,16 +262,30 @@
     <script src="/index.js"></script>
     <script>
         /* slidershow */
-        var slider = document.getElementsByClassName('slider')[0];
-        Array.from(slider.children).forEach(function (ele, index) {
-            var image = new Image();
-            image.onload = function () {
-                ele.appendChild(image);
-            }
-            image.src = `/images/slide0${index + 1}.jpg`;
-        });
+        // var slider = document.getElementsByClassName('slider')[0];
+        // document.onload = function () {
+
+            var sliderLiImg = document.querySelectorAll('.slider li img');
+            // console.log(sliderLi);
+            Array.from(sliderLiImg).forEach(function (ele, index) {
+                // console.log(ele.dataset.origin);
+                // console.log(ele.src);
+                var img = new Image();
+                img.onload = function () {
+                    ele.src = img.src;
+
+                }
+                img.src = ele.dataset.origin;
+            });
+        // }
+        // Array.from(slider.children).forEach(function (ele, index) {
+        //     var image = new Image();
+        //     image.onload = function () {
+        //         ele.appendChild(image);
+        //     }
+        //     image.src = `/images/slide0${index + 1}.jpg`;
+        // });
         /* waterfull */
-        // var 
         var wfImage = Array.from(document.getElementsByClassName('wf-image'));
         var imageArr = ["/images/18742275209205360.jpg", "/images/18924794137858123.jpg",
             "/images/19019352137865075.jpg", "/images/109951163315570256.jpg", "/images/109951163324132839.jpg",
