@@ -12,7 +12,6 @@ var cssnano = require("cssnano");
 var connect = require("gulp-connect");
 
 
-
 var folder = {
     src : "src/",
     dist : "dist/"
@@ -22,12 +21,12 @@ var devMode = process.env.NODE_ENV !== "production";
 
 //流操作 task running
 gulp.task("html",function(){
-    var page =  gulp.src(folder.src + "html/index.html")
+    var page =  gulp.src(folder.src + "views/*")
                     .pipe(connect.reload());
     if(!devMode){
         page.pipe(htmlclean());
     }
-    page.pipe(gulp.dest(folder.dist + "html/"))
+    page.pipe(gulp.dest(folder.dist + "views/"))
 })
 
 gulp.task("images",function(){
@@ -36,13 +35,13 @@ gulp.task("images",function(){
         .pipe(gulp.dest(folder.dist+"images/"))
 })
 gulp.task("js",function(){
-    var js = gulp.src(folder.src+"js/*")
+    var js = gulp.src(folder.src+"scripts/*")
             .pipe(connect.reload());
     if(!devMode){
         js.pipe(uglify())
         .pipe(stripDebug())
     }   
-    js.pipe(gulp.dest(folder.dist+"js/"))
+    js.pipe(gulp.dest(folder.dist+"scripts/"))
 })
 gulp.task("css",function(){
     var css = gulp.src(folder.src+"css/*")
@@ -57,9 +56,9 @@ gulp.task("css",function(){
     .pipe(gulp.dest(folder.dist + "css/"))
 })
 gulp.task("watch",function(){
-    gulp.watch(folder.src + "html/*",["html"]);
+    gulp.watch(folder.src + "views/*",["html"]);
     gulp.watch(folder.src + "images/*",["images"]);
-    gulp.watch(folder.src + "js/*",["js"]);
+    gulp.watch(folder.src + "scripts/*",["js"]);
     gulp.watch(folder.src + "css/*",["css"]);
 })
 gulp.task("server",function(){
@@ -70,3 +69,4 @@ gulp.task("server",function(){
 })
 
 gulp.task("default",["html","images","js","css","watch","server"]);
+

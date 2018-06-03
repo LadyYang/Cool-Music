@@ -1,0 +1,36 @@
+{
+  "name": "coolmusic",
+  "version": "1.0.0",
+  "description": "> node chtao.js",
+  "main": "dist/scripts/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ladyyang/CoolMusic.git"
+  },
+  "keywords": [
+    "music"
+  ],
+  "author": "chtao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ladyyang/CoolMusic/issues"
+  },
+  "homepage": "https://github.com/ladyyang/CoolMusic#readme",
+  "devDependencies": {
+    "autoprefixer": "^8.6.0",
+    "cssnano": "^3.10.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-connect": "^5.5.0",
+    "gulp-deporder": "^1.1.0",
+    "gulp-htmlclean": "^2.7.22",
+    "gulp-imagemin": "^4.1.0",
+    "gulp-less": "^3.5.0",
+    "gulp-postcss": "^7.0.1",
+    "gulp-strip-debug": "^3.0.0",
+    "gulp-uglify": "^3.0.0"
+  }
+}
