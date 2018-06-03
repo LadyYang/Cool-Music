@@ -89,8 +89,7 @@ song.extend({
                         // console.log(index);
                         // self.loadSong(self.songList[index].FileHash);
                         var hash = self.songList[index].FileHash;
-                        window.location = './html/playsong.html?hash=' + hash;
-
+                        window.open('./html/playsong.html?hash=' + hash);
                     }
                 }
                 flag = false;
