@@ -121,7 +121,7 @@ if (cluster.isMaster) {
             });
         } else if (req.url === '/') {
 
-            get('/html/index.html', res);
+            get('/index.html', res);
         } else {
 
             get(req.url, res);
@@ -130,7 +130,7 @@ if (cluster.isMaster) {
         log({
             req: req,
             res: res,
-            path: res.statusCode < 400 ? '/../../log/access.log' : '/../../log/error.log'
+            path: res.statusCode < 400 ? '/../../../log/access.log' : '/../../../log/error.log'
         });
     });
 
@@ -138,14 +138,14 @@ if (cluster.isMaster) {
         console.log(err.toString());
         log({
             info: 'Service opening failed, ' + err.toString(),
-            path: '/../../log/server.log'
+            path: '/../../../log/server.log'
         });
     })
 
     server.listen(81, function () {
         log({
             info: 'Start service successfully',
-            path: '/../../log/server.log'
+            path: '/../../../log/server.log'
         });
     });
 
