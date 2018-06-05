@@ -13,43 +13,66 @@
 
 <body>
     <div class="play-wrapper">
-        <div class="song-img">
-            <div class="img-wrapper">
+
+        <div class="play-nav">
+            <div class="prev"></div>
+            <div class="info">
+                <div class="name">林中鸟</div>
+                <div class="author">葛林</div>
+            </div>
+            <div class="share"></div>
+        </div>
+        <div class="wand">
+        </div>
+        <div class="dial paused">
+            <div class="zz">
+                <img src="/images/19019352137865075.jpg" alt="">
             </div>
         </div>
-        <div class="song-info">
-
+        <div class="lyric">
+            <div class="ly-list"></div>
         </div>
-        <div class="pro">
-            <div class="cur-time">00:00</div>
-            <div class="pro-wrapper">
-                <div class="pro-bottom"></div>
-                <div class="pro-top">
-                    <div class="slider-point"></div>
+        <div class="progress-bar">
+            <span class="start-time">00:00</span>
+            <div class="bar">
+                <div class="slide">
+                    <span></span>
                 </div>
             </div>
-            <div class="all-time">04:10</div>
 
+            <span class="end-time">03:51</span>
         </div>
-        <div class="control">
-            <div class="btn-wrapper like-btn"></div>
-            <div class="btn-wrapper prev-btn"></div>
-            <div class="btn-wrapper play-btn"></div>
-            <div class="btn-wrapper next-btn"></div>
-            <div class="btn-wrapper list-btn"></div>
+
+        <div class="bottom">
+            <span class="play-mode"></span>
+            <span class="prev"></span>
+            <span class="state"></span>
+            <span class="next"></span>
+            <span class="list"></span>
         </div>
+
     </div>
 
     <script>
-        var hash = window.location.search.match(/hash=(.*)$/)[1];
-        // console.log(hash);
-        var song = new Song();
-        song.imgDoc = document.getElementsByClassName('img-wrapper')[0];
-        var playBtn = document.getElementsByClassName('play-btn')[0];
-        song.loadSong(hash);
-        playBtn.onclick = function () {
-            song.play();
-        }
+        // var hash = window.location.search.match(/hash=(.*)$/)[1];
+        // // console.log(hash);
+        // var song = new Song();
+        // song.isPlay = false;
+        // song.imgDoc = document.getElementsByClassName('img-wrapper')[0];
+        // var playBtn = document.getElementsByClassName('play-btn')[0];
+        // song.loadSong(hash);
+        // song.timeDom = document.getElementsByClassName('all-time')[0];
+
+        // playBtn.onclick = function () {
+        //     if (song.isPlay) {
+        //         song.isPlay = false;
+        //         song.pause();
+        //     } else {
+        //         song.isPlay = true;
+        //         song.play();
+        //     }
+        //     this.classList.toggle('pause-btn');
+        // }
     </script>
 </body>
 

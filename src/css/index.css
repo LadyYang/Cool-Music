@@ -39,7 +39,7 @@ body {
     height: 73px;
     position: fixed;
     z-index: 9999;
-    background-color: red;
+    background-color: #C20C0C;
     color: #fff;
     top: 0;
     transition: all 200ms ease-in-out;
@@ -176,7 +176,7 @@ body {
 }
 
 .slideshow .slider-index .slider-active {
-    background-color: red;
+    background-color: #C20C0C;
 }
 
 /* waterfall */

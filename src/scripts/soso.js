@@ -108,6 +108,7 @@ song.extend({
                 self.target.parentElement.style.display = 'block';
             }
 
+            // cancle click
             this.input.nextElementSibling.onclick = function () {
                 nav.style = '';
                 content.style = '';
@@ -120,9 +121,6 @@ song.extend({
         }
     })(),
 
-    syncLyrics: function () {
-        var lyrics = this.lyrics;
-    }
 })
 
 song.bindEvent();
