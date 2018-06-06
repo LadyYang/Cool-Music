@@ -6,11 +6,14 @@ function doJSON(data) {
 
 song.extend({
     searchUrl: 'http://songsearch.kugou.com/song_search_v2?callback=doJSON&keyword=',
-    // playWrapper: document.getElementsByClassName('play-wrapper')[0],
-    // songWrapper: document.getElementsByClassName('song_wrapper')[0],
-    input: document.getElementsByTagName('input')[0],
-    target: document.getElementsByClassName('song_list')[0],
-    imgDoc: document.getElementsByClassName('img-wrapper')[0],
+    inputDom: document.querySelector('input'),
+    targetDom: document.querySelector('.song_list'),
+    imgDom: document.querySelector('.zz'),
+    songNameDom: document.querySelector('.play-nav .name'),
+    authorDom: document.querySelector('.play-nav .author'),
+    timeDom: document.querySelector('.end-time'),
+    isPlay: false,
+    
 
     // callback of jsonp 
     cb: function (data) {
@@ -18,7 +21,7 @@ song.extend({
         this.songList = data.data.lists;
         console.log(this.songList);
         if (this.songList.length) {
-            this.createDom(this.target, this.songList);
+            this.createDom(this.targetDom, this.songList);
         }
     },
 
@@ -54,6 +57,27 @@ song.extend({
         }
     },
 
+    playUi: function () {
+        var self = this;
+
+        var playBtn = document.querySelector('.play-wrapper .bottom .state');
+        this.loadSong(this.hash);
+        var dial = document.querySelector('.dial');
+
+        playBtn.onclick = function () {
+            if (self.isPlay) {
+                self.isPlay = false;
+                dial.classList.add('paused');
+                self.pause();
+            } else {
+                self.isPlay = true;
+                self.play();
+                dial.classList.remove('paused');
+            }
+            this.classList.toggle('pause-btn');
+        }
+    },
+
     // jsonp 加载歌曲资源
     loadSongList: function () {
         // this---> this.input
@@ -75,7 +99,7 @@ song.extend({
         return function () {
             var self = this;
             if (flag) {
-                this.input.oninput = this.debounce(this.loadSongList, 300);
+                this.inputDom.oninput = this.debounce(this.loadSongList, 300);
 
                 var singer = document.getElementsByClassName('song_list')[0];
 
@@ -84,12 +108,17 @@ song.extend({
                     var target = e.target;
 
                     if (target.className === 'singer_name') {
-                        self.input.value = '';
+                        self.inputDom.value = '';
                         var index = singerName.indexOf(target);
                         // console.log(index);
                         // self.loadSong(self.songList[index].FileHash);
-                        var hash = self.songList[index].FileHash;
-                        window.open('./html/playsong.html?hash=' + hash);
+                        self.hash = self.songList[index].FileHash;
+                        // window.open('./html/playsong.html?hash=' + hash);
+                        var ct = document.querySelector('.ct');
+                        var playWrapper = document.querySelector('.play-wrapper');
+                        ct.style.display = 'none';
+                        playWrapper.style.display = 'block';
+                        self.playUi();
                     }
                 }
                 flag = false;
@@ -98,25 +127,25 @@ song.extend({
             }
 
 
-            this.input.onclick = function () {
+            this.inputDom.onclick = function () {
                 nav.style.top = '-38px';
                 nav.style.backgroundColor = '#ccc';
                 content.style.display = 'none';
                 this.style.width = '85%';
                 this.style.left = '44%';
                 this.nextElementSibling.style.display = 'inline-block';
-                self.target.parentElement.style.display = 'block';
+                self.targetDom.parentElement.style.display = 'block';
             }
 
             // cancle click
-            this.input.nextElementSibling.onclick = function () {
+            this.inputDom.nextElementSibling.onclick = function () {
                 nav.style = '';
                 content.style = '';
                 this.previousElementSibling.style = '';
                 this.previousElementSibling.value = '';
                 this.style = '';
-                self.target.parentElement.style.display = '';
-                self.target.innerHTML = '';
+                self.targetDom.parentElement.style.display = '';
+                self.targetDom.innerHTML = '';
             }
         }
     })(),
