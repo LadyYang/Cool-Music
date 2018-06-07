@@ -11,9 +11,16 @@ song.extend({
     imgDom: document.querySelector('.zz'),
     songNameDom: document.querySelector('.play-nav .name'),
     authorDom: document.querySelector('.play-nav .author'),
-    timeDom: document.querySelector('.end-time'),
+    endTimeDom: document.querySelector('.end-time'),
+    startTimeDom: document.querySelector('.start-time'),
+    lyricUiDom: document.querySelector('.ly-list'),
+    dialDom: document.querySelector('.dial'),
+    ctDom: document.querySelector('.ct'),
+    playUiBackBtn: document.querySelector('.play-nav .back'),
+    playBtn: document.querySelector('.play-wrapper .bottom .state'),
+    playUiDom: document.querySelector('.play-wrapper'),
     isPlay: false,
-    
+
 
     // callback of jsonp 
     cb: function (data) {
@@ -60,21 +67,19 @@ song.extend({
     playUi: function () {
         var self = this;
 
-        var playBtn = document.querySelector('.play-wrapper .bottom .state');
         this.loadSong(this.hash);
-        var dial = document.querySelector('.dial');
 
-        playBtn.onclick = function () {
-            if (self.isPlay) {
-                self.isPlay = false;
-                dial.classList.add('paused');
-                self.pause();
+        this.playBtn.onclick = () => {
+            if (this.isPlay) {
+                this.isPlay = false;
+                this.dialDom.classList.add('paused');
+                this.pause();
             } else {
-                self.isPlay = true;
-                self.play();
-                dial.classList.remove('paused');
+                this.isPlay = true;
+                this.play();
+                this.dialDom.classList.remove('paused');
             }
-            this.classList.toggle('pause-btn');
+            this.playBtn.classList.toggle('pause-btn');
         }
     },
 
@@ -92,32 +97,36 @@ song.extend({
     },
 
     bindEvent: (function () {
-        var flag = true;
-        var nav = document.getElementsByClassName('nav')[0];
-        var content = document.getElementsByClassName('content')[0];
+        var flag = true,
+            nav = document.getElementsByClassName('nav')[0],
+            content = document.getElementsByClassName('content')[0],
+            nextBtn = document.querySelector('.bottom .next'),
+            prevBtn = document.querySelector('.bottom .prev'),
+            singer = document.getElementsByClassName('song_list')[0];
 
         return function () {
             var self = this;
             if (flag) {
                 this.inputDom.oninput = this.debounce(this.loadSongList, 300);
 
-                var singer = document.getElementsByClassName('song_list')[0];
-
                 singer.onclick = function (e) {
                     var singerName = Array.from(document.getElementsByClassName('singer_name'));
                     var target = e.target;
 
+                    // Select a song to display the play Ui
                     if (target.className === 'singer_name') {
                         self.inputDom.value = '';
-                        var index = singerName.indexOf(target);
-                        // console.log(index);
-                        // self.loadSong(self.songList[index].FileHash);
-                        self.hash = self.songList[index].FileHash;
-                        // window.open('./html/playsong.html?hash=' + hash);
-                        var ct = document.querySelector('.ct');
-                        var playWrapper = document.querySelector('.play-wrapper');
-                        ct.style.display = 'none';
-                        playWrapper.style.display = 'block';
+                        self.index = singerName.indexOf(target);
+
+                        self.hash = self.songList[self.index].FileHash;
+
+
+
+                        // Switch interface ct between play
+                        self.ctDom.style.display = 'none';
+                        self.playUiDom.style.display = 'block';
+
+
                         self.playUi();
                     }
                 }
@@ -126,6 +135,13 @@ song.extend({
                 throw new Error('You can\'t perform this function');
             }
 
+            nextBtn.onclick = () => {
+                this.next();
+            }
+
+            prevBtn.onclick = () => {
+                this.prev();
+            }
 
             this.inputDom.onclick = function () {
                 nav.style.top = '-38px';
@@ -146,6 +162,14 @@ song.extend({
                 this.style = '';
                 self.targetDom.parentElement.style.display = '';
                 self.targetDom.innerHTML = '';
+            }
+
+            // Play screen return button
+            this.playUiBackBtn.onclick = function () {
+
+                self.ctDom.style.display = 'block';
+                self.playUiDom.style.display = 'none';
+
             }
         }
     })(),

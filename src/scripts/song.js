@@ -1,5 +1,5 @@
 /*!
- * Date: 2018-5-28 19:28
+ * StartTime: 2018-5-28 19:28
  * 酷狗接口：
  * searchUrl = http://songsearch.kugou.com/song_search_v2?callback=Song.doJSON&keyword
  * songUrl = http: //www.kugou.com/yy/index.php?r=play/getdata&hash=;
@@ -105,13 +105,80 @@
         return imgData;
     }
 
+    // 模糊图片
+    function blurImg(img, ele) {
+        var w = img.width,
+            h = img.height,
+            canvasW = 40,
+            canvasH = 40;
+
+        var canvas = document.createElement('canvas'),
+            ctx = canvas.getContext('2d');
+
+        canvas.width = canvasW;
+        canvas.height = canvasH;
+
+        ctx.drawImage(img, 0, 0, w, h, 0, 0, canvasW, canvasH);
+
+        var pixel = ctx.getImageData(0, 0, canvasH, canvasH);
+
+        gaussBlur(pixel);
+
+        ctx.putImageData(pixel, 0, 0);
+
+        var imageData = canvas.toDataURL();
+
+        ele.style.backgroundImage = 'url(' + imageData + ')';
+        ele.style.backgroundRepeat = 'no-repeat';
+        ele.style.backgroundSize = '100% 100%';
+    }
+
+
+    function ajax(json) {
+        var method = json.method,
+            url = json.url,
+            flag = json.flag,
+            data = json.data,
+            success = json.success,
+            beforeSend = json.beforeSend,
+            xhr = null;
+
+        if (window.XMLHttpRequest) {
+            xhr = new window.XMLHttpRequest();
+        } else {
+            xhr = new window.ActiveXObject('Mircosoft.XMLHTTP');
+        }
+
+        if (method.toLowerCase() === 'get') {
+            url += '?' + data;
+            xhr.open(method, url, flag);
+        } else {
+            xhr.open(method, url, flag);
+        }
+
+        typeof beforeSend === 'function' ? beforeSend() : '';
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                typeof success === 'function' ? success(xhr.responseText) : '';
+            }
+        }
+
+        if (method.toLowerCase() === 'get') {
+            xhr.send();
+        } else {
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urle')
+            xhr.send(data);
+        }
+    }
+
     // assign
     Song.prototype.extend = Song.extend = function extend(target) {
         target = typeof target === 'object' ? target : {};
 
         var names = Object.getOwnPropertyNames(target);
         names.forEach((ele) => {
-            if (typeof target[ele] === 'object') {
+            if (typeof target[ele] === 'object' && target[ele] !== null && !target[ele].nodeType) {
                 if (Array.isArray(target[ele])) {
                     this[ele] = [];
                     extend.call(this[ele], target[ele]);
@@ -119,14 +186,16 @@
                     this[ele] = {};
                     extend.call(this[ele], target[ele]);
                 }
+            } else {
+                this[ele] = target[ele];
             }
-            this[ele] = target[ele];
-        })
+        });
     }
 
     var audio = new Audio();
 
     Song.prototype.extend({
+        timer: null,
         /* 
          * Determine which song the user clicked on in the song list
          * @param {Number} index
@@ -147,22 +216,27 @@
                     // console.log(JSON.parse(data));
 
                     self.oneSong = JSON.parse(data).data;
-                    self.readyPlay(self.oneSong);
+                    self.readyToPlay(self.oneSong);
                 }
             });
         },
 
-        readyPlay: function (data) {
+        readyToPlay: function (data) {
             var time,
-                lyrics = data.lyrics;
+                firstTime,
+                secondTime,
+                lyricArr,
+                lyrics = data.lyrics,
+                str = '';
 
             var img = new Image();
+
             img.onload = () => {
 
                 // 高斯模糊
-                this.blurImg(img, document.querySelector(".play-wrapper"));
+                blurImg(img, document.querySelector(".play-wrapper"));
 
-                this.imgDom.appendChild(img);
+                this.imgDom.replaceChild(img, this.imgDom.firstElementChild);
             }
 
             img.crossOrigin = "Anonymous";
@@ -170,77 +244,20 @@
 
             audio.src = data.play_url;
 
-            // update title nav
+            // Update song information
             this.songNameDom.innerHTML = data.audio_name;
             this.authorDom.innerHTML = data.author_name;
 
-            // calculate all time
+            // Calculate the total song time
             time = (data.timelength / 60000).toFixed(2).split('.');
-            var firstTime = time[0];
-            var secondTime = time[1];
+            firstTime = time[0];
+            secondTime = time[1];
             firstTime = secondTime > 60 ? (secondTime = secondTime - 60, ++firstTime) : firstTime;
-            this.timeDom.innerHTML = `${firstTime}:${secondTime}`;
-        },
+            this.endTimeDom.innerHTML = `${String(firstTime).length == 2 ? firstTime : '0' + firstTime}:${String(secondTime).length == 2 ? secondTime : '0' + secondTime}`;
 
-        play: function () {
-            audio.play();
-            this.syncLyricsTime();
-        },
+            // Prepare the lyrics
+            lyricArr = lyrics.split('\n').map((ele, index) => {
 
-        pause: function () {
-            audio.pause();
-        },
-
-        next: function () {
-
-        },
-
-        prev: function () {
-
-        },
-
-        // 模糊图片
-        blurImg: function (img, ele) {
-            var w = img.width,
-                h = img.height,
-                canvasW = 40,
-                canvasH = 40;
-
-            var canvas = document.createElement('canvas'),
-                ctx = canvas.getContext('2d');
-
-            canvas.width = canvasW;
-            canvas.height = canvasH;
-
-            ctx.drawImage(img, 0, 0, w, h, 0, 0, canvasW, canvasH);
-
-            var pixel = ctx.getImageData(0, 0, canvasH, canvasH);
-
-            gaussBlur(pixel);
-
-            ctx.putImageData(pixel, 0, 0);
-
-            var imageData = canvas.toDataURL();
-
-            ele.style.backgroundImage = 'url(' + imageData + ')';
-            ele.style.backgroundRepeat = 'no-repeat';
-            ele.style.backgroundSize = '100% 100%';
-        },
-
-        syncLyricsTime: function (lyricsDom) {
-            var info = this.oneSong;
-            var lyrics = info.lyrics;
-            var author = info.authors[0].author_name;
-
-
-
-            // Get current progress time
-            var currentTime = (audio.currentTime / 60).toFixed(2).split('.');
-            currentTime[0] = currentTime[1] > 60 ? (currentTime[1] = currentTime[1] - 60, ++currentTime[0]) : currentTime[0];
-            currentTime = currentTime.join('.');
-
-
-            var lyricTimeArr = lyrics.split('\n').map((ele, index) => {
                 // [00: 02.33]作曲：周杰伦
                 return ele.split(']').map((ele, index, arr) => {
                     return arr[index].replace(/\[(\d{2}):(\d{2})\..*/g, function ($, $1, $2) {
@@ -249,12 +266,108 @@
                 });
             });
 
-            var str = '';
-            lyricTimeArr.forEach((ele, index) => {
+
+            lyricArr.forEach((ele, index) => {
                 ele[1] && (str += `<p>${ele[1]}</p>`);
             });
+
+            this.lyricUiDom.innerHTML = str;
+
+            this.playBtn.className = 'state';
+            this.dialDom.className = 'dial paused';
+            this.isPlay = false;
+
+            // init start time
+            this.startTimeDom.innerHTML = '00:00';
+
+            // init once
+            this.syncLyricsTime = syncLyricsTime.call(this);
+
+            // Auto play 
+            // Safari nonsupport
+            var u = navigator.userAgent;
+            if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {
+                // alert('安卓手机');
+                setTimeout(() => {
+                    this.playBtn.click();
+                }, 400);
+
+            } else if (u.indexOf('iPhone') > -1) {
+                // alert('苹果手机');
+                // ....
+
+            }
+            //else if (u.indexOf('Windows Phone') > -1) {
+            //     // alert('win phone');
+
+            // }
+
+        },
+
+
+        play: function () {
+            audio.play();
+            this.timer = setTimeout(this.syncLyricsTime.bind(this), 16)
+        },
+
+        pause: function () {
+            audio.pause();
+            clearTimeout(this.timer);
+        },
+
+        next: function () {
+            this.index++;
+            this.index = this.index % this.songList.length;
+            this.hash = this.songList[Math.abs(this.index)].FileHash;
+
+            console.log(this.index);
+            this.loadSong(this.hash);
+        },
+
+        prev: function () {
+            this.index--;
+            this.index = this.index % this.songList.length;
+            this.hash = this.songList[Math.abs(this.index)].FileHash;
+
+            console.log(this.index);
+            this.loadSong(this.hash);
         }
     });
+
+    function syncLyricsTime() {
+        clearTimeout(this.timer);
+        var a = +new Date();
+        var firstTime = '00';
+        var secondTime = '00';
+
+        return function () {
+            var currentTime,
+                timer,
+                info = this.oneSong;
+
+            clearTimeout(this.timer);
+
+            // Gets the current playback time
+            currentTime = (audio.currentTime / 60).toFixed(2).split('.');
+            currentTime[0] = currentTime[1] > 60 ? (currentTime[1] = currentTime[1] - 60, ++currentTime[0]) : currentTime[0];
+            currentTime = currentTime.join(':');
+
+
+            // Update time 
+            // 00:00
+            var b = +new Date();
+            if (b - a >= 1000) {
+                console.log(1);
+                a = b;
+                ++secondTime;
+                firstTime = secondTime > 60 ? (secondTime = secondTime - 60, ++firstTime) : firstTime;
+                this.startTimeDom.innerHTML = `${String(firstTime).length == 2 ? firstTime : '0' + firstTime}:${String(secondTime).length == 2 ? secondTime : '0' + secondTime}`;
+            }
+
+            this.timer = setTimeout(this.syncLyricsTime.bind(this), 16);
+
+        }
+    }
 
     global.Song = Song;
     return Song;

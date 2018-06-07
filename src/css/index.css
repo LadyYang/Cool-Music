@@ -353,7 +353,7 @@ body {
     top: 80px;
     left: 50%;
     transform: translateX(-50%);
-    animation: zhuan 10s linear infinite;
+    animation: zhuan 12s linear infinite;
 }
 
 .play-wrapper div.paused {
