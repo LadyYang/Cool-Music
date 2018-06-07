@@ -3,6 +3,8 @@
  * 酷狗接口：
  * searchUrl = http://songsearch.kugou.com/song_search_v2?callback=Song.doJSON&keyword
  * songUrl = http: //www.kugou.com/yy/index.php?r=play/getdata&hash=;
+ * 
+ * entry: loadSong();
  */
 (function (global, factory) {
     "use strict";
@@ -21,12 +23,14 @@
 })(this, function (global) {
     "use strict"
 
+    // Constructor function
     function Song(sUrl) {
         if (!(this instanceof Song)) {
             throw new Error("Illegal constructor.");
         }
     };
 
+    // 高斯
     function gaussBlur(imgData) {
         var pixes = imgData.data;
         var width = imgData.width;
@@ -133,7 +137,6 @@
         ele.style.backgroundSize = '100% 100%';
     }
 
-
     function ajax(json) {
         var method = json.method,
             url = json.url,
@@ -172,6 +175,105 @@
         }
     }
 
+    function readyImage(imgSrc = '/images/head.png', dom) {
+        var img = new Image();
+
+        img.onload = () => {
+
+            // 高斯模糊
+            blurImg(img, document.querySelector(".play-wrapper"));
+
+            dom.replaceChild(img, dom.firstElementChild);
+        }
+
+        img.crossOrigin = "Anonymous";
+        img.src = imgSrc;
+    }
+
+    function parseSongTime(timeAll, dom) {
+        var time,
+            firstTime,
+            secondTime;
+
+        // Calculate the total song time
+        time = (timeAll / 60000).toFixed(2).split('.');
+        firstTime = time[0];
+        secondTime = time[1];
+        firstTime = secondTime > 60 ? (secondTime = secondTime - 60, ++firstTime) : firstTime;
+        dom.innerHTML = `${String(firstTime).length == 2 ? firstTime : '0' + firstTime}:${String(secondTime).length == 2 ? secondTime : '0' + secondTime}`;
+    }
+
+    function parseLyrics(lyrics, dom) {
+
+        // Prepare the lyrics
+        var lyricsArr = lyrics.split('\n').map((ele, index) => {
+
+            // eg: '[00: 02.33]作曲：周杰伦'  ==>  ['00:02', '作曲：周杰伦']
+            return ele.split(']').map((ele, index, arr) => {
+                return arr[index].replace(/\[(\d{2}):(\d{2})\..*/g, function ($, $1, $2) {
+                    return $1 + ":" + $2;
+                });
+            });
+        });
+
+        var str;
+        lyricsArr.forEach((ele, index) => {
+
+            ele[1] && (str += `<p>${ele[1]}</p>`);
+        });
+
+        dom.innerHTML = str;
+
+        return {
+            lyricsArr: lyricsArr
+        }
+    }
+
+    var audio = new Audio();
+
+    // Initialize some work before playing
+    function beforePlay(data) {
+        audio.src = data.play_url;
+
+        // Update playUi title information
+        this.songNameDom.innerHTML = data.audio_name;
+        this.authorDom.innerHTML = data.author_name;
+
+        this.isPlay = false;
+        this.playBtn.className = 'state';
+
+        // Change the wheel
+        this.dialDom.className = 'dial paused';
+        this.dialDom.style.opacity = 1;
+
+        // init start time
+        this.startTimeDom.innerHTML = '00:00';
+
+        readyImage(data.img, this.imgDom);
+        parseSongTime(data.timelength, this.endTimeDom);
+        let {
+            lyricsArr
+        } = parseLyrics(data.lyrics, this.lyricUiDom);
+
+        // Auto play 
+        // Safari nonsupport
+        var u = navigator.userAgent;
+        if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {
+            // alert('安卓手机');
+            setTimeout(() => {
+                this.playBtn.click();
+            }, 300);
+
+        } else if (u.indexOf('iPhone') > -1) {
+            // alert('苹果手机');
+            // ....
+        }
+
+        // init once
+        this.syncLyricsTime = syncLyricsTime.call(this, lyricsArr);
+
+    }
+
     // assign
     Song.prototype.extend = Song.extend = function extend(target) {
         target = typeof target === 'object' ? target : {};
@@ -192,7 +294,7 @@
         });
     }
 
-    var audio = new Audio();
+
 
     Song.prototype.extend({
         timer: null,
@@ -213,97 +315,13 @@
                 data: hash,
                 flag: true,
                 success: function (data) {
-                    // console.log(JSON.parse(data));
 
                     self.oneSong = JSON.parse(data).data;
-                    self.readyToPlay(self.oneSong);
+
+                    beforePlay.call(self, self.oneSong);
                 }
             });
         },
-
-        readyToPlay: function (data) {
-            var time,
-                firstTime,
-                secondTime,
-                lyricArr,
-                lyrics = data.lyrics,
-                str = '';
-
-            var img = new Image();
-
-            img.onload = () => {
-
-                // 高斯模糊
-                blurImg(img, document.querySelector(".play-wrapper"));
-
-                this.imgDom.replaceChild(img, this.imgDom.firstElementChild);
-            }
-
-            img.crossOrigin = "Anonymous";
-            img.src = data.img;
-
-            audio.src = data.play_url;
-
-            // Update song information
-            this.songNameDom.innerHTML = data.audio_name;
-            this.authorDom.innerHTML = data.author_name;
-
-            // Calculate the total song time
-            time = (data.timelength / 60000).toFixed(2).split('.');
-            firstTime = time[0];
-            secondTime = time[1];
-            firstTime = secondTime > 60 ? (secondTime = secondTime - 60, ++firstTime) : firstTime;
-            this.endTimeDom.innerHTML = `${String(firstTime).length == 2 ? firstTime : '0' + firstTime}:${String(secondTime).length == 2 ? secondTime : '0' + secondTime}`;
-
-            // Prepare the lyrics
-            lyricArr = lyrics.split('\n').map((ele, index) => {
-
-                // [00: 02.33]作曲：周杰伦
-                return ele.split(']').map((ele, index, arr) => {
-                    return arr[index].replace(/\[(\d{2}):(\d{2})\..*/g, function ($, $1, $2) {
-                        return $1 + ":" + $2;
-                    });
-                });
-            });
-
-
-            lyricArr.forEach((ele, index) => {
-                ele[1] && (str += `<p>${ele[1]}</p>`);
-            });
-
-            this.lyricUiDom.innerHTML = str;
-
-            this.playBtn.className = 'state';
-            this.dialDom.className = 'dial paused';
-            this.isPlay = false;
-
-            // init start time
-            this.startTimeDom.innerHTML = '00:00';
-
-            // init once
-            this.syncLyricsTime = syncLyricsTime.call(this);
-
-            // Auto play 
-            // Safari nonsupport
-            var u = navigator.userAgent;
-            if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {
-                // alert('安卓手机');
-                setTimeout(() => {
-                    this.playBtn.click();
-                }, 400);
-
-            } else if (u.indexOf('iPhone') > -1) {
-                // alert('苹果手机');
-                // ....
-
-            }
-            //else if (u.indexOf('Windows Phone') > -1) {
-            //     // alert('win phone');
-
-            // }
-
-        },
-
 
         play: function () {
             audio.play();
@@ -318,27 +336,67 @@
         next: function () {
             this.index++;
             this.index = this.index % this.songList.length;
-            this.hash = this.songList[Math.abs(this.index)].FileHash;
+            this.hash = this.songList[this.index].FileHash;
 
-            console.log(this.index);
             this.loadSong(this.hash);
         },
 
         prev: function () {
-            this.index--;
+            if (this.index === 0) {
+                this.index = this.songList.length - 1;
+            } else {
+                this.index--;
+            }
+
             this.index = this.index % this.songList.length;
             this.hash = this.songList[Math.abs(this.index)].FileHash;
 
-            console.log(this.index);
             this.loadSong(this.hash);
         }
     });
 
-    function syncLyricsTime() {
+    var rollingTime = (function () {
+        var a = +new Date(),
+            firstTime = '00',
+            secondTime = '00';
+
+        return function (currentTime, dom) {
+            currentTime && (a = +new Date());
+
+            // Update time 
+            // 00:00
+            var b = +new Date();
+            if (b - a >= 1000) {
+                a = b;
+                ++secondTime;
+                firstTime = secondTime > 60 ? (secondTime = secondTime - 60, ++firstTime) : firstTime;
+                dom.innerHTML = currentTime || `${String(firstTime).length == 2 ? firstTime : '0' + firstTime}:${String(secondTime).length == 2 ? secondTime : '0' + secondTime}`;
+            }
+        }
+
+    })();
+
+    function rollingLyrics(arr, currentTime, lyricUiDom) {
+        // currentTime ==> ['02', '32']
+
+        arr.forEach(function (ele, index) {
+
+            // ele ==> ["01:54", "Sorry like an angel"]
+            // console.log(ele);
+            var [first, second] = ele[0].split(':');
+
+            console.log(first, second);
+            if (first == currentTime[0] && second == currentTime[1]) {
+                lyricUiDom.style.top = lyricUiDom.offsetTop + 18 + 'px';
+                lyricUiDom.children[index].style.color = 'blue';
+            }
+        });
+    }
+
+    function syncLyricsTime(lyArr) {
         clearTimeout(this.timer);
-        var a = +new Date();
-        var firstTime = '00';
-        var secondTime = '00';
+        var lyDom = document.querySelectorAll('.ly-list p'),
+            lyTimer = null;
 
         return function () {
             var currentTime,
@@ -350,24 +408,17 @@
             // Gets the current playback time
             currentTime = (audio.currentTime / 60).toFixed(2).split('.');
             currentTime[0] = currentTime[1] > 60 ? (currentTime[1] = currentTime[1] - 60, ++currentTime[0]) : currentTime[0];
-            currentTime = currentTime.join(':');
+            // currentTime = currentTime.join(':');
 
+            rollingTime(null, this.startTimeDom);
 
-            // Update time 
-            // 00:00
-            var b = +new Date();
-            if (b - a >= 1000) {
-                console.log(1);
-                a = b;
-                ++secondTime;
-                firstTime = secondTime > 60 ? (secondTime = secondTime - 60, ++firstTime) : firstTime;
-                this.startTimeDom.innerHTML = `${String(firstTime).length == 2 ? firstTime : '0' + firstTime}:${String(secondTime).length == 2 ? secondTime : '0' + secondTime}`;
-            }
+            // Update lyric
+            rollingLyrics(lyArr, this.lyricUiDom);
 
             this.timer = setTimeout(this.syncLyricsTime.bind(this), 16);
-
         }
     }
+
 
     global.Song = Song;
     return Song;

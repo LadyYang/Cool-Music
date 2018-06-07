@@ -171,6 +171,20 @@ song.extend({
                 self.playUiDom.style.display = 'none';
 
             }
+
+            this.dialDom.onclick = function () {
+                this.style.opacity = 0;
+                this.style.display = 'none';
+                self.lyricUiDom.parentNode.style.display = 'block';                
+                self.lyricUiDom.parentNode.style.opacity = 1;
+            }
+
+            this.lyricUiDom.parentNode.onclick = function () {
+                this.style.opacity = 0;
+                this.style.display = 'none';
+                self.dialDom.style.display = 'block'; 
+                self.dialDom.style.opacity = 1;                               
+            }
         }
     })(),
 

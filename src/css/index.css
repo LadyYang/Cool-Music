@@ -352,6 +352,8 @@ body {
     position: absolute;
     top: 80px;
     left: 50%;
+    opacity: 0;
+    transition: opacity 1s linear;
     transform: translateX(-50%);
     animation: zhuan 12s linear infinite;
 }
@@ -359,6 +361,8 @@ body {
 .play-wrapper div.paused {
     animation-play-state: paused;
 }
+
+/* 转盘 */
 
 .play-wrapper .dial .zz {
     width: 100%;
@@ -382,12 +386,15 @@ body {
     border-radius: 100%;
 }
 
+/* 歌词 */
+
 .play-wrapper .lyric {
     width: 100%;
     height: 75%;
-    border: 1px solid #C20C0C;
     overflow: hidden;
     position: relative;
+    opacity: 0;
+    transition: opcity 1s linear;
     display: none;
 }
 
@@ -397,6 +404,18 @@ body {
     width: 100%;
     text-align: center;
 }
+
+.lyric .ly-list p {
+    font-family: '新宋体', '微软雅黑', Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    margin: 5px 0 5px 0;
+}
+
+.lyric .ly-list .active {
+    color: deepskyblue;
+}
+
+/* 进度条 */
 
 .play-wrapper .progress-bar {
     height: 30px;
