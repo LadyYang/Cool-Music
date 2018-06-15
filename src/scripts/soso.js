@@ -7,18 +7,18 @@ function doJSON(data) {
 song.extend({
     searchUrl: 'http://songsearch.kugou.com/song_search_v2?callback=doJSON&keyword=',
     inputDom: document.querySelector('input'),
-    targetDom: document.querySelector('.song_list'),
-    imgDom: document.querySelector('.zz'),
+    targetDom: document.querySelector('.song_wrapper .song_list'),
+    imgDom: document.querySelector('.play-main .dial .zz'),
     songNameDom: document.querySelector('.play-nav .name'),
     authorDom: document.querySelector('.play-nav .author'),
-    endTimeDom: document.querySelector('.end-time'),
-    startTimeDom: document.querySelector('.start-time'),
-    lyricUiDom: document.querySelector('.ly-list'),
-    dialDom: document.querySelector('.dial'),
+    endTimeDom: document.querySelector('.play-main .progress-bar .end-time'),
+    startTimeDom: document.querySelector('.play-main .progress-bar .start-time'),
+    lyricUiDom: document.querySelector('.play-main .ly-list'),
+    dialDom: document.querySelector('.play-main .dial'),
     ctDom: document.querySelector('.ct'),
     playUiBackBtn: document.querySelector('.play-nav .back'),
-    playBtn: document.querySelector('.play-wrapper .bottom .state'),
-    playUiDom: document.querySelector('.play-wrapper'),
+    playBtn: document.querySelector('.play-UI .play-bottom .state'),
+    playUiDom: document.querySelector('.play-UI'),
     isPlay: false,
 
 
@@ -100,8 +100,8 @@ song.extend({
         var flag = true,
             nav = document.getElementsByClassName('nav')[0],
             content = document.getElementsByClassName('content')[0],
-            nextBtn = document.querySelector('.bottom .next'),
-            prevBtn = document.querySelector('.bottom .prev'),
+            nextBtn = document.querySelector('.play-bottom .next'),
+            prevBtn = document.querySelector('.play-bottom .prev'),
             singer = document.getElementsByClassName('song_list')[0];
 
         return function () {
@@ -144,22 +144,16 @@ song.extend({
             }
 
             this.inputDom.onclick = function () {
-                nav.style.top = '-38px';
-                nav.style.backgroundColor = '#ccc';
+                nav.classList.add('active');
                 content.style.display = 'none';
-                this.style.width = '85%';
-                this.style.left = '44%';
-                this.nextElementSibling.style.display = 'inline-block';
                 self.targetDom.parentElement.style.display = 'block';
             }
 
             // cancle click
             this.inputDom.nextElementSibling.onclick = function () {
-                nav.style = '';
+                nav.classList.remove('active');
                 content.style = '';
-                this.previousElementSibling.style = '';
                 this.previousElementSibling.value = '';
-                this.style = '';
                 self.targetDom.parentElement.style.display = '';
                 self.targetDom.innerHTML = '';
             }

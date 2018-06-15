@@ -132,9 +132,13 @@
 
         var imageData = canvas.toDataURL();
 
-        ele.style.backgroundImage = 'url(' + imageData + ')';
-        ele.style.backgroundRepeat = 'no-repeat';
-        ele.style.backgroundSize = '100% 100%';
+        var g = new Image();
+
+        g.src = imageData;
+
+        g.onload = function () {
+            ele.replaceChild(g, ele.firstElementChild);
+        }
     }
 
     function ajax(json) {
@@ -181,7 +185,7 @@
         img.onload = () => {
 
             // 高斯模糊
-            blurImg(img, document.querySelector(".play-wrapper"));
+            blurImg(img, document.querySelector(".play-bg"));
 
             dom.replaceChild(img, dom.firstElementChild);
         }
@@ -194,11 +198,12 @@
         var time,
             firstTime,
             secondTime;
-
+        console.log(timeAll);
         // Calculate the total song time
-        time = (timeAll / 60000).toFixed(2).split('.');
+        time = (timeAll / 60).toFixed(2).split('.');
         firstTime = time[0];
         secondTime = time[1];
+
         firstTime = secondTime > 60 ? (secondTime = secondTime - 60, ++firstTime) : firstTime;
         dom.innerHTML = `${String(firstTime).length == 2 ? firstTime : '0' + firstTime}:${String(secondTime).length == 2 ? secondTime : '0' + secondTime}`;
     }
@@ -233,8 +238,6 @@
 
     // Initialize some work before playing
     function beforePlay(data) {
-        audio.src = data.play_url;
-
         // Update playUi title information
         this.songNameDom.innerHTML = data.audio_name;
         this.authorDom.innerHTML = data.author_name;
@@ -250,10 +253,10 @@
         this.startTimeDom.innerHTML = '00:00';
 
         readyImage(data.img, this.imgDom);
-        parseSongTime(data.timelength, this.endTimeDom);
-        let {
-            lyricsArr
-        } = parseLyrics(data.lyrics, this.lyricUiDom);
+        parseSongTime(audio.duration, this.endTimeDom);
+        ({
+            lyricsArr: this.lyricsArr
+        } = parseLyrics(data.lyrics, this.lyricUiDom));
 
         // Auto play 
         // Safari nonsupport
@@ -269,9 +272,7 @@
             // ....
         }
 
-        // init once
-        this.syncLyricsTime = syncLyricsTime.call(this, lyricsArr);
-
+        bindEvent.call(this);
     }
 
     // assign
@@ -293,8 +294,6 @@
             }
         });
     }
-
-
 
     Song.prototype.extend({
         timer: null,
@@ -318,14 +317,14 @@
 
                     self.oneSong = JSON.parse(data).data;
 
-                    beforePlay.call(self, self.oneSong);
+                    audio.onloadedmetadata = beforePlay.bind(self, self.oneSong);
+                    audio.src = self.oneSong.play_url;
                 }
             });
         },
 
         play: function () {
             audio.play();
-            this.timer = setTimeout(this.syncLyricsTime.bind(this), 16)
         },
 
         pause: function () {
@@ -355,13 +354,19 @@
         }
     });
 
-    var rollingTime = (function () {
+    var updateTime = (function () {
         var a = +new Date(),
             firstTime = '00',
             secondTime = '00';
 
         return function (currentTime, dom) {
-            currentTime && (a = +new Date());
+            if (currentTime) {
+                currentTime && (a = +new Date());
+
+                var currentTime = (audio.currentTime / 60).toFixed(2).split('.');
+                currentTime[0] = currentTime[1] > 60 ? (currentTime[1] = currentTime[1] - 60, ++currentTime[0]) : currentTime[0];
+                currentTime = currentTime.join(':');
+            }
 
             // Update time 
             // 00:00
@@ -377,7 +382,9 @@
     })();
 
     function rollingLyrics(arr, currentTime, lyricUiDom) {
-        // currentTime ==> ['02', '32']
+
+        // currentTime ==> ['02', '32']        
+        // currentTime = currentTime.join(':');
 
         arr.forEach(function (ele, index) {
 
@@ -385,38 +392,76 @@
             // console.log(ele);
             var [first, second] = ele[0].split(':');
 
-            console.log(first, second);
+            // console.log(first, second);
             if (first == currentTime[0] && second == currentTime[1]) {
-                lyricUiDom.style.top = lyricUiDom.offsetTop + 18 + 'px';
+                console.log('ok');
+                lyricUiDom.style.top = lyricUiDom.offsetTop - 18 + 'px';
                 lyricUiDom.children[index].style.color = 'blue';
             }
         });
     }
 
     function syncLyricsTime(lyArr) {
-        clearTimeout(this.timer);
-        var lyDom = document.querySelectorAll('.ly-list p'),
-            lyTimer = null;
 
-        return function () {
-            var currentTime,
-                timer,
-                info = this.oneSong;
+        // Gets the current playback time
+        var currentTime = (audio.currentTime / 60).toFixed(2).split('.');
+        currentTime[0] = currentTime[1] > 60 ? (currentTime[1] = currentTime[1] - 60, ++currentTime[0]) : currentTime[0];
 
-            clearTimeout(this.timer);
+        // Update lyric
+        rollingLyrics(lyArr, currentTime, this.lyricUiDom);
+        updateTime(null, this.startTimeDom);
+        rollingBar.call(document.querySelector('.progress-bar .bar .slide'), audio.currentTime / audio.duration);
+    }
 
-            // Gets the current playback time
-            currentTime = (audio.currentTime / 60).toFixed(2).split('.');
-            currentTime[0] = currentTime[1] > 60 ? (currentTime[1] = currentTime[1] - 60, ++currentTime[0]) : currentTime[0];
-            // currentTime = currentTime.join(':');
+    function rollingBar(per) {
+        this.style.right = this.offsetWidth - (this.offsetWidth * per) + 'px';
+    }
 
-            rollingTime(null, this.startTimeDom);
+    function slideProgressBar() {
+        // bind slide time
+        var bar = document.querySelector('.progress-bar .bar');
+        bar.ontouchstart = function (e) {
+            var
+                left = bar.offsetLeft,
+                w = bar.offsetWidth,
+                right = left + w;
 
-            // Update lyric
-            rollingLyrics(lyArr, this.lyricUiDom);
+            document.ontouchmove = function (e) {
+                var {
+                    clientX: newX
+                } = e.touches[0];
 
-            this.timer = setTimeout(this.syncLyricsTime.bind(this), 16);
+                // console.log();
+                if (newX < left) {
+                    newX = left;
+                } else if (newX > right) {
+                    newX = right;
+                }
+
+                // Percentage of current slippage
+                var percentage = (newX - left) / w;
+                console.log(percentage);
+                audio.currentTime = audio.duration * percentage;
+                rollingBar.call(bar.firstElementChild, percentage);
+            }
         }
+
+        bar.ontouchend = function (e) {
+            document.ontouchmove = null;
+        }
+
+        audio.onended = function () {
+            console.log('end');
+            audio.play();
+        }
+    }
+
+    function bindEvent() {
+        // this ==> song
+        audio.ontimeupdate = syncLyricsTime.bind(this, this.lyricsArr);
+
+        slideProgressBar();
+
     }
 
 

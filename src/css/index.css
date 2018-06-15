@@ -27,14 +27,14 @@ body {
     z-index: 10000;
 }
 
-.wrapper {
+.ct .ct-content {
     width: 100%;
     position: relative;
 }
 
 /******nav*****/
 
-.wrapper .nav {
+.ct-content .nav {
     width: 100%;
     height: 73px;
     position: fixed;
@@ -42,16 +42,16 @@ body {
     background-color: #C20C0C;
     color: #fff;
     top: 0;
-    transition: all 200ms ease-in-out;
+    transition: all 400ms ease-in-out;
 }
 
-.wrapper .nav .nav-top {
+.ct-content .nav .nav-top {
     width: 100%;
     height: 40px;
     display: flex;
 }
 
-.wrapper .nav .nav-top span {
+.ct-content .nav .nav-top span {
     display: inline-block;
     width: 60px;
     height: 40px;
@@ -60,7 +60,7 @@ body {
     flex-grow: 1;
 }
 
-.wrapper .nav .nav-top .menu {
+.ct-content .nav .nav-top .menu {
     display: inline-block;
     width: 26px;
     height: 28px;
@@ -71,13 +71,13 @@ body {
     background-size: cover;
 }
 
-.wrapper .nav .soso {
+.ct-content .nav .soso {
     width: 100%;
     height: 30px;
     position: relative;
 }
 
-.wrapper .nav .soso input {
+.ct-content .nav .soso input {
     width: 75%;
     height: 80%;
     position: absolute;
@@ -89,9 +89,10 @@ body {
     border-radius: 30px;
     border: none;
     outline: none;
+    transition: all 300ms ease-in-out;
 }
 
-.wrapper .nav .soso span {
+.ct-content .nav .soso span {
     position: absolute;
     right: 5px;
     font-size: 16px;
@@ -100,10 +101,30 @@ body {
     display: none;
 }
 
-.wrapper .song_wrapper {
+/* input 被点击时 效果改变 */
+
+.ct-content .nav.active {
+    top: -30px;
+    background-color: #ccc;
+    height: 80px;
+}
+
+.ct-content .nav.active .soso input {
+    width: 85%;
+    left: 44%;
+    height: 100%;
+}
+
+.ct-content .nav.active .soso span {
+    display: inline-block;
+}
+
+/* 搜索歌曲列表展示 */
+
+.ct-content .song_wrapper {
     width: 100%;
     position: relative;
-    top: 30px;
+    top: 50px;
     display: none;
 }
 
@@ -128,7 +149,7 @@ body {
     display: inline-block;
 }
 
-.wrapper .content {
+.ct-content .content {
     width: 100%;
     position: relative;
     top: 73px;
@@ -136,7 +157,7 @@ body {
 
 /*******slideshow*******/
 
-.wrapper .content .slideshow {
+.ct-content .content .slideshow {
     width: 100%;
     position: relative;
 }
@@ -186,7 +207,7 @@ body {
 
 /******template******/
 
-.wrapper .content .waterfall {
+.ct-content .content .waterfall {
     position: relative;
     width: 100%;
 }
@@ -303,24 +324,28 @@ body {
 
 /* 播放界面 */
 
-.play-wrapper {
+.play-UI {
     width: 100%;
     height: 100%;
-    position: relative;
+    position: fixed;
     color: #fff;
     display: none;
 }
 
-.play-wrapper .play-nav {
+.play-UI .play-nav {
     width: 100%;
-    height: 42px;
+    height: 8%;
     display: flex;
+    align-items: center;
+    position: absolute;
     border-bottom: 1px solid #ccc;
 }
 
 .play-nav .back {
+    display: flex;
+    align-items: center;
     width: 30px;
-    height: 30px;
+    height: 100%;
 }
 
 .play-nav .share {
@@ -330,13 +355,15 @@ body {
 
 .play-nav .info {
     flex-grow: 1;
+    height: 100%;
 }
 
 .play-nav .info .name,
 .play-nav .info .author {
-    height: 20px;
-    text-align: center;
-    line-height: 20px;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 14px;
 }
 
@@ -344,13 +371,22 @@ body {
     font-size: 10px;
 }
 
-.play-wrapper .dial {
+/* 播放界面中心部分 */
+
+.play-UI .play-main {
+    width: 100%;
+    height: 80%;
+    top: 8%;
+    position: absolute;
+}
+
+.play-main .dial {
     width: 300px;
     height: 300px;
     border-radius: 100%;
     display: inline-block;
     position: absolute;
-    top: 80px;
+    top: 50px;
     left: 50%;
     opacity: 0;
     transition: opacity 1s linear;
@@ -358,13 +394,13 @@ body {
     animation: zhuan 12s linear infinite;
 }
 
-.play-wrapper div.paused {
+.play-main div.paused {
     animation-play-state: paused;
 }
 
 /* 转盘 */
 
-.play-wrapper .dial .zz {
+.play-main .dial .zz {
     width: 100%;
     height: 100%;
     border: 50px solid black;
@@ -380,7 +416,7 @@ body {
     }
 }
 
-.dial .zz img {
+.play-main .dial .zz img {
     width: 100%;
     height: 100%;
     border-radius: 100%;
@@ -388,81 +424,83 @@ body {
 
 /* 歌词 */
 
-.play-wrapper .lyric {
+.play-main .lyric {
     width: 100%;
     height: 75%;
     overflow: hidden;
-    position: relative;
+    position: absolute;
+    top: 0;
     opacity: 0;
     transition: opcity 1s linear;
     display: none;
 }
 
-.lyric .ly-list {
+.play-main .lyric .ly-list {
     position: absolute;
     top: 0;
     width: 100%;
     text-align: center;
 }
 
-.lyric .ly-list p {
+.play-main .lyric .ly-list p {
     font-family: '新宋体', '微软雅黑', Arial, Helvetica, sans-serif;
     font-size: 16px;
     margin: 5px 0 5px 0;
 }
 
-.lyric .ly-list .active {
+.play-main .lyric .ly-list .active {
     color: deepskyblue;
 }
 
 /* 进度条 */
 
-.play-wrapper .progress-bar {
+.play-main .progress-bar {
     height: 30px;
     width: 100%;
     position: absolute;
-    bottom: 90px;
+    bottom: 10px;
     text-align: center;
     line-height: 30px;
 }
 
-.progress-bar .start-time,
-.progress-bar .end-time {
+.play-main .progress-bar .start-time,
+.play-main .progress-bar .end-time {
     display: inline-block;
     width: 12%;
     font-size: 10px;
 }
 
-.progress-bar .start-time {
+.play-main .progress-bar .start-time {
     float: left;
 }
 
-.progress-bar .end-time {
+.play-main .progress-bar .end-time {
     float: right;
 }
 
-.progress-bar .bar {
+.play-main .progress-bar .bar {
     display: inline-block;
     height: 2px;
     width: 75%;
     background-color: #ddd;
-    margin: 0 0px 5px 0px;
+    margin: 15px 0px 10px 0px;
     position: relative;
     overflow: hidden;
 }
 
-.progress-bar .bar .slide {
+.play-main .progress-bar .bar .slide {
     position: absolute;
     height: 2px;
-    width: 250px;
+    width: 100%;
     background-color: #C20C0C;
     right: 100%;
 }
 
-.progress-bar .bar .slide span {
+.play-main .progress-bar .bar .slide::after {
+    display: block;
+    content: ' ';
     width: 10px;
     height: 10px;
-    display: inline-block;
     position: absolute;
     transform: translateY(-50%);
     left: 100%;
@@ -470,9 +508,11 @@ body {
     background-color: #C20C0C;
 }
 
-.play-wrapper .bottom {
+/* 播放界面底部 */
+
+.play-UI .play-bottom {
     width: 100%;
-    height: 90px;
+    height: 12%;
     position: absolute;
     bottom: 0;
     display: flex;
@@ -480,41 +520,51 @@ body {
     align-items: center;
 }
 
-.play-wrapper .bottom span {
-    width: 35px;
+.play-bottom span {
+    width: 30px;
+    height: 30px;
     display: inline-block;
-    height: 35px;
 }
 
-.bottom .play-mode,
-.bottom .prev,
-.bottom .next,
-.bottom .state,
-.bottom .list {
+.play-bottom .play-mode,
+.play-bottom .prev,
+.play-bottom .next,
+.play-bottom .state,
+.play-bottom .list {
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-.bottom .play-mode {
+.play-bottom .play-mode {
     background-image: url(/images/icon-like.png);
 }
 
-.bottom .prev {
+.play-bottom .prev {
     background-image: url(/images/icon-prev.png);
 }
 
-.bottom .state {
+.play-bottom .state {
     background-image: url(/images/icon-play.png);
 }
 
-.bottom .pause-btn {
+.play-bottom .pause-btn {
     background-image: url(/images/icon-pause.png);
 }
 
-.bottom .next {
+.play-bottom .next {
     background-image: url(/images/icon-next.png);
 }
 
-.bottom .list {
+.play-bottom .list {
     background-image: url(/images/icon-list.png);
+}
+
+.play-UI .play-bg {
+    width: 100%;
+    height: 100%;
+}
+
+.play-UI .play-bg img {
+    width: 100%;
+    height: 100%;
 }
