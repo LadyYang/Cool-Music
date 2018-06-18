@@ -11,14 +11,16 @@ song.extend({
     imgDom: document.querySelector('.play-main .dial .zz'),
     songNameDom: document.querySelector('.play-nav .name'),
     authorDom: document.querySelector('.play-nav .author'),
-    endTimeDom: document.querySelector('.play-main .progress-bar .end-time'),
-    startTimeDom: document.querySelector('.play-main .progress-bar .start-time'),
+    endTimeDom: document.querySelector('.play-UI .play-bottom .progress-bar .end-time'),
+    startTimeDom: document.querySelector('.play-UI .play-bottom .progress-bar .start-time'),
     lyricUiDom: document.querySelector('.play-main .ly-list'),
     dialDom: document.querySelector('.play-main .dial'),
     ctDom: document.querySelector('.ct'),
     playUiBackBtn: document.querySelector('.play-nav .back'),
     playBtn: document.querySelector('.play-UI .play-bottom .state'),
+    playBtn2: document.querySelector('.p-bottom .state'),
     playUiDom: document.querySelector('.play-UI'),
+    pImg: document.querySelector('.p-bottom .p-img'),
     isPlay: false,
 
 
@@ -36,11 +38,7 @@ song.extend({
     createDom: function (obj, songList) {
         var str = '';
 
-        songList.forEach(function (ele, index) {
-            // all of song time
-            var time = (ele.Duration / 60).toFixed(2).toString().split('.');
-            var minute = time[0];
-            var sec = time[1];
+        songList.forEach(function (ele) {
             var itemStr = `<li class="song_item"> 
                                 <div class="singer_name">${ele.SongName}</div>
                         </li>`;
@@ -64,25 +62,6 @@ song.extend({
         }
     },
 
-    playUi: function () {
-        var self = this;
-
-        this.loadSong(this.hash);
-
-        this.playBtn.onclick = () => {
-            if (this.isPlay) {
-                this.isPlay = false;
-                this.dialDom.classList.add('paused');
-                this.pause();
-            } else {
-                this.isPlay = true;
-                this.play();
-                this.dialDom.classList.remove('paused');
-            }
-            this.playBtn.classList.toggle('pause-btn');
-        }
-    },
-
     // jsonp 加载歌曲资源
     loadSongList: function () {
         // this---> this.input
@@ -102,13 +81,47 @@ song.extend({
             content = document.getElementsByClassName('content')[0],
             nextBtn = document.querySelector('.play-bottom .next'),
             prevBtn = document.querySelector('.play-bottom .prev'),
-            singer = document.getElementsByClassName('song_list')[0];
+            singer = document.getElementsByClassName('song_list')[0],
+            pBottom = document.querySelector('.p-bottom');
 
         return function () {
-            var self = this;
             if (flag) {
+
+                var self = this;
+
+                function playBtnEvent() {
+                    if (this.isPlay) {
+                        this.isPlay = false;
+                        this.dialDom.classList.add('paused');
+                        this.pImg.classList.add('paused');
+                        this.playBtn.classList.remove('pause-btn');
+                        this.playBtn2.classList.remove('pause-btn');
+                        this.pause();
+                    } else {
+                        this.isPlay = true;
+                        this.play();
+                        this.dialDom.classList.remove('paused');
+                        this.pImg.classList.remove('paused');
+                        this.playBtn.classList.add('pause-btn');
+                        this.playBtn2.classList.add('pause-btn');
+                    }
+                }
+
+                // 播放界面的播放按钮
+                this.playBtn.onclick = () => {
+                    // this ==> song
+                    playBtnEvent.call(this);
+                }
+
+                // 底部小界面的播放按钮
+                this.playBtn2.onclick = () => {
+                    // this ==> song
+                    playBtnEvent.call(this);
+                }
+
                 this.inputDom.oninput = this.debounce(this.loadSongList, 300);
 
+                // Click on a single song
                 singer.onclick = function (e) {
                     var singerName = Array.from(document.getElementsByClassName('singer_name'));
                     var target = e.target;
@@ -120,64 +133,104 @@ song.extend({
 
                         self.hash = self.songList[self.index].FileHash;
 
-
-
                         // Switch interface ct between play
-                        self.ctDom.style.display = 'none';
-                        self.playUiDom.style.display = 'block';
+                        switchPlayUI.call(self);
 
-
-                        self.playUi();
+                        self.loadSong(self.hash);
                     }
                 }
+
+                function switchPlayUI() {
+                    this.ctDom.style.display = 'none';
+                    this.playUiDom.style.top = '0';
+                }
+
+                this.pImg.addEventListener('click', switchPlayUI.bind(this));
+
+                nextBtn.onclick = () => {
+                    this.next();
+                }
+
+                prevBtn.onclick = () => {
+                    this.prev();
+                }
+
+                function slideUpToDown() {
+                    // console.log(e);
+                    var first = 0,
+                        second = 0;
+
+                    return function (e) {
+
+                    }
+                }
+
+                this.playUiDom.touchstart = (() => {
+                    var first = 0,
+                        second = 0;
+
+
+
+                });
+
+                // click input
+                this.inputDom.onclick = function () {
+                    nav.classList.add('active');
+                    content.style.display = 'none';
+                    self.targetDom.parentElement.style.display = 'block';
+                    pBottom.style.bottom = '-50px';
+                }
+
+                // cancle click
+                this.inputDom.nextElementSibling.onclick = function () {
+                    nav.classList.remove('active');
+                    content.style = '';
+                    this.previousElementSibling.value = '';
+                    self.targetDom.parentElement.style.display = '';
+                    self.targetDom.innerHTML = '';
+                    pBottom.style = '';
+                }
+
+                // Play screen return button
+                this.playUiBackBtn.onclick = () => {
+                    this.ctDom.style = '';
+                    this.playUiDom.style = '';
+                }
+
+                // click show lyrics
+                this.dialDom.onclick = function () {
+                    this.style.opacity = 0;
+                    this.style.display = 'none';
+                    self.lyricUiDom.parentNode.style.display = 'block';
+                    self.lyricUiDom.parentNode.style.opacity = 1;
+                }
+
+                // click show dial
+                this.lyricUiDom.parentNode.onclick = function () {
+                    this.style.opacity = 0;
+                    this.style.display = 'none';
+                    self.dialDom.style.display = 'block';
+                    self.dialDom.style.opacity = 1;
+                }
+
+                var menu = document.querySelector('.nav .nav-top .icon');
+                var rightWrapper = document.querySelector('.ct .right-wrapper');
+                menu.flag = false;
+                menu.onclick = () => {
+                    if (menu.flag) {
+                        this.ctDom.style.left = '-100%';
+                        rightWrapper.style.right = '0';
+                        menu.flag = false;
+                    } else {
+                        this.ctDom.style.left = '-20%';
+                        rightWrapper.style.right = '-80%';
+                        menu.flag = true;
+                    }
+                }
+
                 flag = false;
             } else {
                 throw new Error('You can\'t perform this function');
-            }
-
-            nextBtn.onclick = () => {
-                this.next();
-            }
-
-            prevBtn.onclick = () => {
-                this.prev();
-            }
-
-            this.inputDom.onclick = function () {
-                nav.classList.add('active');
-                content.style.display = 'none';
-                self.targetDom.parentElement.style.display = 'block';
-            }
-
-            // cancle click
-            this.inputDom.nextElementSibling.onclick = function () {
-                nav.classList.remove('active');
-                content.style = '';
-                this.previousElementSibling.value = '';
-                self.targetDom.parentElement.style.display = '';
-                self.targetDom.innerHTML = '';
-            }
-
-            // Play screen return button
-            this.playUiBackBtn.onclick = function () {
-
-                self.ctDom.style.display = 'block';
-                self.playUiDom.style.display = 'none';
-
-            }
-
-            this.dialDom.onclick = function () {
-                this.style.opacity = 0;
-                this.style.display = 'none';
-                self.lyricUiDom.parentNode.style.display = 'block';                
-                self.lyricUiDom.parentNode.style.opacity = 1;
-            }
-
-            this.lyricUiDom.parentNode.onclick = function () {
-                this.style.opacity = 0;
-                this.style.display = 'none';
-                self.dialDom.style.display = 'block'; 
-                self.dialDom.style.opacity = 1;                               
             }
         }
     })(),

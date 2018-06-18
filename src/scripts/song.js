@@ -179,6 +179,12 @@
         }
     }
 
+    /* 
+     * @method
+     *      Create the image document based on the image resource path and insert it into the {dom} document
+     * @param {String} imgSrc
+     * @param {Element} dom
+     */
     function readyImage(imgSrc = '/images/head.png', dom) {
         var img = new Image();
 
@@ -194,18 +200,58 @@
         img.src = imgSrc;
     }
 
-    function parseSongTime(timeAll, dom) {
-        var time,
-            firstTime,
-            secondTime;
-        console.log(timeAll);
-        // Calculate the total song time
-        time = (timeAll / 60).toFixed(2).split('.');
-        firstTime = time[0];
-        secondTime = time[1];
+    function calcTime(time) {
+        var currentTime = [];
 
-        firstTime = secondTime > 60 ? (secondTime = secondTime - 60, ++firstTime) : firstTime;
-        dom.innerHTML = `${String(firstTime).length == 2 ? firstTime : '0' + firstTime}:${String(secondTime).length == 2 ? secondTime : '0' + secondTime}`;
+        if (time >= 60) {
+            currentTime = (time / 60).toFixed(2).split('.');
+            currentTime[0] = currentTime[1] >= 60 ? (currentTime[1] = currentTime[1] - 60, ++currentTime[0]) : currentTime[0];
+        } else {
+            currentTime[0] = '00';
+            currentTime[1] = time.toFixed(0);
+        }
+
+        return currentTime;
+    }
+
+    /* 
+     * @method
+     *      Parses the time into the specified format, and insert the format into document dom.
+     * @param {Number | String} timeAll
+     * @param {Element} dom
+     */
+    function parseSongTime() {
+        var
+            a = +new Date(),
+            firstTime = '00',
+            secondTime = '00';
+
+        return function (flag, time, dom) {
+            window.a = audio;
+
+            if (flag) {
+                a = +new Date();
+
+                var currentTime = calcTime(time);
+
+                [firstTime, secondTime] = currentTime;
+
+                dom.innerHTML = `${String(currentTime[0]).length == 2 ? currentTime[0] : '0' + currentTime[0]}:${String(currentTime[1]).length == 2 ? currentTime[1] : '0' + currentTime[1]}`;
+            } else {
+
+                // Update time 
+                // 00:00
+                var b = +new Date();
+                console.log(time);
+                if (b - a >= 800) {
+                    a = b;
+                    ++secondTime;
+                    firstTime = secondTime >= 60 ? (secondTime = secondTime - 60, ++firstTime) : firstTime;
+                    dom.innerHTML = `${String(firstTime).length == 2 ? firstTime : '0' + firstTime}:${String(secondTime).length == 2 ? secondTime : '0' + secondTime}`;
+                }
+            }
+
+        }
     }
 
     function parseLyrics(lyrics, dom) {
@@ -234,14 +280,20 @@
         }
     }
 
+    function render(data) {
+        readyImage(data.img, this.imgDom);
+        readyImage(data.img, this.pImg);
+        this.parseSongInfo(this.songNameDom, this.authorDom, data);
+        parseSongTime()(true, audio.duration, this.endTimeDom);
+        ({
+            lyricsArr: this.lyricsArr
+        } = parseLyrics(data.lyrics, this.lyricUiDom));
+    }
+
     var audio = new Audio();
 
     // Initialize some work before playing
     function beforePlay(data) {
-        // Update playUi title information
-        this.songNameDom.innerHTML = data.audio_name;
-        this.authorDom.innerHTML = data.author_name;
-
         this.isPlay = false;
         this.playBtn.className = 'state';
 
@@ -252,11 +304,7 @@
         // init start time
         this.startTimeDom.innerHTML = '00:00';
 
-        readyImage(data.img, this.imgDom);
-        parseSongTime(audio.duration, this.endTimeDom);
-        ({
-            lyricsArr: this.lyricsArr
-        } = parseLyrics(data.lyrics, this.lyricUiDom));
+        render.call(this, data);
 
         // Auto play 
         // Safari nonsupport
@@ -323,6 +371,12 @@
             });
         },
 
+        parseSongInfo: function (name, author, data) {
+            // Update playUi title information
+            name.innerHTML = data.audio_name;
+            author.innerHTML = data.author_name;
+        },
+
         play: function () {
             audio.play();
         },
@@ -354,33 +408,6 @@
         }
     });
 
-    var updateTime = (function () {
-        var a = +new Date(),
-            firstTime = '00',
-            secondTime = '00';
-
-        return function (currentTime, dom) {
-            if (currentTime) {
-                currentTime && (a = +new Date());
-
-                var currentTime = (audio.currentTime / 60).toFixed(2).split('.');
-                currentTime[0] = currentTime[1] > 60 ? (currentTime[1] = currentTime[1] - 60, ++currentTime[0]) : currentTime[0];
-                currentTime = currentTime.join(':');
-            }
-
-            // Update time 
-            // 00:00
-            var b = +new Date();
-            if (b - a >= 1000) {
-                a = b;
-                ++secondTime;
-                firstTime = secondTime > 60 ? (secondTime = secondTime - 60, ++firstTime) : firstTime;
-                dom.innerHTML = currentTime || `${String(firstTime).length == 2 ? firstTime : '0' + firstTime}:${String(secondTime).length == 2 ? secondTime : '0' + secondTime}`;
-            }
-        }
-
-    })();
-
     function rollingLyrics(arr, currentTime, lyricUiDom) {
 
         // currentTime ==> ['02', '32']        
@@ -395,21 +422,18 @@
             // console.log(first, second);
             if (first == currentTime[0] && second == currentTime[1]) {
                 console.log('ok');
-                lyricUiDom.style.top = lyricUiDom.offsetTop - 18 + 'px';
+                lyricUiDom.style.top = lyricUiDom.offsetTop - 10 + 'px';
                 lyricUiDom.children[index].style.color = 'blue';
             }
         });
     }
 
+    var updateTime = parseSongTime();
+
     function syncLyricsTime(lyArr) {
-
-        // Gets the current playback time
-        var currentTime = (audio.currentTime / 60).toFixed(2).split('.');
-        currentTime[0] = currentTime[1] > 60 ? (currentTime[1] = currentTime[1] - 60, ++currentTime[0]) : currentTime[0];
-
-        // Update lyric
+        var currentTime = calcTime(audio.currentTime);
         rollingLyrics(lyArr, currentTime, this.lyricUiDom);
-        updateTime(null, this.startTimeDom);
+        updateTime(true, audio.currentTime, this.startTimeDom);
         rollingBar.call(document.querySelector('.progress-bar .bar .slide'), audio.currentTime / audio.duration);
     }
 
@@ -419,14 +443,17 @@
 
     function slideProgressBar() {
         // bind slide time
-        var bar = document.querySelector('.progress-bar .bar');
-        bar.ontouchstart = function (e) {
+        var bar = document.querySelector('.progress-bar .bar-wrap');
+        var slide = document.querySelector('.bar-wrap .bar .slide');
+
+        bar.ontouchstart = () => {
             var
                 left = bar.offsetLeft,
                 w = bar.offsetWidth,
                 right = left + w;
 
-            document.ontouchmove = function (e) {
+            document.ontouchmove = (e) => {
+
                 var {
                     clientX: newX
                 } = e.touches[0];
@@ -440,9 +467,10 @@
 
                 // Percentage of current slippage
                 var percentage = (newX - left) / w;
-                console.log(percentage);
+
                 audio.currentTime = audio.duration * percentage;
-                rollingBar.call(bar.firstElementChild, percentage);
+                updateTime(true, audio.currentTime, this.startTimeDom);
+                rollingBar.call(slide, percentage);
             }
         }
 
@@ -450,9 +478,13 @@
             document.ontouchmove = null;
         }
 
-        audio.onended = function () {
+        audio.onended = () => {
             console.log('end');
+            updateTime = parseSongTime();
+            this.startTimeDom.innerHTML = '00:00';
+
             audio.play();
+
         }
     }
 
@@ -460,7 +492,7 @@
         // this ==> song
         audio.ontimeupdate = syncLyricsTime.bind(this, this.lyricsArr);
 
-        slideProgressBar();
+        slideProgressBar.call(this);
 
     }
 
