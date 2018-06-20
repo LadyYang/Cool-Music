@@ -1,4 +1,4 @@
-/*!
+/*
  * StartTime: 2018-5-28 19:28
  * 酷狗接口：
  * searchUrl = http://songsearch.kugou.com/song_search_v2?callback=Song.doJSON&keyword
@@ -22,6 +22,8 @@
     }
 })(this, function (global) {
     "use strict"
+
+    var audio = new Audio();
 
     // Constructor function
     function Song(sUrl) {
@@ -179,28 +181,48 @@
         }
     }
 
-    /* 
+    /**
      * @method
      *      Create the image document based on the image resource path and insert it into the {dom} document
      * @param {String} imgSrc
      * @param {Element} dom
      */
-    function readyImage(imgSrc = '/images/head.png', dom) {
+    function readyImage(dom, imgSrc = '/images/ldh.jpg') {
         var img = new Image();
 
-        img.onload = () => {
+        // previous image
+        var prev = dom.firstElementChild;
 
+        img.onload = () => {
             // 高斯模糊
             blurImg(img, document.querySelector(".play-bg"));
 
-            dom.replaceChild(img, dom.firstElementChild);
+            dom.replaceChild(img, prev);
+        }
+
+        img.onerror = function () {
+            readyImage(dom);
         }
 
         img.crossOrigin = "Anonymous";
         img.src = imgSrc;
     }
 
-    function calcTime(time) {
+
+
+    /**
+     * Format the time and output it.
+     * @example 
+     *      '00:23'
+     *      '02:45'
+     *          |
+     *          |----> No more than 60s
+     * @method
+     * 
+     * @param {Number} time The total number of seconds
+     * @returns {String} Returns after formating
+     */
+    function parseCurrentTime(time) {
         var currentTime = [];
 
         if (time >= 60) {
@@ -211,50 +233,14 @@
             currentTime[1] = time.toFixed(0);
         }
 
-        return currentTime;
+        return `${String(currentTime[0]).length == 2 ? currentTime[0] : '0' + currentTime[0]}:${String(currentTime[1]).length == 2 ? currentTime[1] : '0' + currentTime[1]}`;
     }
 
-    /* 
-     * @method
-     *      Parses the time into the specified format, and insert the format into document dom.
-     * @param {Number | String} timeAll
-     * @param {Element} dom
-     */
-    function parseSongTime() {
-        var
-            a = +new Date(),
-            firstTime = '00',
-            secondTime = '00';
-
-        return function (flag, time, dom) {
-            window.a = audio;
-
-            if (flag) {
-                a = +new Date();
-
-                var currentTime = calcTime(time);
-
-                [firstTime, secondTime] = currentTime;
-
-                dom.innerHTML = `${String(currentTime[0]).length == 2 ? currentTime[0] : '0' + currentTime[0]}:${String(currentTime[1]).length == 2 ? currentTime[1] : '0' + currentTime[1]}`;
-            } else {
-
-                // Update time 
-                // 00:00
-                var b = +new Date();
-                console.log(time);
-                if (b - a >= 800) {
-                    a = b;
-                    ++secondTime;
-                    firstTime = secondTime >= 60 ? (secondTime = secondTime - 60, ++firstTime) : firstTime;
-                    dom.innerHTML = `${String(firstTime).length == 2 ? firstTime : '0' + firstTime}:${String(secondTime).length == 2 ? secondTime : '0' + secondTime}`;
-                }
-            }
-
-        }
+    function renderTime(time, dom) {
+        dom.innerHTML = parseCurrentTime(time);
     }
 
-    function parseLyrics(lyrics, dom) {
+    function parseLyrics(lyrics) {
 
         // Prepare the lyrics
         var lyricsArr = lyrics.split('\n').map((ele, index) => {
@@ -267,30 +253,112 @@
             });
         });
 
-        var str;
-        lyricsArr.forEach((ele, index) => {
+        return lyricsArr;
+    }
+
+    function renderLyrics(lyrics, dom) {
+        var str = '';
+
+        parseLyrics(lyrics).forEach((ele, index) => {
 
             ele[1] && (str += `<p>${ele[1]}</p>`);
         });
 
         dom.innerHTML = str;
+    }
 
-        return {
-            lyricsArr: lyricsArr
+    function rollingLyrics(lyricsArr, dom) {
+        var currentTime = parseCurrentTime(audio.currentTime).split(':');
+
+        var children = Array.from(dom.children);
+
+
+        lyricsArr.forEach(function (ele, index) {
+            // ele ==> ["01:54", "Sorry like an angel"]
+            var [first, second] = ele[0].split(':');
+
+            if (first == currentTime[0] && second == currentTime[1]) {
+
+                children.forEach(function (ele) {
+                    ele.style = '';
+                });
+
+                dom.style.marginTop = -index * 30 + 'px';
+                dom.children[index].style.color = 'blue';
+
+            }
+        });
+    }
+
+    function rollingBar(per) {
+        this.style.right = this.offsetWidth - (this.offsetWidth * per) + 'px';
+    }
+
+    function syncLyricsTime(lyArr) {
+        rollingLyrics(lyArr, this.lyricUiDom);
+        renderTime(audio.currentTime, this.startTimeDom);
+        rollingBar.call(document.querySelector('.progress-bar .bar .slide'), audio.currentTime / audio.duration);
+    }
+
+    function slideProgressBar() {
+        // bind slide time
+        var bar = document.querySelector('.progress-bar .bar-wrap');
+        var slide = document.querySelector('.bar-wrap .bar .slide');
+
+        bar.ontouchstart = () => {
+            var
+                left = bar.offsetLeft,
+                w = bar.offsetWidth,
+                right = left + w;
+
+            document.ontouchmove = (e) => {
+
+                var {
+                    clientX: newX
+                } = e.touches[0];
+
+                // console.log();
+                if (newX < left) {
+                    newX = left;
+                } else if (newX > right) {
+                    newX = right;
+                }
+
+                // Percentage of current slippage
+                var percentage = (newX - left) / w;
+
+                audio.currentTime = audio.duration * percentage;
+                renderTime(audio.currentTime, this.startTimeDom);
+                rollingBar.call(slide, percentage);
+            }
+        }
+
+        bar.ontouchend = function (e) {
+            document.ontouchmove = null;
+        }
+
+        audio.onended = () => {
+            console.log('end');
+            this.startTimeDom.innerHTML = '00:00';
+
+            audio.play();
+
         }
     }
 
-    function render(data) {
-        readyImage(data.img, this.imgDom);
-        readyImage(data.img, this.pImg);
-        this.parseSongInfo(this.songNameDom, this.authorDom, data);
-        parseSongTime()(true, audio.duration, this.endTimeDom);
-        ({
-            lyricsArr: this.lyricsArr
-        } = parseLyrics(data.lyrics, this.lyricUiDom));
+    function renderSongInfo(name, author, data) {
+        // Update playUi title information
+        name.innerHTML = data.audio_name;
+        author.innerHTML = data.author_name;
     }
 
-    var audio = new Audio();
+    function render(data) {
+        readyImage(this.imgDom, data.img);
+        readyImage(this.pImg, data.img);
+        renderSongInfo(this.songNameDom, this.authorDom, data);
+        renderTime(audio.duration, this.endTimeDom);
+        renderLyrics(data.lyrics, this.lyricUiDom);
+    }
 
     // Initialize some work before playing
     function beforePlay(data) {
@@ -321,6 +389,14 @@
         }
 
         bindEvent.call(this);
+    }
+
+    function bindEvent() {
+        // this ==> song
+        audio.ontimeupdate = syncLyricsTime.bind(this, parseLyrics(this.oneSong.lyrics));
+
+        slideProgressBar.call(this);
+
     }
 
     // assign
@@ -371,11 +447,6 @@
             });
         },
 
-        parseSongInfo: function (name, author, data) {
-            // Update playUi title information
-            name.innerHTML = data.audio_name;
-            author.innerHTML = data.author_name;
-        },
 
         play: function () {
             audio.play();
@@ -407,94 +478,6 @@
             this.loadSong(this.hash);
         }
     });
-
-    function rollingLyrics(arr, currentTime, lyricUiDom) {
-
-        // currentTime ==> ['02', '32']        
-        // currentTime = currentTime.join(':');
-
-        arr.forEach(function (ele, index) {
-
-            // ele ==> ["01:54", "Sorry like an angel"]
-            // console.log(ele);
-            var [first, second] = ele[0].split(':');
-
-            // console.log(first, second);
-            if (first == currentTime[0] && second == currentTime[1]) {
-                console.log('ok');
-                lyricUiDom.style.top = lyricUiDom.offsetTop - 10 + 'px';
-                lyricUiDom.children[index].style.color = 'blue';
-            }
-        });
-    }
-
-    var updateTime = parseSongTime();
-
-    function syncLyricsTime(lyArr) {
-        var currentTime = calcTime(audio.currentTime);
-        rollingLyrics(lyArr, currentTime, this.lyricUiDom);
-        updateTime(true, audio.currentTime, this.startTimeDom);
-        rollingBar.call(document.querySelector('.progress-bar .bar .slide'), audio.currentTime / audio.duration);
-    }
-
-    function rollingBar(per) {
-        this.style.right = this.offsetWidth - (this.offsetWidth * per) + 'px';
-    }
-
-    function slideProgressBar() {
-        // bind slide time
-        var bar = document.querySelector('.progress-bar .bar-wrap');
-        var slide = document.querySelector('.bar-wrap .bar .slide');
-
-        bar.ontouchstart = () => {
-            var
-                left = bar.offsetLeft,
-                w = bar.offsetWidth,
-                right = left + w;
-
-            document.ontouchmove = (e) => {
-
-                var {
-                    clientX: newX
-                } = e.touches[0];
-
-                // console.log();
-                if (newX < left) {
-                    newX = left;
-                } else if (newX > right) {
-                    newX = right;
-                }
-
-                // Percentage of current slippage
-                var percentage = (newX - left) / w;
-
-                audio.currentTime = audio.duration * percentage;
-                updateTime(true, audio.currentTime, this.startTimeDom);
-                rollingBar.call(slide, percentage);
-            }
-        }
-
-        bar.ontouchend = function (e) {
-            document.ontouchmove = null;
-        }
-
-        audio.onended = () => {
-            console.log('end');
-            updateTime = parseSongTime();
-            this.startTimeDom.innerHTML = '00:00';
-
-            audio.play();
-
-        }
-    }
-
-    function bindEvent() {
-        // this ==> song
-        audio.ontimeupdate = syncLyricsTime.bind(this, this.lyricsArr);
-
-        slideProgressBar.call(this);
-
-    }
 
 
     global.Song = Song;
