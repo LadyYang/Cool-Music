@@ -7,289 +7,294 @@
     <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>音乐播放器</title>
-    <link rel="stylesheet" media="screen and (max-width: 800px)" href="/css/index.css">
-    <script src="zepto.js"></script>
-    <script src="touch.js"></script>
-    <script src="/song.js"></script>
-    <script src="/control.js" async></script>
-    <script src="/index.js" async></script>
 </head>
 
 <body>
     <!-- 主界面 -->
-    <div class="ct">
-        <div class="left-wrapper">
-            <div class="main">
-                <div class="login">
-                    <div class="portrait">
-                        <img src="/images/ldh.jpg" alt="">
-                    </div>
-                    <span class="monicker">CT 欢迎你</span>
+
+    <div class="left-wrapper">
+        <div class="main">
+            <div class="login">
+                <div class="portrait">
+                    <img src="/images/ldh.jpg" alt="">
                 </div>
-                <ul class="user-select">
-                    <li>消息中心</li>
-                    <li>听歌爱好</li>
-                    <li>帮助与反馈</li>
-                    <li>关于</li>
-                    <li>退出登录</li>
-                </ul>
+                <span class="monicker">CT 欢迎你</span>
             </div>
-
-
+            <ul class="user-select">
+                <li>消息中心</li>
+                <li>听歌爱好</li>
+                <li>帮助与反馈</li>
+                <li>关于</li>
+                <li>退出登录</li>
+            </ul>
         </div>
 
-        <div class="right-wrapper">
-            <div class="ct-content">
 
-                <!-- 导航栏 -->
-                <div class="nav">
-                    <div class="nav-top">
-                        <!-- <span class="menu"></span> -->
-                        <svg t="1527909179631" class="icon" style="color: #fff; width: 30px; height: 30px; margin: 5px 0px 3px 12px; " viewBox="0 0 1024 1024"
-                            version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6816" xmlns:xlink="http://www.w3.org/1999/xlink"
-                            width="16" height="16">
-                            <defs>
-                                <style type="text/css"></style>
-                            </defs>
-                            <path d="M105.931034 300.137931C105.931034 280.636566 121.789652 264.827586 141.3498 264.827586L882.6502 264.827586C902.211443 264.827586 918.068966 280.500605 918.068966 300.137931 918.068966 319.639296 902.210348 335.448276 882.6502 335.448276L141.3498 335.448276C121.788557 335.448276 105.931034 319.775257 105.931034 300.137931ZM105.931034 512C105.931034 492.498635 121.789652 476.689655 141.3498 476.689655L882.6502 476.689655C902.211443 476.689655 918.068966 492.362674 918.068966 512 918.068966 531.501365 902.210348 547.310345 882.6502 547.310345L141.3498 547.310345C121.788557 547.310345 105.931034 531.637326 105.931034 512ZM105.931034 723.862069C105.931034 704.360704 121.789652 688.551724 141.3498 688.551724L882.6502 688.551724C902.211443 688.551724 918.068966 704.224743 918.068966 723.862069 918.068966 743.363434 902.210348 759.172414 882.6502 759.172414L141.3498 759.172414C121.788557 759.172414 105.931034 743.499395 105.931034 723.862069Z"
-                                p-id="6817" fill="#ffffff"></path>
-                        </svg>
-                        <span>推荐</span>
+    </div>
+
+    <div class="right-wrapper">
+        <div class="ct-content">
+
+            <!-- 导航栏 -->
+            <div class="nav">
+                <div class="nav-top">
+                    <!-- <span class="menu"></span> -->
+                    <svg t="1527909179631" class="icon" style="color: #fff; width: 30px; height: 30px; margin: 5px 0px 3px 12px; " viewBox="0 0 1024 1024"
+                        version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6816" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        width="16" height="16">
+                        <defs>
+                            <style type="text/css"></style>
+                        </defs>
+                        <path d="M105.931034 300.137931C105.931034 280.636566 121.789652 264.827586 141.3498 264.827586L882.6502 264.827586C902.211443 264.827586 918.068966 280.500605 918.068966 300.137931 918.068966 319.639296 902.210348 335.448276 882.6502 335.448276L141.3498 335.448276C121.788557 335.448276 105.931034 319.775257 105.931034 300.137931ZM105.931034 512C105.931034 492.498635 121.789652 476.689655 141.3498 476.689655L882.6502 476.689655C902.211443 476.689655 918.068966 492.362674 918.068966 512 918.068966 531.501365 902.210348 547.310345 882.6502 547.310345L141.3498 547.310345C121.788557 547.310345 105.931034 531.637326 105.931034 512ZM105.931034 723.862069C105.931034 704.360704 121.789652 688.551724 141.3498 688.551724L882.6502 688.551724C902.211443 688.551724 918.068966 704.224743 918.068966 723.862069 918.068966 743.363434 902.210348 759.172414 882.6502 759.172414L141.3498 759.172414C121.788557 759.172414 105.931034 743.499395 105.931034 723.862069Z"
+                            p-id="6817" fill="#ffffff"></path>
+                    </svg>
+                    <div class="nav-title">
+                        <span class="current-page">推荐</span>
                         <span>排行榜</span>
                         <span>歌单</span>
+                        <span>发现</span>
                     </div>
-                    <div class="soso">
-                        <input type="text" placeholder="搜 一 搜">
-                        <span>取消</span>
+                </div>
+                <div class="soso">
+                    <input type="text" placeholder="搜 一 搜">
+                    <span>取消</span>
+                </div>
+            </div>
+
+            <div class="content recommend">
+                <!-- 轮播图 -->
+                <div class="slideshow">
+                    <ul class="slider">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                    <div class="slider-index">
+                        <span class="slider-active"></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
                     </div>
                 </div>
 
-                <div class="content">
-                    <!-- 轮播图 -->
-                    <div class="slideshow">
-                        <ul class="slider">
+                <!-- 瀑布流 -->
+                <div class="waterfall">
+                    <!-- template -->
+                    <div class="md">
+                        <div class="hd">
+                            <span class="hd-title">推荐歌单</span>
+                            <span class="hd-icon"></span>
+                        </div>
+                        <ul class="cb">
                             <li>
-                                <img src="" data-origin="/images/slide01.jpg" alt="">
+                                <div class="wf-image">
+                                    <div class="bottom">
+                                        <span class="icon-headset"></span>
+                                        <span class="nb">1240.5万</span>
+                                        <span class="icon-play"></span>
+                                    </div>
+                                </div>
+                                <p class="title">
+                                    <a href="">黑寡妇三角阀刷卡机很热乎</a>
+                                </p>
                             </li>
                             <li>
-                                <img src="" data-origin="/images/slide02.jpg" alt="">
+                                <div class="wf-image">
+                                    <div class="bottom">
+                                        <span class="icon-headset"></span>
+                                        <span class="nb"></span>
+                                        <span class="icon-play"></span>
+                                    </div>
+                                </div>
+                                <p class="title">
+                                    <a href="">黑寡妇三角阀刷卡机很热乎</a>
+                                </p>
                             </li>
                             <li>
-                                <img src="" data-origin="/images/slide03.jpg" alt="">
+                                <div class="wf-image">
+                                    <div class="bottom">
+                                        <span class="icon-headset"></span>
+                                        <span class="nb"></span>
+                                        <span class="icon-play"></span>
+                                    </div>
+                                </div>
+                                <p class="title">
+                                    <a href="">黑寡妇三角阀刷卡机很热乎</a>
+                                </p>
                             </li>
                             <li>
-                                <img src="" data-origin="/images/slide04.jpg" alt="">
+                                <div class="wf-image">
+                                    <div class="bottom">
+                                        <span class="icon-headset"></span>
+                                        <span class="nb"></span>
+                                        <span class="icon-play"></span>
+                                    </div>
+                                </div>
+                                <p class="title">
+                                    <a href="">黑寡妇三角阀刷卡机很热乎</a>
+                                </p>
                             </li>
                             <li>
-                                <img src="" data-origin="/images/slide05.jpg" alt="">
+                                <div class="wf-image">
+                                    <div class="bottom">
+                                        <span class="icon-headset"></span>
+                                        <span class="nb"></span>
+                                        <span class="icon-play"></span>
+                                    </div>
+                                </div>
+                                <p class="title">
+                                    <a href="">黑寡妇三角阀刷卡机很热乎</a>
+                                </p>
                             </li>
                             <li>
-                                <img src="" data-origin="/images/slide06.jpg" alt="">
+                                <div class="wf-image">
+                                    <div class="bottom">
+                                        <span class="icon-headset"></span>
+                                        <span class="nb"></span>
+                                        <span class="icon-play"></span>
+                                    </div>
+                                </div>
+                                <p class="title">
+                                    <a href="">黑寡妇三角阀刷卡机很热乎</a>
+                                </p>
                             </li>
                         </ul>
-                        <div class="slider-index">
-                            <span class="slider-active"></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
+                    </div>
+                    <div class="md">
+                        <div class="hd">
+                            <span class="hd-title">推荐歌单</span>
+                            <span class="hd-icon"></span>
                         </div>
-                    </div>
-
-                    <!-- 瀑布流 -->
-                    <div class="waterfall">
-                        <!-- template -->
-                        <div class="md">
-                            <div class="hd">
-                                <span class="hd-title">推荐歌单</span>
-                                <span class="hd-icon"></span>
-                            </div>
-                            <ul class="cb">
-                                <li>
-                                    <div class="wf-image">
-                                        <div class="bottom">
-                                            <span class="icon-headset"></span>
-                                            <span class="nb">1240.5万</span>
-                                            <span class="icon-play"></span>
-                                        </div>
+                        <ul class="cb">
+                            <li>
+                                <div class="wf-image">
+                                    <div class="bottom">
+                                        <span class="icon-headset"></span>
+                                        <span class="nb">1240.5万</span>
+                                        <span class="icon-play"></span>
                                     </div>
-                                    <p class="title">
-                                        <a href="">黑寡妇三角阀刷卡机很热乎</a>
-                                    </p>
-                                </li>
-                                <li>
-                                    <div class="wf-image">
-                                        <div class="bottom">
-                                            <span class="icon-headset"></span>
-                                            <span class="nb"></span>
-                                            <span class="icon-play"></span>
-                                        </div>
+                                </div>
+                                <p class="title">
+                                    <a href="">黑寡妇三角阀刷卡机很热乎</a>
+                                </p>
+                            </li>
+                            <li>
+                                <div class="wf-image">
+                                    <div class="bottom">
+                                        <span class="icon-headset"></span>
+                                        <span class="nb"></span>
+                                        <span class="icon-play"></span>
                                     </div>
-                                    <p class="title">
-                                        <a href="">黑寡妇三角阀刷卡机很热乎</a>
-                                    </p>
-                                </li>
-                                <li>
-                                    <div class="wf-image">
-                                        <div class="bottom">
-                                            <span class="icon-headset"></span>
-                                            <span class="nb"></span>
-                                            <span class="icon-play"></span>
-                                        </div>
+                                </div>
+                                <p class="title">
+                                    <a href="">黑寡妇三角阀刷卡机很热乎</a>
+                                </p>
+                            </li>
+                            <li>
+                                <div class="wf-image">
+                                    <div class="bottom">
+                                        <span class="icon-headset"></span>
+                                        <span class="nb"></span>
+                                        <span class="icon-play"></span>
                                     </div>
-                                    <p class="title">
-                                        <a href="">黑寡妇三角阀刷卡机很热乎</a>
-                                    </p>
-                                </li>
-                                <li>
-                                    <div class="wf-image">
-                                        <div class="bottom">
-                                            <span class="icon-headset"></span>
-                                            <span class="nb"></span>
-                                            <span class="icon-play"></span>
-                                        </div>
+                                </div>
+                                <p class="title">
+                                    <a href="">黑寡妇三角阀刷卡机很热乎</a>
+                                </p>
+                            </li>
+                            <li>
+                                <div class="wf-image">
+                                    <div class="bottom">
+                                        <span class="icon-headset"></span>
+                                        <span class="nb"></span>
+                                        <span class="icon-play"></span>
                                     </div>
-                                    <p class="title">
-                                        <a href="">黑寡妇三角阀刷卡机很热乎</a>
-                                    </p>
-                                </li>
-                                <li>
-                                    <div class="wf-image">
-                                        <div class="bottom">
-                                            <span class="icon-headset"></span>
-                                            <span class="nb"></span>
-                                            <span class="icon-play"></span>
-                                        </div>
+                                </div>
+                                <p class="title">
+                                    <a href="">黑寡妇三角阀刷卡机很热乎</a>
+                                </p>
+                            </li>
+                            <li>
+                                <div class="wf-image">
+                                    <div class="bottom">
+                                        <span class="icon-headset"></span>
+                                        <span class="nb"></span>
+                                        <span class="icon-play"></span>
                                     </div>
-                                    <p class="title">
-                                        <a href="">黑寡妇三角阀刷卡机很热乎</a>
-                                    </p>
-                                </li>
-                                <li>
-                                    <div class="wf-image">
-                                        <div class="bottom">
-                                            <span class="icon-headset"></span>
-                                            <span class="nb"></span>
-                                            <span class="icon-play"></span>
-                                        </div>
+                                </div>
+                                <p class="title">
+                                    <a href="">黑寡妇三角阀刷卡机很热乎</a>
+                                </p>
+                            </li>
+                            <li>
+                                <div class="wf-image">
+                                    <div class="bottom">
+                                        <span class="icon-headset"></span>
+                                        <span class="nb"></span>
+                                        <span class="icon-play"></span>
                                     </div>
-                                    <p class="title">
-                                        <a href="">黑寡妇三角阀刷卡机很热乎</a>
-                                    </p>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="md">
-                            <div class="hd">
-                                <span class="hd-title">推荐歌单</span>
-                                <span class="hd-icon"></span>
-                            </div>
-                            <ul class="cb">
-                                <li>
-                                    <div class="wf-image">
-                                        <div class="bottom">
-                                            <span class="icon-headset"></span>
-                                            <span class="nb">1240.5万</span>
-                                            <span class="icon-play"></span>
-                                        </div>
-                                    </div>
-                                    <p class="title">
-                                        <a href="">黑寡妇三角阀刷卡机很热乎</a>
-                                    </p>
-                                </li>
-                                <li>
-                                    <div class="wf-image">
-                                        <div class="bottom">
-                                            <span class="icon-headset"></span>
-                                            <span class="nb"></span>
-                                            <span class="icon-play"></span>
-                                        </div>
-                                    </div>
-                                    <p class="title">
-                                        <a href="">黑寡妇三角阀刷卡机很热乎</a>
-                                    </p>
-                                </li>
-                                <li>
-                                    <div class="wf-image">
-                                        <div class="bottom">
-                                            <span class="icon-headset"></span>
-                                            <span class="nb"></span>
-                                            <span class="icon-play"></span>
-                                        </div>
-                                    </div>
-                                    <p class="title">
-                                        <a href="">黑寡妇三角阀刷卡机很热乎</a>
-                                    </p>
-                                </li>
-                                <li>
-                                    <div class="wf-image">
-                                        <div class="bottom">
-                                            <span class="icon-headset"></span>
-                                            <span class="nb"></span>
-                                            <span class="icon-play"></span>
-                                        </div>
-                                    </div>
-                                    <p class="title">
-                                        <a href="">黑寡妇三角阀刷卡机很热乎</a>
-                                    </p>
-                                </li>
-                                <li>
-                                    <div class="wf-image">
-                                        <div class="bottom">
-                                            <span class="icon-headset"></span>
-                                            <span class="nb"></span>
-                                            <span class="icon-play"></span>
-                                        </div>
-                                    </div>
-                                    <p class="title">
-                                        <a href="">黑寡妇三角阀刷卡机很热乎</a>
-                                    </p>
-                                </li>
-                                <li>
-                                    <div class="wf-image">
-                                        <div class="bottom">
-                                            <span class="icon-headset"></span>
-                                            <span class="nb"></span>
-                                            <span class="icon-play"></span>
-                                        </div>
-                                    </div>
-                                    <p class="title">
-                                        <a href="">黑寡妇三角阀刷卡机很热乎</a>
-                                    </p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="p-bottom">
-                    <div class="p-img">
-                        <img src="" alt="">
-                    </div>
-
-                    <div class="p-content">
-                        <div class="name"></div>
-                        <div class="author"></div>
-                    </div>
-
-                    <div class="p-btn">
-                        <span class="state"></span>
-                        <span class="list"></span>
+                                </div>
+                                <p class="title">
+                                    <a href="">黑寡妇三角阀刷卡机很热乎</a>
+                                </p>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
 
-
-            <!-- 搜索列表 -->
-            <div class="song_wrapper">
-                <ul class="song_list">
+            <div class="rank">
+                <ul>
+                    <li>
+                        <img src="" alt="">
+                        <div>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
                 </ul>
             </div>
 
-            <div class="baffle"></div>
+            <div class="song-list"></div>
+
+            <div class="discover"></div>
+
+
+            <div class="p-bottom">
+                <div class="p-img">
+                    <img src="" alt="">
+                </div>
+
+                <div class="p-content">
+                    <div class="name"></div>
+                    <div class="author"></div>
+                </div>
+
+                <div class="p-btn">
+                    <span class="state"></span>
+                    <span class="list"></span>
+                </div>
+            </div>
         </div>
+
+
+        <!-- 搜索列表 -->
+        <div class="song_wrapper">
+            <ul class="song_list">
+            </ul>
+        </div>
+
+        <div class="baffle"></div>
     </div>
     <!-- 播放界面 -->
     <div class="play-UI">
@@ -355,61 +360,5 @@
             <img src="" alt="">
         </div>
     </div>
-
-
-
-
-    <script>
-        var wfImage = Array.from(document.getElementsByClassName('wf-image')),
-            slideshow = document.getElementsByClassName('slideshow')[0],
-            sliderLiImg = document.querySelectorAll('.slider li img'),
-            imageArr = ["/images/18742275209205360.jpg", "/images/18924794137858123.jpg",
-                "/images/19019352137865075.jpg", "/images/109951163315570256.jpg", "/images/109951163324132839.jpg",
-                "/images/109951163325479921.jpg", "/images/18742275209205360.jpg", "/images/18924794137858123.jpg",
-                "/images/109951163315570256.jpg", "/images/19019352137865075.jpg", "/images/109951163324132839.jpg",
-                "/images/109951163325479921.jpg"
-            ];
-        slideshow.style.height = slideshow.offsetWidth / 2.2 + 'px';
-
-
-        /* waterfull */
-        wfImage.forEach(function (ele, index) {
-            var image = new Image();
-            image.onload = function () {
-                ele.appendChild(image);
-            };
-            image.src = imageArr[index];
-        });
-
-
-
-        window.onload = function () {
-            document.addEventListener('touchstart', function (e) {
-                // console.log(e);
-                if (e.touches.length > 1) {
-                    e.preventDefault();
-                }
-            });
-
-            var lastTouchEnd = 0;
-            document.addEventListener('touchend', function (e) {
-                var now = +new Date();
-                if (now - lastTouchEnd < 300) {
-                    e.preventDefault();
-                }
-                lastTouchEnd = now;
-            });
-
-            /* slidershow */
-            Array.from(sliderLiImg).forEach(function (ele, index) {
-                var img = new Image();
-                img.onload = function () {
-                    ele.src = img.src;
-                }
-                img.src = ele.dataset.origin;
-            });
-        }
-    </script>
 </body>
-
 </html>

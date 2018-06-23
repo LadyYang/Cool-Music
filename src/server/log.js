@@ -7,16 +7,16 @@ function log({req,res,info,path}) {
     if (req instanceof stream.Readable) {
         var href = url.parse(req.url);
         var socket = req.socket;
-        // console.log(href);
-        // console.log(req.headers);
-        // console.log(req.rawHeaders);
+
+
         data = `|clientIP:${socket.remoteAddress} ${socket.remotePort}|access:${href.pathname}|code:${res.statusCode}|method:${req.method}|User-Agent:${req.headers['user-agent']}|`
     } else {
         data = info;
     }
     fs.open(__dirname + path, 'a+', function (err, fd) {
         if (err) {
-            throw err;
+            console.log(err);
+            // throw err;
         }
 
         var date = new Date();
