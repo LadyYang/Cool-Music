@@ -241,6 +241,3 @@ function init() {
     }
     song.bindEvent();
 }
-
-
-init();
