@@ -50,6 +50,6 @@ module.exports = {
                 return getPath('css/index.css').replace("js", "css")
             }
         }),
-        new UglifyJSPlugin()
+        // new UglifyJSPlugin()
     ]
 }
