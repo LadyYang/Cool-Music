@@ -34,7 +34,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             filename: '/views/index.html',
-            template: 'src/views/index.html'
+            template: 'src/views/index.html',
         }),
         new HtmlWebpackPlugin({
             filename: '/views/error.html',

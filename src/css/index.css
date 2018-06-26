@@ -20,7 +20,7 @@
         z-index: 10000;
         background-color: #fff;
     }
-    .left-wrapper .main {
+    .left-wrapper .left-main {
         width: 100%;
         height: 100%;
         position: absolute;
@@ -28,7 +28,7 @@
         display: flex;
         flex-direction: column;
     }
-    .left-wrapper .main .login {
+    .left-wrapper .left-main .login {
         width: 100%;
         height: 100px;
         display: flex;
@@ -37,64 +37,50 @@
         box-sizing: content-box;
         border-bottom: 25px solid rgba(200, 197, 197, 0.1);
     }
-    .left-wrapper .main .login .portrait {
+    .left-wrapper .left-main .login .portrait {
         display: inline-block;
         height: 85px;
         width: 85px;
         margin: 0 20px 0 20px;
     }
-    .left-wrapper .main .login .portrait img {
+    .left-wrapper .left-main .login .portrait img {
         width: 100%;
         height: 100%;
         border-radius: 100%;
     }
-    .left-wrapper .main .login .monicker {
+    .left-wrapper .left-main .login .monicker {
         display: inline-block;
         height: 100px;
         flex-grow: 1;
         line-height: 100px;
         text-align: center;
     }
-    .left-wrapper .main .user-select {
+    .left-wrapper .left-main .user-select {
         flex-grow: 1;
         width: 100%;
         font-size: 16px;
         padding: 30px 10px 0 20px;
     }
-    .left-wrapper .main .user-select li {
+    .left-wrapper .left-main .user-select li {
         width: 100%;
         height: 60px;
         line-height: 60px;
         border-bottom: 1px solid rgba(0, 0, 0, .1);
         box-sizing: content-box;
     }
-    .left-wrapper .main .user-select li:last-child {
+    .left-wrapper .left-main .user-select li:last-child {
         color: #C20C0C;
     }
     /* 右边界面 */
     .right-wrapper {
         width: 100%;
-        position: absolute;
+        position: relative;
         z-index: 9999;
         right: 0;
         transition: right 300ms ease-out;
     }
-    .right-wrapper .baffle {
-        width: 100%;
-        height: 100%;
-        top: 40px;
-        position: fixed;
-        z-index: 10006;
-        background-color: #ccc;
-        display: none;
-        opacity: 0.3;
-    }
-    .right-wrapper .ct-content {
-        width: 100%;
-        position: absolute;
-    }
     /******nav*****/
-    .ct-content .nav {
+    .right-wrapper .nav {
         width: 100%;
         height: 73px;
         position: fixed;
@@ -104,17 +90,17 @@
         top: 0;
         transition: all 400ms ease-in-out;
     }
-    .ct-content .nav .nav-top {
+    .right-wrapper .nav .nav-top {
         width: 100%;
         height: 40px;
         display: flex;
     }
-    .ct-content .nav .nav-top .nav-title {
+    .right-wrapper .nav .nav-top .nav-title {
         display: flex;
         flex-grow: 1;
         position: relative;
     }
-    .ct-content .nav .nav-top .nav-title::before {
+    .right-wrapper .nav .nav-top .nav-title::before {
         width: 0;
         height: 0;
         position: absolute;
@@ -125,7 +111,7 @@
         border: 8px solid transparent;
         border-top: 8px solid #fff;
     }
-    .ct-content .nav .nav-top span {
+    .right-wrapper .nav .nav-top span {
         display: inline-block;
         width: 60px;
         height: 40px;
@@ -134,7 +120,7 @@
         line-height: 40px;
         flex-grow: 1;
     }
-    .ct-content .nav .nav-top .menu {
+    .right-wrapper .nav .nav-top .menu {
         display: inline-block;
         width: 26px;
         height: 28px;
@@ -144,12 +130,12 @@
         background-repeat: no-repeat;
         background-size: cover;
     }
-    .ct-content .nav .soso {
+    .right-wrapper .nav .soso {
         width: 100%;
         height: 30px;
         position: relative;
     }
-    .ct-content .nav .soso input {
+    .right-wrapper .nav .soso input {
         width: 75%;
         height: 80%;
         position: absolute;
@@ -163,7 +149,7 @@
         outline: none;
         transition: all 300ms ease-in-out;
     }
-    .ct-content .nav .soso span {
+    .right-wrapper .nav .soso span {
         position: absolute;
         right: 5px;
         font-size: 16px;
@@ -172,21 +158,21 @@
         display: none;
     }
     /* input 被点击时 效果改变 */
-    .ct-content .nav.active {
+    .right-wrapper .nav.active {
         top: -30px;
         background-color: #ccc;
         height: 80px;
     }
-    .ct-content .nav.active .soso input {
+    .right-wrapper .nav.active .soso input {
         width: 85%;
         left: 44%;
         height: 100%;
     }
-    .ct-content .nav.active .soso span {
+    .right-wrapper .nav.active .soso span {
         display: inline-block;
     }
     /* 搜索歌曲列表展示 */
-    .right-wrapper .song_wrapper {
+    .song_wrapper {
         width: 100%;
         position: relative;
         top: 50px;
@@ -209,150 +195,6 @@
         overflow: hidden;
         text-overflow: ellipsis;
         display: inline-block;
-    }
-    .right-wrapper .ct-content .content {
-        width: 100%;
-        position: relative;
-        top: 73px;
-    }
-    /*******slideshow*******/
-    .right-wrapper .ct-content .content .slideshow {
-        width: 100%;
-        position: relative;
-    }
-    .slideshow .slider,
-    .slideshow .slider li {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-    }
-    .slideshow .slider li {
-        opacity: 0;
-        transition: opacity 1s linear;
-    }
-    .slideshow .slider li img {
-        width: 100%;
-        height: 100%;
-    }
-    .slideshow .slider-index {
-        position: absolute;
-        width: 100%;
-        height: 15px;
-        bottom: 5px;
-        display: flex;
-        justify-content: center;
-    }
-    .slideshow .slider-index span {
-        display: block;
-        margin-left: 10px;
-        width: 10px;
-        height: 10px;
-        background-color: #fff;
-        border-radius: 100%;
-        cursor: pointer;
-    }
-    .slideshow .slider-index .slider-active {
-        background-color: #C20C0C;
-    }
-    /* waterfall */
-    /******template******/
-    .right-wrapper .ct-content .content .waterfall {
-        position: relative;
-        width: 100%;
-    }
-    .waterfall .md {
-        position: relative;
-        width: 100%;
-    }
-    .waterfall .md .hd {
-        height: 50px;
-        width: 34%;
-        display: inline-block;
-        position: relative;
-    }
-    .waterfall .md .hd .hd-title,
-    .waterfall .md .hd .hd-icon {
-        display: inline-block;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-    }
-    .waterfall .md .hd .hd-title {
-        padding-left: 12px;
-        padding-right: 12px;
-        font-weight: 600;
-        font-size: 18px;
-    }
-    .waterfall .md .hd .hd-icon {
-        left: 100px;
-        width: 23px;
-        height: 23px;
-        background-image: url(../images/more.png);
-        background-repeat: no-repeat;
-        background-size: cover;
-    }
-    .waterfall .md .cb {
-        width: 100%;
-        position: relative;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-    }
-    .waterfall .md .cb li {
-        width: 32%;
-        position: relative;
-    }
-    .waterfall .md .cb .wf-image {
-        width: 100%;
-    }
-    .waterfall .md .cb .wf-image img {
-        width: 100%;
-        height: 100%;
-        /* position: absolute; */
-    }
-    .waterfall .md .cb li .bottom {
-        width: 100%;
-        height: 30px;
-        position: absolute;
-        z-index: 999;
-        line-height: 30px;
-        top: 1px;
-    }
-    .cb li .bottom .icon-headset,
-    .cb li .bottom .icon-play {
-        background: url(../images/iconall.png) no-repeat;
-    }
-    .cb li .bottom .icon-headset {
-        float: left;
-        width: 14px;
-        height: 11px;
-        background-position: 0 -24px;
-        margin: 9px 5px 9px 10px;
-    }
-    .cb li .bottom .nb {
-        float: left;
-        color: #fff;
-        font-size: 10px;
-    }
-    .cb li .bottom .icon-play {
-        display: inline-block;
-        position: absolute;
-        right: 10px;
-        top: 5px;
-        width: 16px;
-        height: 17px;
-        background-position: 0 0;
-    }
-    .md .cb li .title {
-        width: 100%;
-        height: 60px;
-        display: flex;
-        justify-content: space-between;
-    }
-    .md .cb li .title a {
-        text-decoration: none;
-        color: #000;
-        font-size: 16px;
     }
     /* 播放界面 */
     .play-UI {
@@ -585,7 +427,7 @@
         height: 100%;
     }
     /* 底部播放界面 */
-    .p-bottom {
+    .right-wrapper .p-bottom {
         width: 100%;
         height: 50px;
         position: fixed;
@@ -595,7 +437,7 @@
         align-items: center;
         bottom: 0px;
         background-color: #C20C0C;
-        transition: bottom 400ms ease-in-out;
+        transition: bottom 350ms linear;
     }
     .p-bottom .p-img {
         width: 40px;
@@ -661,5 +503,24 @@
         width: 30px;
         height: 30px;
         background-image: url(../images/icon-list.png);
+    }
+    .right-wrapper .threed {
+        /* perspective: 800px; */
+    }
+    .right-wrapper .content {
+        width: 100%;
+        top: 73px;
+        position: absolute;
+    }
+    .baffle {
+        width: 100%;
+        height: 100%;
+        top: 40px;
+        position: fixed;
+        z-index: 10006;
+        right: -80%;
+        background-color: #ccc;
+        display: none;
+        opacity: 0.3;
     }
 }

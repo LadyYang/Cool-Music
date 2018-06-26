@@ -70,8 +70,8 @@ function clickSongList(e) {
 }
 
 function switchPlayUI() {
-    // this.ctDom.style.display = 'none';
     this.playUiDom.style.top = '0';
+    this.rightWrapDom.style.display = 'none';
 }
 
 // jsonp 加载歌曲资源
@@ -105,6 +105,7 @@ song.extend({
     playUiDom: document.querySelector('.play-UI'),
     pImg: document.querySelector('.p-bottom .p-img'),
     pBottom: document.querySelector('.p-bottom'),
+    rightWrapDom: document.querySelector('.right-wrapper'),
     isPlay: false,
 
     bindEvent: bindEvent,
@@ -185,6 +186,7 @@ function bindEvent() {
 
     // Play screen return button
     this.playUiBackBtn.onclick = () => {
+        this.rightWrapDom.style.display = '';
         this.playUiDom.style = '';
     }
 

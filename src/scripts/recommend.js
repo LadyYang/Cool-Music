@@ -79,7 +79,6 @@ var slideshow = {
         });
 
         $(this.slideshowDom).on('swipeLeft', () => {
-            console.log('ok');
             this.slide('right-left');
         });
 

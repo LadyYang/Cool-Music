@@ -32,7 +32,7 @@
 	}
 	/*==== GLOBAL =====*/
 	#main {
-		width: 1000px;
+		width: 100%;
 		margin: 0 auto;
 		background: url(../images/error.jpg) no-repeat left top;
 		font-size: 1.125em;
@@ -107,7 +107,8 @@
 		text-transform: capitalize;
 	}
 	#content .nav li.home {
-		left: 445px;
+		left: 50%;
+		transform: translateX(-50%);
 		top: 270px;
 	}
 	#content .nav li.site_map {

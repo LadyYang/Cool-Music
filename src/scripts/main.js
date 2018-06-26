@@ -18,7 +18,7 @@ var music = {
 window.music = music;
 music.main();
 require('../css/index.css');
-
+require('../css/recommend.css');
 
 window.onload = function () {
     document.addEventListener('touchstart', function (e) {
