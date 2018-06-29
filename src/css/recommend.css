@@ -1,9 +1,12 @@
 @media screen and (max-width: 800px) {
     /* 推荐界面 */
     .right-wrapper .content .recommend {
-        width: 100%;
-        position: relative;
     }
+    /* .right-wrapper .content .recommend::after{
+        display: block;
+        content: '';
+        clear: both;
+    } */
     /*******slideshow*******/
     .right-wrapper .content .recommend .slideshow {
         width: 100%;

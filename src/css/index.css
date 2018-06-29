@@ -16,8 +16,7 @@
         height: 100%;
         position: fixed;
         left: -80%;
-        transition: left 300ms ease-out;
-        z-index: 10000;
+        transition: left 400ms ease-out;
         background-color: #fff;
     }
     .left-wrapper .left-main {
@@ -74,21 +73,21 @@
     /* 右边界面 */
     .right-wrapper {
         width: 100%;
+        height: 100%;
         position: relative;
-        z-index: 9999;
         right: 0;
-        transition: right 300ms ease-out;
     }
     /******nav*****/
     .right-wrapper .nav {
         width: 100%;
         height: 73px;
         position: fixed;
+        right: 0;
         z-index: 9000;
         background-color: #C20C0C;
         color: #fff;
         top: 0;
-        transition: all 400ms ease-in-out;
+        transition: all 400ms ease-out;
     }
     .right-wrapper .nav .nav-top {
         width: 100%;
@@ -111,10 +110,13 @@
         border: 8px solid transparent;
         border-top: 8px solid #fff;
     }
-    .right-wrapper .nav .nav-top span {
+    .right-wrapper .nav .nav-top .nav-title .current-page {
+        border-bottom: 1px solid #fff;
+    }
+    .right-wrapper .nav .nav-top .nav-title span {
         display: inline-block;
         width: 60px;
-        height: 40px;
+        height: 35px;
         text-align: center;
         position: relative;
         line-height: 40px;
@@ -174,7 +176,7 @@
     /* 搜索歌曲列表展示 */
     .song_wrapper {
         width: 100%;
-        position: relative;
+        position: absolute;
         top: 50px;
         display: none;
     }
@@ -436,8 +438,9 @@
         justify-content: center;
         align-items: center;
         bottom: 0px;
+        right: 0;
         background-color: #C20C0C;
-        transition: bottom 350ms linear;
+        transition: bottom 350ms linear, right 400ms ease-out;
     }
     .p-bottom .p-img {
         width: 40px;
@@ -504,13 +507,30 @@
         height: 30px;
         background-image: url(../images/icon-list.png);
     }
-    .right-wrapper .threed {
-        /* perspective: 800px; */
-    }
     .right-wrapper .content {
         width: 100%;
+        height: 100%;
         top: 73px;
+        right: 0;
+        transition: all 400ms ease-out;
         position: absolute;
+        overflow-x: hidden;
+    }
+    .right-wrapper .content .ct-list {
+        width: 400%;
+        height: 100%;
+        left: 0;
+        position: absolute;
+        transition: all 300ms linear;
+    }
+    .right-wrapper .content .ct-list div.it {
+        width: 25%;
+        float: left;
+    }
+    .right-wrapper .content .ct-list::after {
+        content: "";
+        display: table;
+        clear: both;
     }
     .baffle {
         width: 100%;

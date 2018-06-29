@@ -62,10 +62,15 @@ function clickSongList(e) {
             this.songHash.unshift(hash);
             localStorage.hash = JSON.stringify(this.songHash);
         }
+
+        this.loadSong(hash);
+
+        console.log('click');
         // Switch interface ct between play
         switchPlayUI.call(this);
 
-        this.loadSong(hash);
+        cancleSOSO.call(this);
+
     }
 }
 
@@ -77,7 +82,6 @@ function switchPlayUI() {
 // jsonp 加载歌曲资源
 function loadSongList() {
     var searchUrl = 'http://songsearch.kugou.com/song_search_v2?callback=doJSON&keyword=';
-
     // this---> this.input
     if (this.value) {
         var script = document.createElement('script');
@@ -88,6 +92,7 @@ function loadSongList() {
         document.body.removeChild(script);
     }
 }
+
 
 song.extend({
     inputDom: document.querySelector('input'),
@@ -130,10 +135,20 @@ function triggerPlayBtn() {
     }
 }
 
+var nav = document.getElementsByClassName('nav')[0],
+    content = document.getElementsByClassName('content')[0];
+
+function cancleSOSO() {
+    nav.classList.remove('active');
+    content.style = '';
+    this.targetDom.parentElement.style.display = '';
+    this.pBottom.style = '';
+    this.inputDom.value = '';
+    this.targetDom.innerHTML = '';
+}
+
 function bindEvent() {
     var self = this,
-        nav = document.getElementsByClassName('nav')[0],
-        content = document.getElementsByClassName('content')[0],
         nextBtn = document.querySelector('.play-bottom .next'),
         prevBtn = document.querySelector('.play-bottom .prev'),
         singer = document.getElementsByClassName('song_list')[0];
@@ -175,20 +190,13 @@ function bindEvent() {
     }
 
     // cancle click
-    this.inputDom.nextElementSibling.onclick = function () {
-        nav.classList.remove('active');
-        content.style = '';
-        self.targetDom.parentElement.style.display = '';
-        self.pBottom.style = '';
-        this.previousElementSibling.value = '';
-        self.targetDom.innerHTML = '';
-    }
+    this.inputDom.nextElementSibling.onclick = cancleSOSO.bind(this);
 
-    // Play screen return button
-    this.playUiBackBtn.onclick = () => {
-        this.rightWrapDom.style.display = '';
-        this.playUiDom.style = '';
-    }
+        // Play screen return button
+        this.playUiBackBtn.onclick = () => {
+            this.rightWrapDom.style.display = '';
+            this.playUiDom.style = '';
+        }
 
     // click show lyrics
     this.dialDom.onclick = function () {

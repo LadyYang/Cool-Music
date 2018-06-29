@@ -20,20 +20,20 @@ music.main();
 require('../css/index.css');
 require('../css/recommend.css');
 
-window.onload = function () {
-    document.addEventListener('touchstart', function (e) {
-        // console.log(e);
-        if (e.touches.length > 1) {
-            e.preventDefault();
-        }
-    });
+// window.onload = function () {
+//     document.addEventListener('touchstart', function (e) {
+//         // console.log(e);
+//         if (e.touches.length > 1) {
+//             e.preventDefault();
+//         }
+//     });
 
-    var lastTouchEnd = 0;
-    document.addEventListener('touchend', function (e) {
-        var now = +new Date();
-        if (now - lastTouchEnd < 300) {
-            e.preventDefault();
-        }
-        lastTouchEnd = now;
-    });
-}
+//     var lastTouchEnd = 0;
+//     document.addEventListener('touchend', function (e) {
+//         var now = +new Date();
+//         if (now - lastTouchEnd < 300) {
+//             e.preventDefault();
+//         }
+//         lastTouchEnd = now;
+//     });
+// }
