@@ -1,3 +1,3 @@
-# CoolMusic
+# Cool-Music
 
 > node chtao.js
