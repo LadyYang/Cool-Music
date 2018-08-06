@@ -1,0 +1,234 @@
+/* 播放界面 */
+
+@media screen and (max-width: 800px) {
+    .play-UI {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 100%;
+        color: #fff;
+        z-index: 10001;
+        transition: all 250ms ease-in;
+    }
+    .play-UI .play-content {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        display: flex;
+        flex-direction: column;
+    }
+    .play-UI .play-content .play-nav {
+        width: 100%;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #ccc;
+    }
+    .play-content .play-nav .back {
+        display: flex;
+        align-items: center;
+        width: 30px;
+        height: 100%;
+    }
+    .play-content .play-nav .share {
+        width: 42px;
+        height: 100%;
+    }
+    .play-content .play-nav .info {
+        flex-grow: 1;
+        height: 100%;
+    }
+    .play-content .play-nav .info .name,
+    .play-content .play-nav .info .author {
+        height: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+    }
+    .play-content .play-nav .info .author {
+        font-size: 10px;
+    }
+    /* 播放界面中心部分 */
+    .play-UI .play-content .play-main {
+        width: 100%;
+        flex-grow: 1;
+        position: relative;
+        overflow: hidden;
+    }
+    .play-content .play-main .dial {
+        width: 300px;
+        height: 300px;
+        border-radius: 100%;
+        display: inline-block;
+        position: absolute;
+        top: 50px;
+        left: 50%;
+        opacity: 0;
+        transition: opacity 1s linear;
+        transform: translateX(-50%);
+        animation: zhuan 12s linear infinite;
+    }
+    .play-content .play-main div.paused {
+        animation-play-state: paused;
+    }
+    /* 转盘 */
+    .play-content .play-main .dial .zz {
+        width: 100%;
+        height: 100%;
+        border: 50px solid black;
+        border-radius: 100%;
+    }
+    @keyframes zhuan {
+        0% {
+            transform: translateX(-50%) rotateZ(0deg);
+        }
+        100% {
+            transform: translateX(-50%) rotateZ(360deg);
+        }
+    }
+    .play-content .play-main .dial .zz img {
+        width: 100%;
+        height: 100%;
+        border-radius: 100%;
+    }
+    /* 歌词 */
+    .play-content .play-main .lyric {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        opacity: 0;
+        transition: opcity 1s linear;
+        display: none;
+    }
+    .play-content .play-main .lyric .ly-list {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        text-align: center;
+        transition: marginTop 100ms linear;
+    }
+    .play-content .play-main .lyric .ly-list p {
+        font-family: '新宋体', '微软雅黑', Arial, Helvetica, sans-serif;
+        height: 30px;
+        line-height: 30px;
+        font-size: 16px;
+    }
+    .play-content .play-main .lyric .ly-list .active {
+        color: deepskyblue;
+    }
+    .play-UI .play-content .play-bottom {
+        width: 100%;
+        height: 100px;
+        bottom: 0;
+        position: relative;
+    }
+    /* 进度条 */
+    .play-UI .play-content .play-bottom .progress-bar {
+        height: 30%;
+        width: 100%;
+        position: absolute;
+        text-align: center;
+        line-height: 30px;
+    }
+    .play-UI .play-content .play-bottom .progress-bar .start-time,
+    .play-UI .play-content .play-bottom .progress-bar .end-time {
+        display: inline-block;
+        width: 12%;
+        font-size: 10px;
+    }
+    .play-UI .play-content .play-bottom .progress-bar .start-time {
+        float: left;
+    }
+    .play-UI .play-content .play-bottom .progress-bar .end-time {
+        float: right;
+    }
+    .play-UI .play-content .play-bottom .progress-bar .bar-wrap {
+        display: inline-block;
+        height: 30px;
+        width: 75%;
+        position: relative;
+        overflow: hidden;
+    }
+    .play-UI .play-content .play-bottom .progress-bar .bar-wrap .bar {
+        width: 100%;
+        height: 2px;
+        background-color: #ddd;
+        display: inline-block;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+    }
+    .play-UI .play-content .play-bottom .progress-bar .bar-wrap .bar .slide {
+        position: absolute;
+        height: 2px;
+        width: 100%;
+        background-color: #C20C0C;
+        right: 100%;
+    }
+    .play-UI .play-content .play-bottom .progress-bar .bar-wrap .bar .slide::after {
+        display: block;
+        content: ' ';
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        transform: translateY(-50%);
+        left: 100%;
+        border-radius: 100%;
+        background-color: #C20C0C;
+    }
+    /* 播放界面底部 */
+    .play-UI .play-content .play-bottom .play-control {
+        width: 100%;
+        height: 70%;
+        position: absolute;
+        bottom: 0;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+    .play-content .play-bottom .play-control span {
+        width: 30px;
+        height: 30px;
+        display: inline-block;
+    }
+    .play-content .play-bottom .play-control .play-mode,
+    .play-content .play-bottom .play-control .prev,
+    .play-content .play-bottom .play-control .next,
+    .play-content .play-bottom .play-control .state,
+    .play-content .play-bottom .play-control .list {
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    .play-content .play-bottom .play-control .play-mode {
+        background-image: url(../../images/icon-like.png);
+    }
+    .play-content .play-bottom .play-control .prev {
+        background-image: url(../../images/icon-prev.png);
+    }
+    .play-content .play-bottom .play-control .state {
+        background-image: url(../../images/icon-play.png);
+    }
+    .play-content .play-bottom .play-control .pause-btn {
+        background-image: url(../../images/icon-pause.png);
+    }
+    .play-content .play-bottom .play-control .next {
+        background-image: url(../../images/icon-next.png);
+    }
+    .play-content .play-bottom .play-control .list {
+        background-image: url(../../images/icon-list.png);
+    }
+    .play-UI .play-bg {
+        width: 100%;
+        height: 100%;
+    }
+    .play-UI .play-bg img {
+        width: 100%;
+        height: 100%;
+    }
+    
+}

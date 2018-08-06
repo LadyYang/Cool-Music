@@ -2,7 +2,12 @@ var fs = require('fs');
 var url = require('url');
 var stream = require('stream');
 
-function log({req,res,info,path}) {
+function log({
+    req,
+    res,
+    info,
+    path
+}) {
     var data = '';
     if (req instanceof stream.Readable) {
         var href = url.parse(req.url);
@@ -25,9 +30,9 @@ function log({req,res,info,path}) {
 
         fs.write(fd, str, 0, null, null, function (err) {
             if (err) throw err;
-          fs.close(fd, function () {
-              console.log('close ok');
-          });
+            fs.close(fd, function () {
+                console.log('close ok');
+            });
         });
     });
 }

@@ -1,5 +1,5 @@
-require('./zepto.min.js');
-require('./touch.js');
+require('../../utils/zepto.min.js');
+require('../../utils/touch.js');
 
 /**
  * @description slideshow module
@@ -10,7 +10,7 @@ var index = -1,
 
 // Slideshow Object
 var slideshow = {
-    path: ['../images/slide01.jpg', '../images/slide02.jpg', '../images/slide03.jpg', '../images/slide04.jpg', '../images/slide05.jpg', '../images/slide06.jpg'],
+    path: ['../../images/slide01.jpg', '../../images/slide02.jpg', '../../images/slide03.jpg', '../../images/slide04.jpg', '../../images/slide05.jpg', '../../images/slide06.jpg'],
     sliderLi: document.querySelectorAll('.slider li'),
     slideshowDom: document.querySelector('.slideshow'),
 
@@ -32,7 +32,7 @@ var slideshow = {
             } else {
                 setTimeout(() => {
                     this.createImage(ele, index);
-                }, 500);
+                }, 0);
             }
         });
     },
@@ -103,11 +103,11 @@ var slideshow = {
 
 // 瀑布流界面对象
 var waterfall = {
-    path: ["../images/18742275209205360.jpg", "../images/18924794137858123.jpg",
-        "../images/19019352137865075.jpg", "../images/109951163315570256.jpg", "../images/109951163324132839.jpg",
-        "../images/109951163325479921.jpg", "../images/18742275209205360.jpg", "../images/18924794137858123.jpg",
-        "../images/109951163315570256.jpg", "../images/19019352137865075.jpg", "../images/109951163324132839.jpg",
-        "../images/109951163325479921.jpg"
+    path: ["../../images/18742275209205360.jpg", "../../images/18924794137858123.jpg",
+        "../../images/19019352137865075.jpg", "../../images/109951163315570256.jpg", "../../images/109951163324132839.jpg",
+        "../../images/109951163325479921.jpg", "../../images/18742275209205360.jpg", "../../images/18924794137858123.jpg",
+        "../../images/109951163315570256.jpg", "../../images/19019352137865075.jpg", "../../images/109951163324132839.jpg",
+        "../../images/109951163325479921.jpg"
     ],
     wfImgArr: Array.from(document.querySelectorAll('.wf-image')),
 
@@ -134,4 +134,15 @@ var recommend = {
     }
 }
 
-module.exports = recommend;
+// page object
+var discover = {
+    recommend: recommend,
+
+    init: function () {
+        require('./discover.css')
+        
+        recommend.init();
+    }
+}
+
+module.exports = discover;

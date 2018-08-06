@@ -1,3 +1,5 @@
+window.route = require('../utils/route.js');
+
 var common = {
     bindEvent: function () {
         var menu = document.querySelector('.nav .nav-top .icon'),
@@ -5,20 +7,20 @@ var common = {
             leftWrapper = document.querySelector('.left-wrapper'),
             nav = document.querySelector('.nav'),
             pBottom = document.querySelector('.p-bottom'),
-            ctList = document.querySelector('.ct-list'),
-            baffle = document.querySelector('.baffle');
+            ctList = document.querySelector('.ct-list');
+        // baffle = document.querySelector('.baffle');
 
         menu.flag = false;
         menu.onclick = () => {
             if (menu.flag) {
                 leftWrapper.style.left = '';
                 content.style = '';
-                baffle.style.display = 'none';
+                // baffle.style.display = 'none';
                 nav.style.right = "";
                 pBottom.style.right = "";
                 menu.flag = false;
             } else {
-                baffle.style.display = 'block';
+                // baffle.style.display = 'block';
                 leftWrapper.style.left = '0';
                 content.style.position = 'fixed';
                 content.style.right = "-80%";

@@ -1,4 +1,4 @@
-const Song = require('./song.js');
+const Song = require('../../utils/song.js');
 
 'use strict';
 
@@ -74,11 +74,6 @@ function clickSongList(e) {
     }
 }
 
-function switchPlayUI() {
-    this.playUiDom.style.top = '0';
-    this.rightWrapDom.style.display = 'none';
-}
-
 // jsonp 加载歌曲资源
 function loadSongList() {
     var searchUrl = 'http://songsearch.kugou.com/song_search_v2?callback=doJSON&keyword=';
@@ -92,6 +87,13 @@ function loadSongList() {
         document.body.removeChild(script);
     }
 }
+
+function switchPlayUI() {
+    this.playUiDom.style.top = '0';
+    this.rightWrapDom.style.display = 'none';
+}
+
+
 
 
 song.extend({
@@ -192,11 +194,11 @@ function bindEvent() {
     // cancle click
     this.inputDom.nextElementSibling.onclick = cancleSOSO.bind(this);
 
-        // Play screen return button
-        this.playUiBackBtn.onclick = () => {
-            this.rightWrapDom.style.display = '';
-            this.playUiDom.style = '';
-        }
+    // Play screen return button
+    this.playUiBackBtn.onclick = () => {
+        this.rightWrapDom.style.display = '';
+        this.playUiDom.style = '';
+    }
 
     // click show lyrics
     this.dialDom.onclick = function () {

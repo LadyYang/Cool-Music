@@ -1,0 +1,28 @@
+/* 搜索歌曲列表展示 */
+
+@media screen and (max-width: 800px) {
+    .song_wrapper {
+        width: 100%;
+        position: absolute;
+        top: 50px;
+        display: none;
+    }
+    .song_wrapper .song_list {
+        width: 100%;
+    }
+    .song_wrapper .song_list .song_item {
+        position: relative;
+        height: 40px;
+        border-bottom: 1px solid #ccc;
+        margin: 3px 0 3px 0;
+    }
+    .song_wrapper .song_list .song_item div {
+        width: 100%;
+        text-align: center;
+        line-height: 40px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+    }
+}

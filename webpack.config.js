@@ -3,14 +3,35 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
+function setHTMLConfig(name, config = {}) {
+    var {
+        inject = true,
+            hash = false,
+            chunks = [],
+            favicon = '',
+            title = 'MUSIC',
+    } = config;
+
+    return new HtmlWebpackPlugin({
+        filename: `pages/${name}/${name}.html`,
+        template: `src/pages/${name}/${name}.html`,
+        inject: inject,
+        favicon: favicon,
+        hash: hash,
+        chunks: chunks.concat(name),
+        title: title
+    })
+}
+
 module.exports = {
     entry: {
-        'js/main': './src/scripts/main.js',
+        'main': './src/pages/main/main.js',
+        'error': './src/pages/error/error.js'
     },
     output: {
-        path: __dirname + '/dist',
-        filename: '[name].js',
-        // publicPath: '../dist/images'
+        path: __dirname + '/dist/',
+        filename: 'pages/[name]/[name].js',
+        // publicPath: 'http://localhost:81/'
     },
     mode: 'development',
     module: {
@@ -25,31 +46,24 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: 'css-loader',
+                    fallback: ['style-loader'],
+                    use: ['css-loader'],
                 })
+            },
+            // {
+            //     test: /\.css$/,
+            //     use: ['css-loader']
+            // },
+            {
+                test: /\.html$/,
+                use: ['html-loader']
             }
         ]
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            filename: '/views/index.html',
-            template: 'src/views/index.html',
-        }),
-        new HtmlWebpackPlugin({
-            filename: '/views/error.html',
-            template: 'src/views/error.html',
-            inject: false,
-            minify: {
-                removeComments: true,
-                collapseWhitespace: false
-            }
-        }),
-        new ExtractTextPlugin({
-            filename: (getPath) => {
-                return getPath('css/index.css').replace("js", "css")
-            }
-        }),
+        setHTMLConfig('main'),
+        setHTMLConfig('error'),
+        new ExtractTextPlugin('pages/[name]/[name].css')
         // new UglifyJSPlugin()
     ]
 }
