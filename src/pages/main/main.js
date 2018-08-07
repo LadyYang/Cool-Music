@@ -1,19 +1,33 @@
 require('../../layout/initialize.css');
 require('./main.css');
+require('../discover/discover.css')
 require('../../layout/footer.css');
-// const common = require('../../app/app.js');
+require('../play/play.css');
 
-function parseHTML(pageContext, className) {
-    var main = document.querySelector('body .main');
-    main.innerHTML = pageContext;
+
+function parseHTML(className) {
     document.body.className = className;
 }
 
-var discoverHTML = require('../discover/discover.html');
-parseHTML(discoverHTML, 'discover')
+function renderHTML() {
+    var discoverHTML = require('../discover/discover.html'),
+        playHTML = require('../play/play.html'),
+        footerHTML = require('../../layout/footer.html'),
+        footer = document.querySelector('footer'),
+        playUI = document.querySelector('.play-UI'),
+        main = document.querySelector('body .main');
 
-const discover = require('../discover/discover.js');
+    playUI.innerHTML = playHTML;
+    footer.innerHTML = footerHTML;
+    main.innerHTML = discoverHTML;
+    parseHTML('discover')
+}
 
+async function renderJS() {
+    await renderHTML();
+
+    return require('../discover/discover.js');
+}
 
 var music = {
     bindEvent: function () {
@@ -21,12 +35,14 @@ var music = {
     },
 
     main: function () {
-        this.bindEvent();
-        discover.init();
-        // common.init();
+        this.mainDom = document.querySelector('.main');
+        renderJS().then((discover) => {
+            discover.init();
+        })
 
-        var footer = document.querySelector('footer');
-        footer.innerHTML = require('../../layout/footer.html');
+
+        this.bindEvent();
+        // common.init();
     }
 }
 

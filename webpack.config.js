@@ -26,11 +26,11 @@ function setHTMLConfig(name, config = {}) {
 module.exports = {
     entry: {
         'main': './src/pages/main/main.js',
-        'error': './src/pages/error/error.js'
+        'error': './src/pages/error/error.js',
     },
     output: {
         path: __dirname + '/dist/',
-        filename: 'pages/[name]/[name].js',
+        filename: 'pages/[name]/[name]-[hash:5].js',
         // publicPath: 'http://localhost:81/'
     },
     mode: 'development',
@@ -63,7 +63,7 @@ module.exports = {
     plugins: [
         setHTMLConfig('main'),
         setHTMLConfig('error'),
-        new ExtractTextPlugin('pages/[name]/[name].css')
+        new ExtractTextPlugin('pages/[name]/[name]-[hash:5].css')
         // new UglifyJSPlugin()
     ]
 }

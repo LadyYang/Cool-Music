@@ -5,15 +5,10 @@ require('../../utils/touch.js');
  * @description slideshow module
  */
 var index = -1,
-    lastIndex = 0,
-    sliderLiArr = Array.from(document.getElementsByClassName('slider')[0]['children']);
+    lastIndex = 0;
 
 // Slideshow Object
 var slideshow = {
-    path: ['../../images/slide01.jpg', '../../images/slide02.jpg', '../../images/slide03.jpg', '../../images/slide04.jpg', '../../images/slide05.jpg', '../../images/slide06.jpg'],
-    sliderLi: document.querySelectorAll('.slider li'),
-    slideshowDom: document.querySelector('.slideshow'),
-
     createImage: function (dom, index) {
         var image = new Image();
         image.onload = () => {
@@ -39,7 +34,7 @@ var slideshow = {
 
     slide: function slide(dir) {
         dir = dir || 'right-left';
-        clearTimeout(sliderLiArr.timer);
+        clearTimeout(this.sliderLiArr.timer);
 
         lastIndex = index;
         if (dir === 'right-left') {
@@ -47,33 +42,33 @@ var slideshow = {
         } else if (dir === 'left-right') {
             index--;
         }
-        index = index % sliderLiArr.length;
+        index = index % this.sliderLiArr.length;
 
         // console.log(index);
-        sliderLiArr[Math.abs(lastIndex)].style.opacity = '';
-        sliderLiArr[Math.abs(index)].style.opacity = 1;
+        this.sliderLiArr[Math.abs(lastIndex)].style.opacity = '';
+        this.sliderLiArr[Math.abs(index)].style.opacity = 1;
 
         $('.slider-active').removeClass('slider-active');
         $('.slider-index span').eq(index).addClass('slider-active');
-        sliderLiArr.timer = setTimeout(() => {
+        this.sliderLiArr.timer = setTimeout(() => {
             this.slide('right-left');
         }, 4000);
     },
 
     bindEvent: function () {
         $('.slider-index span').on('click', function () {
-            clearTimeout(sliderLiArr.timer);
+            clearTimeout(this.sliderLiArr.timer);
 
             var n = $(this).index();
 
-            sliderLiArr[Math.abs(lastIndex)].style.opacity = '';
-            sliderLiArr[n].style.opacity = 1;
+            this.sliderLiArr[Math.abs(lastIndex)].style.opacity = '';
+            this.sliderLiArr[n].style.opacity = 1;
             $('.slider-active').removeClass('slider-active');
             $('.slider-index span').eq(n).addClass('slider-active');
             lastIndex = n;
             index = n;
 
-            sliderLiArr.timer = setTimeout(() => {
+            this.sliderLiArr.timer = setTimeout(() => {
                 show('right-left');
             }, 3000);
         });
@@ -88,18 +83,19 @@ var slideshow = {
     },
 
     init: function () {
-        this.bindEvent();
-        this.renderImage();
-
+        this.path = ['../../images/slide01.jpg', '../../images/slide02.jpg', '../../images/slide03.jpg', '../../images/slide04.jpg', '../../images/slide05.jpg', '../../images/slide06.jpg'];
+        this.sliderLi = document.querySelectorAll('.slider li');
+        this.slideshowDom = document.querySelector('.slideshow');
+        this.sliderLiArr = Array.from(document.getElementsByClassName('slider')[0]['children']);
         this.slideshowDom.style.height = this.slideshowDom.offsetWidth / 2.2 + 'px';
-
-        sliderLiArr.timer = setTimeout(() => {
+        this.sliderLiArr.timer = setTimeout(() => {
             this.slide('right-left');
         }, 30);
 
+        this.bindEvent();
+        this.renderImage();
     }
 }
-
 
 // 瀑布流界面对象
 var waterfall = {
@@ -120,29 +116,198 @@ var waterfall = {
 
 }
 
-/**
- * @description Recommend UI Object
- *     推荐总界面
- */
-var recommend = {
-    slideshow: slideshow,
-    waterfall: waterfall,
+// soso Object
+const Song = require('../play/song.js');
+class SOSO extends Song {
+    constructor() {
+        super();
 
-    init: function () {
-        slideshow.init();
-        waterfall.init();
+        window.doJSON = data => {
+            this.cb(data);
+        }
+
+        this.inputDom = document.querySelector('input');
+        this.targetDom = document.querySelector('.song_wrapper .song_list');
+        this.playUiBackBtn = document.querySelector('.play-nav .back');
+        this.playUiDom = document.querySelector('.play-UI');
+
+        // Play screen return button
+        this.playUiBackBtn.onclick = () => {
+            discover.main.style.display = 'block';
+            this.playUiDom.style.top = '100%';
+        }
+
     }
+
+    // callback of jsonp 
+    cb(data) {
+        // // 搜索的所有歌曲信息 songList
+        this.songList = data.data.lists;
+
+        if (this.songList.length) {
+            this.createDom(this.targetDom, this.songList);
+        }
+    }
+
+    // create song list
+    createDom(obj, songList) {
+        var str = '';
+
+        songList.forEach(function (ele) {
+            var itemStr = `<li class="song_item"> 
+                                <div class="singer_name">${ele.SongName}</div>
+                        </li>`;
+            str += itemStr;
+        });
+
+        obj.innerHTML = str;
+    }
+
+    // 防抖
+    debounce(handle, delay) {
+        var timer = null;
+
+        return function (e) {
+            var args = arguments;
+            clearTimeout(timer);
+
+            timer = setTimeout(() => {
+                handle.apply(this, args);
+            }, delay)
+        }
+    }
+
+    clickSongList(e) {
+        var singerName = Array.from(document.getElementsByClassName('singer_name'));
+        var target = e.target;
+
+        // Select a song to display the play Ui
+        if (target.className === 'singer_name') {
+            this.inputDom.value = '';
+            this.index = singerName.indexOf(target);
+
+            let hash = this.songList[this.index].FileHash;
+
+            // this.songHash
+            if (this.songHash.indexOf(hash) === -1) {
+                this.songHash.unshift(hash);
+                localStorage.hash = JSON.stringify(this.songHash);
+            }
+
+            this.loadSong(hash);
+
+            this.renderPlayUI();
+
+        }
+    }
+
+    // jsonp 加载this.歌曲资源
+    loadSongList() {
+        var searchUrl = 'http://songsearch.kugou.com/song_search_v2?callback=doJSON&keyword=';
+        // this---> this.input
+        if (this.value) {
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = searchUrl + this.value;
+            // script.src = `https://c.y.qq.com/soso/fcgi-bin/client_search_cp?ct=24&qqmusic_ver=1298&new_json=1&remoteplace=txt.yqq.center&searchid=49493059975831973&t=0&aggr=1&cr=1&catZhida=1&lossless=0&flag_qc=0&p=1&n=20&w=${this.value}&g_tk=1175838790&jsonpCallback=cb&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0`;
+            document.body.appendChild(script);
+            document.body.removeChild(script);
+        }
+    }
+
+    renderPlayUI() {
+        // load playUI and prepare to initialize
+        this.playUiDom.style.top = '0%';
+        discover.cancel.click();
+        discover.main.style.display = 'none';
+    }
+
 }
+
+// equalizer
+(function () {
+    function equalizer() {
+        document.querySelectorAll('#music-bars span')[(Math.floor(Math.random() * 15))].classList.toggle('move');
+
+        setTimeout(equalizer, 30);
+    }
+
+    document.querySelectorAll('#music-bars span').forEach((ele, index) => {
+        ele.style.left = index * 2 + 'px';
+    })
+
+    setTimeout(equalizer, 30);
+
+})();
 
 // page object
 var discover = {
-    recommend: recommend,
+    cancel: document.querySelector('.top .cancel'),
+    main: document.querySelector('.discover .main'),
+    so: new SOSO(),
+
+    hasLocalStorage() {
+        
+    },
+
+    bindEvent: function () {
+        var playBtn = document.querySelector('.discover .top .play');
+        playBtn.onclick = this.so.renderPlayUI.bind(this.so);
+
+        // when click soso input
+        function clickSOSO() {
+            var soso = document.querySelector('.soso input');
+            var play = document.querySelector('.top .play');
+            var content = document.querySelector('.discover .content');
+            var songWrapper = document.querySelector('.discover .song_wrapper');
+            var songList = document.querySelector('.song_wrapper .song_list');
+            var flag = true;
+
+            soso.onclick = function () {
+                if (flag) {
+                    soso.className = 'running'
+                    play.style.display = 'none';
+                    discover.cancel.style.display = 'inline-block';
+                    content.style.display = 'none';
+                    songWrapper.style.display = 'block';
+                    flag = !flag;
+                }
+            }
+
+            discover.cancel.onclick = function () {
+                flag = !flag;
+                soso.className = '';
+                play.style.display = '';
+                discover.cancel.style.display = '';
+                content.style.display = '';
+                songWrapper.style.display = '';
+                soso.value = '';
+                songList.innerHTML = '';
+            }
+        }
+
+
+
+        clickSOSO();
+    },
+
+    render: function () {
+
+    },
 
     init: function () {
-        require('./discover.css')
+        this.bindEvent();
+        slideshow.init();
+        waterfall.init();
+
+        console.log(this.so);
         
-        recommend.init();
+        this.so.bindEvent();
     }
 }
+
+
+
+
 
 module.exports = discover;

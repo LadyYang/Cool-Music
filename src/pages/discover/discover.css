@@ -1,53 +1,82 @@
 @media screen and (max-width: 800px) {
     /* 左边登录部分 */
-    .discover header {
+    .discover .top {
+        height: 50px;
+        display: flex;
         position: fixed;
         top: 0px;
         width: 100%;
-        height: 80px;
         z-index: 9999;
         background-color: #ec3e3d;
     }
-    .discover header .top {
-        height: 35px;
-        display: flex;
-    }
-    .discover header .top .soso {
-        width: 90%;
+    .discover .top .soso {
+        width: 85%;
         height: 100%;
         display: inline-block;
         text-align: center;
-        padding: 6px 0;
-    }
-    .discover header .top span {
-        display: none;
+        padding: 10px 0;
     }
     .top .soso input {
         text-align: center;
-        display: block;
-        height: 22px;
+        height: 30px;
         margin: 0 auto;
-        width: 80%;
+        width: 70%;
         border: none;
+        outline: none;
         background-color: #efb4b3;
         border-radius: 40px;
+        transition: width 300ms linear;
     }
-    .discover header .top .play {
+    .top .soso input.running {
+        width: 95%;
+    }
+    .discover .top .play {
         display: inline-block;
-        width: 10%;
+        width: 15%;
+        position: relative;
     }
-    .discover header nav .category {
-        height: 40px;
+    #music-bars span {
+        background-color: #fff;
+        display: block;
+        width: 1px;
+        height: 0px;
+        position: absolute;
+        bottom: 12px;
+        transition: height 600ms 200ms ease-out;
+    }
+
+    #music-bars span.move {
+        height: 20px;
+    }
+    
+    .discover .top .cancel {
+        display: none;
+        height: 100%;
+        text-align: center;
+        line-height: 50px;
+        color: #fff;
+        margin-left: 6px;
+    }
+    .discover nav {
+        height: 30px;
+        position: fixed;
+        top: 50px;
+        width: 100%;
+        z-index: 9999;
+        background-color: #ec3e3d;
+    }
+    .discover nav .category {
+        height: 25px;
         display: flex;
         justify-content: space-around;
         align-items: center;
         color: #ccc;
     }
-    .discover header nav .line {
+    .discover nav .line {
         width: 40px;
         border: 1px solid #fff;
     }
-    .discover header nav .recommend {
+    .discover nav .recommend {
         color: #fff;
     }
     .discover .mid {
@@ -55,7 +84,6 @@
         color: #fff;
         overflow-x: hidden;
     }
-
     /* 推荐界面 */
     .discover .mid .ct {
         width: 200%;
@@ -63,13 +91,11 @@
         left: 0;
         font-size: 0;
     }
-
     .discover .mid .ct .recommend {
         width: 50%;
         display: inline-block;
         font-size: 16px;
     }
-
     .discover .mid .ct .rank {
         width: 50%;
         display: inline-block;
@@ -215,83 +241,28 @@
         color: #333;
         font-size: 14px;
     }
-    /* 底部播放界面 */
-    .discover .mid .p-bottom {
+    .song_wrapper {
         width: 100%;
-        height: 50px;
-        position: fixed;
-        z-index: 9999;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        bottom: 0px;
-        right: 0;
-        background-color: #C20C0C;
-        transition: bottom 350ms linear, right 400ms ease-out;
+        position: absolute;
+        top: 50px;
+        display: none;
     }
-    .p-bottom .p-img {
-        width: 40px;
+    .song_wrapper .song_list {
+        width: 100%;
+    }
+    .song_wrapper .song_list .song_item {
+        position: relative;
         height: 40px;
-        margin-left: 10px;
-        float: left;
-        animation: zhuanzhuan 10s linear infinite;
+        border-bottom: 1px solid #ccc;
+        margin: 3px 0 3px 0;
     }
-    .p-bottom .p-img.paused {
-        animation-play-state: paused;
-    }
-    @keyframes zhuanzhuan {
-        0% {
-            transform: rotateZ(0deg);
-        }
-        100% {
-            transform: rotateZ(360deg);
-        }
-    }
-    .p-bottom .p-img img {
+    .song_wrapper .song_list .song_item div {
         width: 100%;
-        height: 100%;
-        border-radius: 100%;
-    }
-    .p-bottom .p-content {
-        flex-grow: 1;
-        height: 100%;
-    }
-    .p-bottom .p-content .name,
-    .p-bottom .p-content .author {
-        height: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 14px;
-    }
-    .p-bottom .p-content .author {
-        font-size: 10px;
-    }
-    .p-bottom .p-btn {
-        width: 120px;
-        height: 100%;
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
-    }
-    .p-bottom .p-btn span {
+        text-align: center;
+        line-height: 40px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         display: inline-block;
-        background-size: 100% 100%;
-        background-repeat: no-repeat;
-    }
-    .p-bottom .p-btn .state {
-        width: 30px;
-        background-image: url(../../images/icon-play.png);
-        height: 30px;
-    }
-    .p-bottom .p-btn .state.pause-btn {
-        height: 30px;
-        width: 30px;
-        background-image: url(../../images/icon-pause.png);
-    }
-    .p-bottom .p-btn .list {
-        width: 30px;
-        height: 30px;
-        background-image: url(../../images/icon-list.png);
     }
 }
