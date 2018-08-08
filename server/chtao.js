@@ -61,6 +61,7 @@ if (cluster.isMaster) {
         } = url.parse(u, true, false);
         
         var img = href.match(/(.*\.png|.*\.ico|.*\.jpg)$/);
+        
         var css = href.match(/(.*\.css)$/);
         var html = href.match(/(.*\.html)$/);
         var js = href.match(/(.*\.js)$/);
@@ -78,7 +79,7 @@ if (cluster.isMaster) {
             res.writeHead(code, {
                 'Content-type': type,
                 'Expires': new Date(Date.now() + 3000 * 1000).toUTCString(),
-                'Cache-Control': 'max-age=3000',
+                'Cache-Control': 'max-age=3000000000',
             });
 
             fileReadStream.pipe(res);

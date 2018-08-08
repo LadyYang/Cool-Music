@@ -30,8 +30,8 @@ module.exports = {
     },
     output: {
         path: __dirname + '/dist/',
-        filename: 'pages/[name]/[name]-[hash:5].js',
-        // publicPath: 'http://localhost:81/'
+        filename: 'pages/[name]/[name]-[hash].js',
+        publicPath: 'http://172.30.192.95:81/'
     },
     mode: 'development',
     module: {
@@ -63,7 +63,7 @@ module.exports = {
     plugins: [
         setHTMLConfig('main'),
         setHTMLConfig('error'),
-        new ExtractTextPlugin('pages/[name]/[name]-[hash:5].css')
+        new ExtractTextPlugin('pages/[name]/[name]-[hash].css')
         // new UglifyJSPlugin()
     ]
 }

@@ -1,5 +1,13 @@
 @media screen and (max-width: 800px) {
     /* 左边登录部分 */
+    /* body.discover {
+        background-color: #ec3e3d;
+    }
+
+    .discover .main,
+    .play-UI {
+        background-color: #fff;
+    } */
     .discover .top {
         height: 50px;
         display: flex;
@@ -113,12 +121,15 @@
         position: absolute;
     }
     .slideshow .slider li {
+        background-color: #ec3e3d;
         opacity: 0;
         transition: opacity 1s linear;
     }
     .slideshow .slider li img {
+        padding: 15px 15px 0 15px;
         width: 100%;
         height: 100%;
+        border-radius: 20px;
     }
     .slideshow .slider-index {
         position: absolute;

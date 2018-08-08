@@ -4,8 +4,6 @@ require('../../utils/touch.js');
 /**
  * @description slideshow module
  */
-var index = -1,
-    lastIndex = 0;
 
 // Slideshow Object
 var slideshow = {
@@ -36,20 +34,20 @@ var slideshow = {
         dir = dir || 'right-left';
         clearTimeout(this.sliderLiArr.timer);
 
-        lastIndex = index;
+        this.lastIndex = this.index;
         if (dir === 'right-left') {
-            index++;
+            this.index++;
         } else if (dir === 'left-right') {
-            index--;
+            this.index--;
         }
-        index = index % this.sliderLiArr.length;
+        this.index = this.index % this.sliderLiArr.length;
 
         // console.log(index);
-        this.sliderLiArr[Math.abs(lastIndex)].style.opacity = '';
-        this.sliderLiArr[Math.abs(index)].style.opacity = 1;
+        this.sliderLiArr[Math.abs(this.lastIndex)].style.opacity = '';
+        this.sliderLiArr[Math.abs(this.index)].style.opacity = 1;
 
         $('.slider-active').removeClass('slider-active');
-        $('.slider-index span').eq(index).addClass('slider-active');
+        $('.slider-index span').eq(this.index).addClass('slider-active');
         this.sliderLiArr.timer = setTimeout(() => {
             this.slide('right-left');
         }, 4000);
@@ -61,11 +59,11 @@ var slideshow = {
 
             var n = $(this).index();
 
-            this.sliderLiArr[Math.abs(lastIndex)].style.opacity = '';
+            this.sliderLiArr[Math.abs(this.lastIndex)].style.opacity = '';
             this.sliderLiArr[n].style.opacity = 1;
             $('.slider-active').removeClass('slider-active');
             $('.slider-index span').eq(n).addClass('slider-active');
-            lastIndex = n;
+            this.lastIndex = n;
             index = n;
 
             this.sliderLiArr.timer = setTimeout(() => {
@@ -83,11 +81,14 @@ var slideshow = {
     },
 
     init: function () {
+        this.index = -1;
+        this.lastIndex = 0;
         this.path = ['../../images/slide01.jpg', '../../images/slide02.jpg', '../../images/slide03.jpg', '../../images/slide04.jpg', '../../images/slide05.jpg', '../../images/slide06.jpg'];
         this.sliderLi = document.querySelectorAll('.slider li');
         this.slideshowDom = document.querySelector('.slideshow');
         this.sliderLiArr = Array.from(document.getElementsByClassName('slider')[0]['children']);
         this.slideshowDom.style.height = this.slideshowDom.offsetWidth / 2.2 + 'px';
+
         this.sliderLiArr.timer = setTimeout(() => {
             this.slide('right-left');
         }, 30);
@@ -99,15 +100,15 @@ var slideshow = {
 
 // 瀑布流界面对象
 var waterfall = {
-    path: ["../../images/18742275209205360.jpg", "../../images/18924794137858123.jpg",
-        "../../images/19019352137865075.jpg", "../../images/109951163315570256.jpg", "../../images/109951163324132839.jpg",
-        "../../images/109951163325479921.jpg", "../../images/18742275209205360.jpg", "../../images/18924794137858123.jpg",
-        "../../images/109951163315570256.jpg", "../../images/19019352137865075.jpg", "../../images/109951163324132839.jpg",
-        "../../images/109951163325479921.jpg"
-    ],
-    wfImgArr: Array.from(document.querySelectorAll('.wf-image')),
-
     init: function () {
+        // picture path
+        this.path = ["../../images/18742275209205360.jpg", "../../images/18924794137858123.jpg",
+            "../../images/19019352137865075.jpg", "../../images/109951163315570256.jpg", "../../images/109951163324132839.jpg",
+            "../../images/109951163325479921.jpg", "../../images/18742275209205360.jpg", "../../images/18924794137858123.jpg",
+            "../../images/109951163315570256.jpg", "../../images/19019352137865075.jpg", "../../images/109951163324132839.jpg",
+            "../../images/109951163325479921.jpg"
+        ];
+        this.wfImgArr = Array.from(document.querySelectorAll('.wf-image'));
         /* waterfull */
         this.wfImgArr.forEach((ele, index) => {
             slideshow.createImage.call(this, ele, index);
@@ -136,6 +137,22 @@ class SOSO extends Song {
             discover.main.style.display = 'block';
             this.playUiDom.style.top = '100%';
         }
+
+        // equalizer
+        (function () {
+            function equalizer() {
+                document.querySelectorAll('#music-bars span')[(Math.floor(Math.random() * 15))].classList.toggle('move');
+
+                setTimeout(equalizer, 30);
+            }
+
+            document.querySelectorAll('#music-bars span').forEach((ele, index) => {
+                ele.style.left = index * 2 + 'px';
+            })
+
+            setTimeout(equalizer, 30);
+
+        })();
 
     }
 
@@ -224,30 +241,10 @@ class SOSO extends Song {
 
 }
 
-// equalizer
-(function () {
-    function equalizer() {
-        document.querySelectorAll('#music-bars span')[(Math.floor(Math.random() * 15))].classList.toggle('move');
-
-        setTimeout(equalizer, 30);
-    }
-
-    document.querySelectorAll('#music-bars span').forEach((ele, index) => {
-        ele.style.left = index * 2 + 'px';
-    })
-
-    setTimeout(equalizer, 30);
-
-})();
-
 // page object
 var discover = {
-    cancel: document.querySelector('.top .cancel'),
-    main: document.querySelector('.discover .main'),
-    so: new SOSO(),
-
     hasLocalStorage() {
-        
+
     },
 
     bindEvent: function () {
@@ -256,26 +253,25 @@ var discover = {
 
         // when click soso input
         function clickSOSO() {
-            var soso = document.querySelector('.soso input');
-            var play = document.querySelector('.top .play');
-            var content = document.querySelector('.discover .content');
-            var songWrapper = document.querySelector('.discover .song_wrapper');
-            var songList = document.querySelector('.song_wrapper .song_list');
-            var flag = true;
+            var soso = document.querySelector('.soso input'),
+                play = document.querySelector('.top .play'),
+                content = document.querySelector('.discover .content'),
+                songWrapper = document.querySelector('.discover .song_wrapper'),
+                songList = document.querySelector('.song_wrapper .song_list');
 
             soso.onclick = function () {
-                if (flag) {
+                if (!content.style.display) {
+                    // document.body.style.backgroundColor = '#fff';
                     soso.className = 'running'
                     play.style.display = 'none';
                     discover.cancel.style.display = 'inline-block';
                     content.style.display = 'none';
                     songWrapper.style.display = 'block';
-                    flag = !flag;
                 }
             }
 
             discover.cancel.onclick = function () {
-                flag = !flag;
+                // document.body.style.backgroundColor = '';
                 soso.className = '';
                 play.style.display = '';
                 discover.cancel.style.display = '';
@@ -296,18 +292,19 @@ var discover = {
     },
 
     init: function () {
-        this.bindEvent();
+        this.cancel = document.querySelector('.top .cancel');
+        this.main = document.querySelector('.discover .main');
+        this.so = new SOSO();
+
         slideshow.init();
         waterfall.init();
 
-        console.log(this.so);
-        
+        this.bindEvent();
         this.so.bindEvent();
+
+        console.log(this.so);
+
     }
 }
-
-
-
-
 
 module.exports = discover;

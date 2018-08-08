@@ -155,7 +155,7 @@
      * @param {String} imgSrc
      * @param {Element} dom
      */
-    function readyImage(dom, imgSrc = '../images/ldh.jpg') {
+    function readyImage(dom, imgSrc = '../../images/ldh.jpg') {
         var img = new Image();
 
         // previous image

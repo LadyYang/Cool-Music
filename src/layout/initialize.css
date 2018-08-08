@@ -3,9 +3,8 @@
     body {
         box-sizing: border-box;
         user-select: none;
-        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
-
     * {
         padding: 0;
         margin: 0;
