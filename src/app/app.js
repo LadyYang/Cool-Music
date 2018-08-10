@@ -92,7 +92,11 @@
     }
 
     // all tab
-    App.prototype.tabs = {};
+    Object.defineProperty(App.prototype, 'tabs', {
+        configurable: true,
+        writable: true,
+        value: {}
+    })
 
     // all page
     var pages = [];
@@ -104,6 +108,7 @@
             writable: true,
             value: function (tab) {
                 this.tabs[tab.pageName] = tab;
+                pages = [tab];
 
                 if (this.currentPage) {
                     var currentPageDOM = document.getElementById(this.currentPage.pageName);
@@ -151,6 +156,7 @@
                 var targetPage = document.getElementById(page.pageName),
                     currentPageDOM = document.getElementById(this.currentPage.pageName);
 
+                pages = [page];
 
                 typeof this.currentPage.onHide === 'function' ? this.currentPage.onHide() : '';
 
@@ -176,7 +182,7 @@
             configurable: true,
             writable: true,
             value: function () {
-
+                 
             }
         },
 

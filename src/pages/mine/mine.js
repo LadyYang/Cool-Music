@@ -4,22 +4,17 @@ class Mine {
     }
 
     onShow() {
-        console.log('mine show');
-
     }
 
     onHide() {
-        console.log('mine hide');
 
     }
 
     onLoad() {
-        console.log('mine load');
         
     }
 
     onReady() {
-        console.log('mine ready');
         
     }
 

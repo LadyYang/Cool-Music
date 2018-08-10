@@ -303,12 +303,10 @@ var discover = {
     },
 
     onShow() {
-        console.log('discover show');
         
     },
 
     onHide() {
-        console.log('discover hide');
         
     },
 
