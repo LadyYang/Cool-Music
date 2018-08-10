@@ -1,60 +1,193 @@
-window.route = require('../utils/route.js');
+;
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define([], factory);
+    } else if (typeof module === 'object' && module.exprots) {
+        module.exprots = factory(root);
+    } else {
+        root.route = factory(root);
+    }
+})(typeof window === 'undefined' ? this : window, function (root) {
 
-var common = {
-    bindEvent: function () {
-        var menu = document.querySelector('.nav .nav-top .icon'),
-            content = document.querySelector('.content'),
-            leftWrapper = document.querySelector('.left-wrapper'),
-            nav = document.querySelector('.nav'),
-            pBottom = document.querySelector('.p-bottom'),
-            ctList = document.querySelector('.ct-list');
-        // baffle = document.querySelector('.baffle');
+    // constructor
+    function App() {
+        if (!(this instanceof App)) {
+            return new App();
+        }
+    }
 
-        menu.flag = false;
-        menu.onclick = () => {
-            if (menu.flag) {
-                leftWrapper.style.left = '';
-                content.style = '';
-                // baffle.style.display = 'none';
-                nav.style.right = "";
-                pBottom.style.right = "";
-                menu.flag = false;
-            } else {
-                // baffle.style.display = 'block';
-                leftWrapper.style.left = '0';
-                content.style.position = 'fixed';
-                content.style.right = "-80%";
-                nav.style.right = "-80%";
-                pBottom.style.right = "-80%";
-                menu.flag = true;
+    Object.defineProperty(App.prototype, 'extend', {
+        writable: true,
+        configurable: true,
+        value: function (o) {
+            for (var p in o) {
+                if (o.hasOwnProperty(p)) {
+                    this[p] = o[p];
+                }
+            }
+        }
+    })
+
+
+    function loadScript(url, callback) {
+        var script = document.createElement('script');
+
+        script.type = 'text/javascript';
+        if (script.readyState) {
+            script.onreadystatechange = function () {
+                if (script.readyState === 'loaded' || script.readyState === 'complete') {
+                    script.onreadystatechange = null;
+                    callback();
+                }
+            };
+        } else {
+            script.onload = function () {
+                callback();
+            };
+        }
+
+        script.src = url;
+        document.body.appendChild(script);
+    }
+
+    function ajax(config) {
+        var {
+            url,
+            method = "GET",
+            callback,
+            flag = true,
+            data,
+            xhr = null
+        } = config;
+
+        if (window.XMLHttpRequest) {
+            xhr = new XMLHttpRequest();
+        } else {
+            xhr = new ActiveXObject('Mircosoft.XMLHTTP');
+        }
+
+        if (method.toLowerCase() === 'get') {
+            url += '?' + data + new Date().getTime();
+            xhr.open(method, url, flag);
+        } else {
+            xhr.open(method, url, flag);
+        }
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                callback(xhr.responseText);
             }
         }
 
-        // switch UI eg: recommendui , findui, rankui, playlistui
-        var n = 0;
-        $('.content').on('swipeLeft', function (e) {
-            if (e.path.some(function (ele) {
-                    return ele.className === 'slideshow';
-                })) {
-                return;
-            }
-            if (n !== 3) {
-                n++;
-                ctList.style.left = -100 * n + '%';
-            }
-        }).on('swipeRight', function (e) {
-            if (n > 0) {
-                n--;
-                ctList.style.left = -100 * n + '%';
-            }
-
-        });
-
-    },
-
-    init: function () {
-        this.bindEvent();
+        if (method.toLowerCase() === 'get') {
+            xhr.send();
+        } else {
+            xhr.setRequestHeader('Content-Type', 'applicant/x-www-form-urle');
+            xhr.send(data);
+        }
     }
-}
 
-module.exports = common;
+    function parseCurrentPage(className) {
+        document.body.className = className;
+    }
+
+    // all tab
+    App.prototype.tabs = {};
+
+    // all page
+    var pages = [];
+
+    // render tabPage function
+    Object.defineProperties(App.prototype, {
+        'renderTab': {
+            configurable: true,
+            writable: true,
+            value: function (tab) {
+                this.tabs[tab.pageName] = tab;
+
+                if (this.currentPage) {
+                    var currentPageDOM = document.getElementById(this.currentPage.pageName);
+                    currentPageDOM.style.display = 'none';
+
+                    typeof this.currentPage.onHide === 'function' ? this.currentPage.onHide() : '';
+                }
+
+
+                Object.defineProperty(App.prototype, 'currentPage', {
+                    configurable: true,
+                    get() {
+                        return tab;
+                    }
+                })
+
+                Object.defineProperty(tab, 'loaded', {
+                    configurable: true,
+                    get() {
+                        return true;
+                    }
+                })
+
+                // 初次加载页面
+                typeof tab.onLoad === 'function' ? tab.onLoad() : '';
+
+                // 页面显示 触发函数
+                typeof tab.onShow === 'function' ? tab.onShow() : '';
+
+                // render page
+                var div = document.createElement('div');
+                div.innerHTML = tab.getHTML();
+                document.body.insertBefore(div, document.body.firstElementChild);
+
+                // 页面渲染完成 触发函数
+                typeof tab.onReady === 'function' ? tab.onReady() : '';
+
+            }
+        },
+
+        'switchTab': {
+            configurable: true,
+            writable: true,
+            value: function (page) {
+                var targetPage = document.getElementById(page.pageName),
+                    currentPageDOM = document.getElementById(this.currentPage.pageName);
+
+
+                typeof this.currentPage.onHide === 'function' ? this.currentPage.onHide() : '';
+
+                Object.defineProperty(App.prototype, 'currentPage', {
+                    configurable: true,
+                    get() {
+                        return page;
+                    }
+                })
+
+                typeof page.onShow === 'function' ? page.onShow() : '';
+
+                currentPageDOM.style.display = 'none';
+                targetPage.style.display = 'block';
+
+            }
+        }
+    })
+
+    // route
+    Object.defineProperties(App.prototype, {
+        'navigateTo': {
+            configurable: true,
+            writable: true,
+            value: function () {
+
+            }
+        },
+
+        'redirectTo': {
+            configurable: true,
+            writable: true,
+            value: function () {
+                
+            }
+        }
+    })
+
+    return App;
+})

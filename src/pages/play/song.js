@@ -19,16 +19,14 @@
 
     'use strict';
     var audio = new Audio(),
-        imgDom = document.querySelector('.play-main .dial .zz'),
-        songNameDom = document.querySelector('.play-nav .name'),
-        authorDom = document.querySelector('.play-nav .author'),
-        endTimeDom = document.querySelector('.play-UI .play-bottom .progress-bar .end-time'),
-        startTimeDom = document.querySelector('.play-UI .play-bottom .progress-bar .start-time'),
-        lyricUiDom = document.querySelector('.play-main .ly-list'),
-        dialDom = document.querySelector('.play-main .dial'),
-        playBtn = document.querySelector('.play-UI .play-bottom .state');
-
-
+        imgDom,
+        songNameDom,
+        authorDom,
+        endTimeDom,
+        startTimeDom,
+        lyricUiDom,
+        dialDom,
+        playBtn;
 
 
     // Constructor function
@@ -36,6 +34,16 @@
         if (!(this instanceof Song)) {
             throw new Error("Illegal constructor.");
         }
+
+        // await render
+        imgDom = document.querySelector('.play-main .dial .zz');
+        songNameDom = document.querySelector('.play-nav .name');
+        authorDom = document.querySelector('.play-nav .author');
+        endTimeDom = document.querySelector('.play-UI .play-bottom .progress-bar .end-time');
+        startTimeDom = document.querySelector('.play-UI .play-bottom .progress-bar .start-time');
+        lyricUiDom = document.querySelector('.play-main .ly-list');
+        dialDom = document.querySelector('.play-main .dial');
+        playBtn = document.querySelector('.play-UI .play-bottom .state');
     };
 
     // 高斯
@@ -369,9 +377,6 @@
     function beforePlay(data) {
         this.isPlay = false;
         playBtn.className = 'state';
-
-        console.log(dialDom);
-
 
         // Change the wheel
         dialDom.className = 'dial paused';

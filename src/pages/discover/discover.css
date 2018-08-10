@@ -1,14 +1,17 @@
 @media screen and (max-width: 800px) {
     /* 左边登录部分 */
-    /* body.discover {
+    /* body#discover {
         background-color: #ec3e3d;
     }
 
-    .discover .main,
+    #discover .main,
     .play-UI {
         background-color: #fff;
     } */
-    .discover .top {
+    #discover {
+        overflow-x: hidden;
+    }
+    #discover .top {
         height: 50px;
         display: flex;
         position: fixed;
@@ -17,7 +20,7 @@
         z-index: 9999;
         background-color: #ec3e3d;
     }
-    .discover .top .soso {
+    #discover .top .soso {
         width: 85%;
         height: 100%;
         display: inline-block;
@@ -38,7 +41,7 @@
     .top .soso input.running {
         width: 95%;
     }
-    .discover .top .play {
+    #discover .top .play {
         display: inline-block;
         width: 15%;
         position: relative;
@@ -57,7 +60,7 @@
         height: 20px;
     }
     
-    .discover .top .cancel {
+    #discover .top .cancel {
         display: none;
         height: 100%;
         text-align: center;
@@ -65,7 +68,7 @@
         color: #fff;
         margin-left: 6px;
     }
-    .discover nav {
+    #discover nav {
         height: 30px;
         position: fixed;
         top: 50px;
@@ -73,44 +76,44 @@
         z-index: 9999;
         background-color: #ec3e3d;
     }
-    .discover nav .category {
+    #discover nav .category {
         height: 25px;
         display: flex;
         justify-content: space-around;
         align-items: center;
         color: #ccc;
     }
-    .discover nav .line {
+    #discover nav .line {
         width: 40px;
         border: 1px solid #fff;
     }
-    .discover nav .recommend {
+    #discover nav .recommend {
         color: #fff;
     }
-    .discover .mid {
+    #discover .mid {
         margin-top: 80px;
         color: #fff;
         overflow-x: hidden;
     }
     /* 推荐界面 */
-    .discover .mid .ct {
+    #discover .mid .ct {
         width: 200%;
         position: relative;
         left: 0;
         font-size: 0;
     }
-    .discover .mid .ct .recommend {
+    #discover .mid .ct .recommend {
         width: 50%;
         display: inline-block;
         font-size: 16px;
     }
-    .discover .mid .ct .rank {
+    #discover .mid .ct .rank {
         width: 50%;
         display: inline-block;
         font-size: 16px;
     }
     /*******slideshow*******/
-    .discover .mid .ct .slideshow {
+    #discover .mid .ct .slideshow {
         width: 100%;
         position: relative;
     }
@@ -129,7 +132,8 @@
         padding: 15px 15px 0 15px;
         width: 100%;
         height: 100%;
-        border-radius: 20px;
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
     }
     .slideshow .slider-index {
         position: absolute;
@@ -153,7 +157,7 @@
     }
     /* waterfall */
     /******template******/
-    .discover .mid .recommend .waterfall {
+    #discover .mid .recommend .waterfall {
         position: relative;
         width: 100%;
     }

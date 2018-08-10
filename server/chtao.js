@@ -150,7 +150,7 @@ if (cluster.isMaster) {
         });
     })
 
-    server.listen(81, function () {
+    server.listen(8080, function () {
         log({
             info: 'Start service successfully',
             path: '/../log/server.log'

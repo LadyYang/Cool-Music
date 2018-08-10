@@ -1,11 +1,11 @@
 @media screen and (max-width: 800px) {
-    .account .main {
+    #account {
         overflow-x: hidden;
     }
-    .account .head .login {
+    #account .head .login {
         display: flex;
     }
-    .account .head .login img {
+    #account .head .login img {
         width: 60px;
         height: 60px;
         margin: 10px;
@@ -14,16 +14,16 @@
         vertical-align: top;
         border-radius: 50%;
     }
-    .account .login .nickname {
+    #account .login .nickname {
         width: 100%;
         height: 80px;
         margin-left: 10px;
     }
-    .account .login .nickname .monicker {
+    #account .login .nickname .monicker {
         height: 50%;
         padding: 13px 0 0 0;
     }
-    .account .login .nickname .grade {
+    #account .login .nickname .grade {
         height: 20px;
         font-size: 12px;
         border: 1px solid #ccc;
@@ -31,13 +31,13 @@
         width: 50px;
         border-radius: 30px;
     }
-    .account .login .nickname .grade svg {
+    #account .login .nickname .grade svg {
         display: inline-block;
         width: 15px;
         height: 15px;
         fill: #fbbd00;
     }
-    .account .login .nickname .grade span {
+    #account .login .nickname .grade span {
         display: inline-block;
         width: 10px;
         height: 20px;

@@ -4,29 +4,15 @@ require('../discover/discover.css')
 require('../../layout/footer.css');
 require('../play/play.css');
 require('../account/account.css');
-
-// all HTML Object
-var HTML = {
-    discoverHTML: require('../discover/discover.html'),
-    playHTML: require('../play/play.html'),
-    footerHTML: require('../../layout/footer.html'),
-    accountHTML: require('../account/account.html'),
-    mineHTML: require('../mine/mine.html'),
-    videoHTML: require('../video/video.html'),
-
-    mainDOM: document.querySelector('body .main'),
-    footerDOM: document.querySelector('footer'),
-
-    parseCurrentPage(className) {
-        document.body.className = className;
-    },
-
-    render(o, htmlStr) {
-        o.innerHTML = htmlStr;
-    }
-}
+const discover = require('../discover/discover.js');
+const account = require('../account/account.js');
+const mine = require('../mine/mine.js');
+const video = require('../video/video.js');
+const App = require('../../app/app.js');
+const app = new App;
 
 // footer Object
+// switch page
 var footer = {
     pages: ['DiscoverPage', 'VideoPage', 'MinePage', 'AccountPage'],
 
@@ -34,10 +20,8 @@ var footer = {
         /* 
             notice!!!
             The footer page needs to be rendered before it can be initialized 
-            --> HTML.render(HTML.footerDOM, HTML.footerHTML);
+            
         */
-        HTML.render(HTML.footerDOM, HTML.footerHTML)
-        HTML.render(document.querySelector('.play-UI'), HTML.playHTML);
 
         this.DiscoverPage = document.querySelector('footer div.discover');
         this.VideoPage = document.querySelector('footer div.video');
@@ -57,22 +41,33 @@ var footer = {
         footer.bindEvent('DiscoverPage');
 
         // load page
-        HTML.parseCurrentPage('discover');
-        HTML.render(HTML.mainDOM, HTML.discoverHTML);
-
-        require('../discover/discover.js').init();
+        if (discover.loaded) {
+            app.switchTab(discover);
+        } else {
+            app.renderTab(discover);
+        }
     },
 
     clickVideoPage() {
         footer.VideoPage.onclick = null;
         footer.bindEvent('VideoPage');
 
+        if (video.loaded) {
+            app.switchTab(video);
+        } else {
+            app.renderTab(video);
+        }
     },
 
     clickMinePage() {
         footer.MinePage.onclick = null;
         footer.bindEvent('MinePage');
 
+        if (mine.loaded) {
+            app.switchTab(mine);
+        } else {
+            app.renderTab(mine);
+        }
     },
 
     clickAccountPage() {
@@ -80,13 +75,16 @@ var footer = {
         footer.bindEvent('AccountPage');
 
         // load page
-        HTML.parseCurrentPage('account');
-        HTML.render(HTML.mainDOM, HTML.accountHTML);
-
-        require('../account/account.js');
+        if (account.loaded) {
+            app.switchTab(account);
+        } else {
+            app.renderTab(account);
+        }
     },
 
     bindEvent(currentPage) {
+        console.log(app);
+
         if (this.initialized) {
 
             // switch classname
@@ -106,11 +104,10 @@ var footer = {
 }
 
 var music = {
-    bindEvent: function () {
-
-    },
 
     main: function () {
+        document.body.innerHTML = require('../play/play.html') + require('../../layout/footer.html');
+
         footer.init();
 
         // common.init();

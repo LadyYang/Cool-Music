@@ -7,6 +7,23 @@ require('../../utils/touch.js');
 
 // Slideshow Object
 var slideshow = {
+    init: function () {
+        this.index = -1;
+        this.lastIndex = 0;
+        this.path = ['../../images/slide01.jpg', '../../images/slide02.jpg', '../../images/slide03.jpg', '../../images/slide04.jpg', '../../images/slide05.jpg', '../../images/slide06.jpg'];
+        this.sliderLi = document.querySelectorAll('.slider li');
+        this.slideshowDom = document.querySelector('.slideshow');
+        this.sliderLiArr = Array.from(document.getElementsByClassName('slider')[0]['children']);
+        this.slideshowDom.style.height = this.slideshowDom.offsetWidth / 2.2 + 'px';
+
+        this.sliderLiArr.timer = setTimeout(() => {
+            this.slide('right-left');
+        }, 30);
+
+        this.bindEvent();
+        this.renderImage();
+    },
+
     createImage: function (dom, index) {
         var image = new Image();
         image.onload = () => {
@@ -25,7 +42,7 @@ var slideshow = {
             } else {
                 setTimeout(() => {
                     this.createImage(ele, index);
-                }, 0);
+                }, 16);
             }
         });
     },
@@ -78,23 +95,6 @@ var slideshow = {
         $(this.slideshowDom).on('swipeRight', () => {
             this.slide('left-right');
         });
-    },
-
-    init: function () {
-        this.index = -1;
-        this.lastIndex = 0;
-        this.path = ['../../images/slide01.jpg', '../../images/slide02.jpg', '../../images/slide03.jpg', '../../images/slide04.jpg', '../../images/slide05.jpg', '../../images/slide06.jpg'];
-        this.sliderLi = document.querySelectorAll('.slider li');
-        this.slideshowDom = document.querySelector('.slideshow');
-        this.sliderLiArr = Array.from(document.getElementsByClassName('slider')[0]['children']);
-        this.slideshowDom.style.height = this.slideshowDom.offsetWidth / 2.2 + 'px';
-
-        this.sliderLiArr.timer = setTimeout(() => {
-            this.slide('right-left');
-        }, 30);
-
-        this.bindEvent();
-        this.renderImage();
     }
 }
 
@@ -127,7 +127,7 @@ class SOSO extends Song {
             this.cb(data);
         }
 
-        this.inputDom = document.querySelector('input');
+        this.inputDom = document.querySelector('.soso input');
         this.targetDom = document.querySelector('.song_wrapper .song_list');
         this.playUiBackBtn = document.querySelector('.play-nav .back');
         this.playUiDom = document.querySelector('.play-UI');
@@ -176,7 +176,7 @@ class SOSO extends Song {
                         </li>`;
             str += itemStr;
         });
-
+        
         obj.innerHTML = str;
     }
 
@@ -243,20 +243,21 @@ class SOSO extends Song {
 
 // page object
 var discover = {
+    
     hasLocalStorage() {
 
     },
 
-    bindEvent: function () {
-        var playBtn = document.querySelector('.discover .top .play');
+    bindEvent() {
+        var playBtn = document.querySelector('#discover .top .play');
         playBtn.onclick = this.so.renderPlayUI.bind(this.so);
 
         // when click soso input
         function clickSOSO() {
             var soso = document.querySelector('.soso input'),
                 play = document.querySelector('.top .play'),
-                content = document.querySelector('.discover .content'),
-                songWrapper = document.querySelector('.discover .song_wrapper'),
+                content = document.querySelector('#discover .content'),
+                songWrapper = document.querySelector('#discover .song_wrapper'),
                 songList = document.querySelector('.song_wrapper .song_list');
 
             soso.onclick = function () {
@@ -282,18 +283,16 @@ var discover = {
             }
         }
 
-
-
         clickSOSO();
     },
 
-    render: function () {
+    onLoad() {
 
     },
 
-    init: function () {
+    onReady() {
         this.cancel = document.querySelector('.top .cancel');
-        this.main = document.querySelector('.discover .main');
+        this.main = document.querySelector('#discover');
         this.so = new SOSO();
 
         slideshow.init();
@@ -301,10 +300,26 @@ var discover = {
 
         this.bindEvent();
         this.so.bindEvent();
+    },
 
-        console.log(this.so);
+    onShow() {
+        console.log('discover show');
+        
+    },
 
+    onHide() {
+        console.log('discover hide');
+        
+    },
+
+    getHTML() {
+        return require('./discover.html');
+    },
+
+    get pageName() {
+        return 'discover';
     }
+
 }
 
 module.exports = discover;
