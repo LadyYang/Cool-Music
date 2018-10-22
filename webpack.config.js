@@ -31,7 +31,7 @@ module.exports = {
     output: {
         path: __dirname + '/dist/',
         filename: 'pages/[name]/[name]-[hash].js',
-        publicPath: 'http://172.30.192.95:8080/'
+        publicPath: 'http://localhost:8080/'
     },
     mode: 'development',
     module: {

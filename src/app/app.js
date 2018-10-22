@@ -87,10 +87,6 @@
         }
     }
 
-    function parseCurrentPage(className) {
-        document.body.className = className;
-    }
-
     // all tab
     Object.defineProperty(App.prototype, 'tabs', {
         configurable: true,
